@@ -1,8 +1,8 @@
 ---
-import Globe from "@lucide/astro/icons/globe";
 import ChevronDown from "@lucide/astro/icons/chevron-down";
 import Check from "@lucide/astro/icons/check";
 import { LANGS, LANG_META, useT, type Lang } from "../i18n";
+import Flag from "./Flag.astro";
 
 interface Props {
   lang: Lang;
@@ -27,8 +27,8 @@ const options = LANGS.map((l) => ({ lang: l, href: alternates[l], ...LANG_META[l
         aria-label={`${t("nav.language")}: ${LANG_META[lang].name}`}
         class="pressable flex h-11 items-center gap-1.5 rounded-full px-2.5 text-[13px] font-bold hover:bg-ink/5 sm:px-3"
       >
-        <Globe size={18} stroke-width={1.75} class="hidden sm:block" />
-        <span class="min-w-4 text-center">{LANG_META[lang].short}</span>
+        <Flag lang={lang} size={22} />
+        <span class="hidden min-w-4 text-center sm:block">{LANG_META[lang].short}</span>
         <ChevronDown size={14} stroke-width={2.25} class="dropdown-chevron opacity-60" />
       </button>
       <ul id="lang-menu" class="dropdown-panel absolute end-0 top-full z-50 mt-2 w-52 rounded-2xl bg-white p-1.5 shadow-[0_20px_50px_-12px_rgb(0_0_0/0.25)] ring-1 ring-ink/5">
@@ -41,8 +41,11 @@ const options = LANGS.map((l) => ({ lang: l, href: alternates[l], ...LANG_META[l
               aria-current={o.lang === lang ? "true" : undefined}
               class="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors duration-150 hover:bg-sand aria-[current=true]:font-bold"
             >
-              <span>{o.name}</span>
-              {o.lang === lang ? <Check size={16} class="text-brand" /> : <span class="text-xs font-semibold text-muted">{o.lang.toUpperCase()}</span>}
+              <span class="flex items-center gap-3">
+                <Flag lang={o.lang} size={22} />
+                {o.name}
+              </span>
+              {o.lang === lang && <Check size={16} class="text-brand" />}
             </a>
           </li>
         ))}
@@ -59,8 +62,9 @@ const options = LANGS.map((l) => ({ lang: l, href: alternates[l], ...LANG_META[l
               hreflang={o.lang}
               lang={o.lang}
               aria-current={o.lang === lang ? "true" : undefined}
-              class="pressable grid h-10 place-items-center rounded-full text-sm font-semibold text-ink/70 aria-[current=true]:bg-white aria-[current=true]:text-ink aria-[current=true]:shadow-sm"
+              class="pressable flex h-10 items-center justify-center gap-2 rounded-full text-sm font-semibold text-ink/70 aria-[current=true]:bg-white aria-[current=true]:text-ink aria-[current=true]:shadow-sm"
             >
+              <Flag lang={o.lang} size={18} />
               {o.name}
             </a>
           </li>

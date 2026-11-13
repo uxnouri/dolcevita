@@ -1,0 +1,38 @@
+---
+/**
+ * Round country flags from the circle-flags set (the artwork behind react-circle-flags, MIT),
+ * inlined at build time: no React, no request to a flag CDN.
+ */
+import fr from "circle-flags/flags/fr.svg?raw";
+import gb from "circle-flags/flags/gb.svg?raw";
+import ma from "circle-flags/flags/ma.svg?raw";
+import type { Lang } from "../i18n";
+
+/** Which country flag represents each language. */
+const FLAGS: Record<Lang, string> = { fr, en: gb, ar: ma };
+
+interface Props {
+  lang: Lang;
+  size?: number;
+  class?: string;
+}
+const { lang, size = 20, class: className } = Astro.props;
+
+// Every flag file uses the same mask id ("a"); make it unique so several flags can share a page.
+const uid = `flag-${lang}-${Math.random().toString(36).slice(2, 8)}`;
+const inner = FLAGS[lang]
+  .replace(/^[\s\S]*?<svg[^>]*>/, "")
+  .replace(/<\/svg>\s*$/, "")
+  .replaceAll('id="a"', `id="${uid}"`)
+  .replaceAll("url(#a)", `url(#${uid})`);
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+  width={size}
+  height={size}
+  aria-hidden="true"
+  class:list={["shrink-0 rounded-full shadow-[0_0_0_1px_rgb(0_0_0/0.08)]", className]}
+  set:html={inner}
+/>
