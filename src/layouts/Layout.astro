@@ -1,0 +1,97 @@
+---
+import "../styles/global.css";
+import manrope from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CartDrawer from "../components/CartDrawer.astro";
+import { SITE } from "../lib/site";
+import { useT, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  /** URL of this same page in the other language. */
+  alternate: string;
+  image?: string;
+  /** Schema.org objects to embed as JSON-LD. */
+  schema?: object[];
+  noindex?: boolean;
+}
+
+const { lang, title, description, alternate, image, schema = [], noindex = false } = Astro.props;
+const t = useT(lang);
+const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${t("hero.eyebrow")}`;
+const desc = description ?? t("meta.description");
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const other = new URL(alternate, Astro.site);
+const frUrl = lang === "fr" ? canonical : other;
+const enUrl = lang === "en" ? canonical : other;
+const ogImage = new URL(image ?? "/og.jpg", Astro.site);
+
+const org = {
+  "@context": "https://schema.org",
+  "@type": "FurnitureStore",
+  name: SITE.name,
+  url: SITE.url,
+  email: SITE.email,
+  telephone: SITE.phones[0].replace(/\s/g, ""),
+  image: new URL("/og.jpg", Astro.site).href,
+  logo: new URL("/favicon.svg", Astro.site).href,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    addressCountry: SITE.address.country,
+  },
+  hasMap: SITE.mapUrl,
+};
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="fr" href={frUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={frUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#f7f5f0" />
+    <link rel="preload" href={manrope} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === "fr" ? "fr_FR" : "en_US"} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>document.documentElement.classList.add("js");</script>
+    <script type="application/ld+json" set:html={JSON.stringify([org, ...schema])} />
+  </head>
+  <body class="min-h-dvh">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white">
+      {t("nav.skip")}
+    </a>
+    <Header lang={lang} alternate={alternate} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <CartDrawer lang={lang} />
+
+    <script>
+      import "../scripts/ui";
+      import "../scripts/cart";
+    </script>
+  </body>
+</html>

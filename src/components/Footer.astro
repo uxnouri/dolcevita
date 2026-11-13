@@ -1,0 +1,88 @@
+---
+import MapPin from "@lucide/astro/icons/map-pin";
+import Phone from "@lucide/astro/icons/phone";
+import Mail from "@lucide/astro/icons/mail";
+import ArrowUp from "@lucide/astro/icons/arrow-up";
+import { path, useT, type Lang } from "../i18n";
+import { topCategories } from "../lib/catalog";
+import { SITE, telHref } from "../lib/site";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 bg-brand-dark text-white sm:mt-32">
+  <div class="container-site py-14 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <img src="/brand/logo-light.svg" alt={SITE.name} width="1019" height="296" loading="lazy" class="h-11 w-auto" />
+        <p class="mt-5 max-w-xs text-[15px] leading-relaxed text-white/70">{t("footer.tagline")}</p>
+      </div>
+
+      <nav class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-8" aria-label="Footer">
+        <div>
+          <p class="text-xs font-semibold tracking-[0.14em] text-white/50 uppercase">{t("footer.shop")}</p>
+          <ul class="mt-4 space-y-2.5 text-[15px]">
+            {
+              topCategories.slice(0, 7).map((c) => (
+                <li>
+                  <a href={path(lang, "category", c.slug)} class="text-white/80 transition-colors hover:text-white">
+                    {c.label[lang]}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-semibold tracking-[0.14em] text-white/50 uppercase">{t("footer.company")}</p>
+          <ul class="mt-4 space-y-2.5 text-[15px]">
+            <li><a href={path(lang, "shop")} class="text-white/80 transition-colors hover:text-white">{t("nav.shop")}</a></li>
+            <li><a href={path(lang, "about")} class="text-white/80 transition-colors hover:text-white">{t("nav.about")}</a></li>
+            <li><a href={path(lang, "blog")} class="text-white/80 transition-colors hover:text-white">{t("nav.blog")}</a></li>
+            <li><a href={path(lang, "contact")} class="text-white/80 transition-colors hover:text-white">{t("nav.contact")}</a></li>
+          </ul>
+        </div>
+        <div class="col-span-2 sm:col-span-1">
+          <p class="text-xs font-semibold tracking-[0.14em] text-white/50 uppercase">{t("footer.visit")}</p>
+          <ul class="mt-4 space-y-3 text-[15px] text-white/80">
+            <li>
+              <a href={SITE.mapUrl} target="_blank" rel="noopener" class="flex gap-3 transition-colors hover:text-white">
+                <MapPin size={18} class="mt-0.5 shrink-0 text-olive" />
+                <span>{SITE.address.street}<br />{SITE.address.city}</span>
+              </a>
+            </li>
+            {
+              SITE.phones.map((p) => (
+                <li>
+                  <a href={telHref(p)} class="flex gap-3 transition-colors hover:text-white">
+                    <Phone size={18} class="mt-0.5 shrink-0 text-olive" />
+                    {p}
+                  </a>
+                </li>
+              ))
+            }
+            <li>
+              <a href={`mailto:${SITE.email}`} class="flex gap-3 transition-colors hover:text-white">
+                <Mail size={18} class="mt-0.5 shrink-0 text-olive" />
+                {SITE.email}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="mt-14 flex flex-col-reverse items-start justify-between gap-4 border-t border-white/10 pt-6 text-sm text-white/50 sm:flex-row sm:items-center">
+      <p>© {year} {SITE.name}. {t("footer.rights")}</p>
+      <a href="#main" class="pressable inline-flex items-center gap-2 text-white/70 hover:text-white">
+        {t("footer.top")}
+        <ArrowUp size={16} />
+      </a>
+    </div>
+  </div>
+</footer>

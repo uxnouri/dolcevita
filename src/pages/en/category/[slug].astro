@@ -1,0 +1,10 @@
+---
+import Shop from "../../../components/pages/Shop.astro";
+import { categories, productsIn } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+  return categories.filter((c) => productsIn(c.slug).length > 0).map((c) => ({ params: { slug: c.slug } }));
+}
+---
+
+<Shop lang="en" category={Astro.params.slug} />

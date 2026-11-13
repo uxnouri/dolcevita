@@ -1,0 +1,55 @@
+---
+import ArrowLeft from "@lucide/astro/icons/arrow-left";
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import ProductCard from "./ProductCard.astro";
+import { path, useT, type Lang } from "../i18n";
+import type { Product } from "../lib/catalog";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  lead?: string;
+  products: Product[];
+}
+const { lang, title, lead, products } = Astro.props;
+const t = useT(lang);
+const id = title.toLowerCase().replace(/[^a-z]+/g, "-");
+---
+
+<section class="mt-20 sm:mt-28" data-rail aria-labelledby={id}>
+  <div class="container-site flex items-end justify-between gap-6">
+    <div>
+      <h2 id={id} class="text-3xl font-bold sm:text-4xl">{title}</h2>
+      {lead && <p class="mt-2 max-w-md text-muted">{lead}</p>}
+    </div>
+    <div class="flex shrink-0 items-center gap-2">
+      <a href={path(lang, "shop")} class="mr-2 hidden text-[15px] font-semibold underline-offset-4 hover:underline sm:block">
+        {t("home.viewAll")}
+      </a>
+      <button type="button" data-rail-prev class="icon-btn hidden border border-ink/15 disabled:opacity-30 sm:grid" aria-label="Previous">
+        <ArrowLeft size={18} />
+      </button>
+      <button type="button" data-rail-next class="icon-btn hidden border border-ink/15 disabled:opacity-30 sm:grid" aria-label="Next">
+        <ArrowRight size={18} />
+      </button>
+    </div>
+  </div>
+  <div class="container-site mt-8 px-0 sm:px-0 lg:px-0">
+    <div class="rail px-4 sm:px-6 lg:px-10">
+      {
+        products.map((p, i) => (
+          <ProductCard
+            product={p}
+            lang={lang}
+            index={i}
+            class="w-[68%] shrink-0 sm:w-[40%] md:w-[30%] lg:w-[23%] xl:w-[calc(20%-0.8rem)]"
+            sizes="(min-width: 1280px) 17rem, (min-width: 1024px) 23vw, (min-width: 768px) 30vw, 68vw"
+          />
+        ))
+      }
+    </div>
+  </div>
+  <div class="container-site mt-6 sm:hidden">
+    <a href={path(lang, "shop")} class="btn-ghost w-full">{t("home.viewAll")}<ArrowRight size={18} /></a>
+  </div>
+</section>

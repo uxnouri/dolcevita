@@ -1,0 +1,73 @@
+---
+import { Image, getImage } from "astro:assets";
+import Plus from "@lucide/astro/icons/plus";
+import { formatPrice, path, useT, type Lang } from "../i18n";
+import { discount, primaryCategory, productImage, type Product } from "../lib/catalog";
+import { SITE } from "../lib/site";
+
+interface Props {
+  product: Product;
+  lang: Lang;
+  /** Responsive `sizes` hint, depends on the grid the card sits in. */
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+  index?: number;
+}
+const { product: p, lang, sizes = "(min-width: 1280px) 22rem, (min-width: 768px) 30vw, 46vw", eager = false, class: className, index = 0 } = Astro.props;
+const t = useT(lang);
+const img = productImage(p.images[0]);
+const thumb = await getImage({ src: img, width: 160, height: 160, format: "webp" });
+const href = path(lang, "product", p.slug);
+const off = discount(p);
+const category = primaryCategory(p);
+---
+
+<article class:list={["group", className]} data-reveal style={`--i:${index % 4}`}>
+  <div class="relative">
+  <a href={href} class="block" tabindex="-1" aria-hidden="true">
+    <div class="relative aspect-square overflow-hidden rounded-2xl bg-sand">
+      <Image
+        src={img}
+        alt=""
+        widths={[240, 360, 520, 720]}
+        sizes={sizes}
+        loading={eager ? "eager" : "lazy"}
+        class="size-full object-contain p-[8%] mix-blend-multiply transition-transform duration-500 ease-(--ease-out) group-hover:scale-[1.04] motion-reduce:transition-none"
+      />
+      <div class="absolute top-3 left-3 flex gap-1.5">
+        {off > 0 && <span class="rounded-full bg-brand px-2.5 py-1 text-xs font-bold text-white tabular-nums">−{off}%</span>}
+        {!p.inStock && <span class="rounded-full bg-ink px-2.5 py-1 text-xs font-bold text-white">{t("product.soldOut")}</span>}
+      </div>
+    </div>
+  </a>
+
+  {
+    p.inStock && (
+      <button
+        type="button"
+        class="pressable absolute right-3 bottom-3 grid size-11 place-items-center rounded-full bg-white text-ink shadow-[0_6px_20px_-6px_rgb(0_0_0/0.25)] hover:bg-ink hover:text-white"
+        data-add-to-cart
+        data-slug={p.slug}
+        data-name={p.name}
+        data-price={p.price}
+        data-image={thumb.src}
+        aria-label={`${t("product.add")} · ${p.name}`}
+      >
+        <Plus size={20} stroke-width={2} />
+      </button>
+    )
+  }
+  </div>
+
+  <div class="mt-3 px-0.5">
+    {category && <p class="text-xs text-muted">{category.label[lang]}</p>}
+    <h3 class="mt-0.5 text-[15px] leading-snug font-semibold tracking-normal">
+      <a href={href} class="hover:text-brand">{p.name}</a>
+    </h3>
+    <p class="mt-1 flex items-baseline gap-2 text-[15px] tabular-nums">
+      <span class:list={["font-bold", off > 0 && "text-brand"]}>{formatPrice(p.price, lang, SITE.currency)}</span>
+      {p.regularPrice && <s class="text-sm text-muted">{formatPrice(p.regularPrice, lang, SITE.currency)}</s>}
+    </p>
+  </div>
+</article>

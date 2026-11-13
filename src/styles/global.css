@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+/* Manrope variable, Latin subsets only (French + English). */
+/* manrope-latin-ext-wght-normal */
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("@fontsource-variable/manrope/files/manrope-latin-ext-wght-normal.woff2") format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* manrope-latin-wght-normal */
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2") format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@theme {
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-paper: #f7f5f0;
+  --color-sand: #efebe3;
+  --color-stone: #e3ded3;
+  --color-ink: #1c2321;
+  --color-muted: #5f6763;
+  --color-brand: #1b635e;
+  --color-brand-dark: #134a46;
+  --color-olive: #99a869;
+  --color-sale: #b4532a;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --container-site: 88rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 5rem;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+    letter-spacing: -0.03em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-olive) 45%, transparent);
+  }
+  dialog::backdrop {
+    background: rgb(15 20 18 / 0.45);
+    opacity: 0;
+    transition: opacity 240ms ease, overlay 240ms allow-discrete, display 240ms allow-discrete;
+  }
+  dialog[open]::backdrop {
+    opacity: 1;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+/* Every pressable thing gets the same subtle press feedback. */
+@utility pressable {
+  transition: transform 160ms var(--ease-out), background-color 160ms ease, color 160ms ease,
+    border-color 160ms ease, opacity 160ms ease;
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+@utility btn {
+  @apply pressable inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold whitespace-nowrap select-none;
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-(--container-site) px-4 sm:px-6 lg:px-10;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand text-white;
+  }
+  .btn-ghost {
+    @apply btn border border-ink/15 bg-transparent text-ink;
+  }
+  .btn-light {
+    @apply btn bg-white text-ink;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover { @apply bg-brand-dark; }
+    .btn-ghost:hover { @apply border-ink/40; }
+    .btn-light:hover { @apply bg-sand; }
+  }
+
+  .icon-btn {
+    @apply pressable grid size-11 place-items-center rounded-full text-ink;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .icon-btn:hover { @apply bg-ink/5; }
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.14em] text-muted uppercase;
+  }
+
+  /* Horizontal scrollers: native momentum + snap, no JS needed on touch. */
+  .rail {
+    @apply flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain sm:gap-4;
+    scrollbar-width: none;
+    scroll-padding-inline: 1rem;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail > * { @apply snap-start; }
+
+  .prose-article p { @apply my-5 text-[17px] leading-[1.75] text-ink/80; }
+  .prose-article h2 { @apply mt-12 mb-4 text-2xl font-bold sm:text-3xl; }
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Side sheet (menu, cart). Enter 400ms on the iOS drawer curve, exit faster. */
+dialog.sheet {
+  margin: 0 0 0 auto;
+  height: 100dvh;
+  max-height: none;
+  width: min(28rem, 100%);
+  max-width: 100%;
+  background: var(--color-paper);
+  color: inherit;
+  padding: 0;
+  border: 0;
+  transform: translateX(100%);
+  transition: transform 260ms var(--ease-out), overlay 260ms allow-discrete, display 260ms allow-discrete;
+}
+dialog.sheet[open] {
+  transform: none;
+  transition-duration: 420ms;
+  transition-timing-function: var(--ease-drawer);
+  @starting-style {
+    transform: translateX(100%);
+  }
+}
+
+/* Centered modal (search). Modals scale from center; never from 0. */
+dialog.modal {
+  margin: 12vh auto auto;
+  width: min(40rem, calc(100% - 2rem));
+  border-radius: 1.5rem;
+  border: 0;
+  padding: 0;
+  background: white;
+  color: inherit;
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.35);
+  opacity: 0;
+  transform: scale(0.96) translateY(-8px);
+  transition: opacity 150ms ease, transform 150ms var(--ease-out), overlay 150ms allow-discrete,
+    display 150ms allow-discrete;
+}
+dialog.modal[open] {
+  opacity: 1;
+  transform: none;
+  transition-duration: 220ms;
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.sheet,
+  dialog.sheet[open] {
+    transform: none;
+    transition: opacity 200ms ease, overlay 200ms allow-discrete, display 200ms allow-discrete;
+    opacity: 0;
+  }
+  dialog.sheet[open] {
+    opacity: 1;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+/* Scroll-reveal: content is visible by default; JS opts in, so no-JS and crawlers see everything. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+  .js [data-reveal] {
+    transform: none;
+    transition: opacity 300ms ease;
+  }
+  .pressable:active { transform: none; }
+}

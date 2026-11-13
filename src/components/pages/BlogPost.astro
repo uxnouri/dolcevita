@@ -1,0 +1,102 @@
+---
+import { Image, getImage } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumbs from "../Breadcrumbs.astro";
+import PostCard from "../PostCard.astro";
+import { formatDate, path, useT, type Lang } from "../../i18n";
+import { ARTICLE, posts, type Post } from "../../lib/blog";
+import { blogImage, siteImage } from "../../lib/catalog";
+import { SITE } from "../../lib/site";
+
+interface Props {
+  lang: Lang;
+  post: Post;
+}
+const { lang, post } = Astro.props;
+const t = useT(lang);
+const other: Lang = lang === "fr" ? "en" : "fr";
+const cover = post.image ? blogImage(post.image) : null;
+const og = cover ? await getImage({ src: cover, width: 1200, format: "jpg" }) : null;
+const blocks = ARTICLE[lang];
+const more = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.title[lang],
+  datePublished: post.date,
+  inLanguage: lang,
+  image: og ? new URL(og.src, Astro.site).href : undefined,
+  author: { "@type": "Organization", name: SITE.name },
+  publisher: { "@type": "Organization", name: SITE.name },
+};
+---
+
+<Layout
+  lang={lang}
+  title={post.title[lang]}
+  description={blocks[0].type === "lead" ? blocks[0].text : undefined}
+  alternate={path(other, "blog", post.slug)}
+  image={og?.src}
+  schema={[schema]}
+>
+  <article class="container-site pt-6 sm:pt-10">
+    <div class="mx-auto max-w-3xl">
+      <Breadcrumbs
+        items={[
+          { label: t("nav.home"), href: path(lang, "home") },
+          { label: t("blog.title"), href: path(lang, "blog") },
+          { label: post.title[lang] },
+        ]}
+        lang={lang}
+      />
+      <time datetime={post.date} class="mt-8 block text-sm text-muted">{formatDate(post.date, lang)}</time>
+      <h1 class="mt-3 text-4xl leading-[1.05] font-bold sm:text-6xl">{post.title[lang]}</h1>
+    </div>
+
+    {
+      cover && (
+        <Image
+          src={cover}
+          alt=""
+          widths={[640, 960, 1280, 1600]}
+          sizes="(min-width: 1408px) 1328px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="mt-10 aspect-[16/9] w-full rounded-[1.75rem] object-cover sm:rounded-[2.25rem]"
+        />
+      )
+    }
+
+    <div class="prose-article mx-auto mt-12 max-w-2xl">
+      {
+        blocks.map((b) => {
+          if (b.type === "lead") return <p class="text-xl! leading-relaxed! font-semibold text-ink!">{b.text}</p>;
+          if (b.type === "h2") return <h2>{b.text}</h2>;
+          if (b.type === "p") return <p>{b.text}</p>;
+          if (b.type === "list")
+            return (
+              <ul class="my-6 space-y-3">
+                {b.items.map(([strong, rest]) => (
+                  <li class="flex gap-3 text-[17px] leading-relaxed text-ink/80">
+                    <span class="mt-2.5 size-1.5 shrink-0 rounded-full bg-olive" />
+                    <span><strong class="font-semibold text-ink">{strong}</strong> {rest}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          return (
+            <Image src={siteImage(b.src)} alt="" widths={[480, 720, 1000, 1305]} sizes="(min-width: 768px) 42rem, 100vw" class="my-10 w-full rounded-2xl" />
+          );
+        })
+      }
+    </div>
+  </article>
+
+  <section class="container-site mt-24" aria-labelledby="more-title">
+    <h2 id="more-title" class="text-3xl font-bold">{t("blog.more")}</h2>
+    <div class="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {more.map((p, i) => <PostCard post={p} lang={lang} index={i} />)}
+    </div>
+  </section>
+</Layout>

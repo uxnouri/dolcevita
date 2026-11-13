@@ -1,0 +1,38 @@
+---
+import ChevronRight from "@lucide/astro/icons/chevron-right";
+import type { Lang } from "../i18n";
+
+interface Props {
+  items: { label: string; href?: string }[];
+  lang: Lang;
+}
+const { items } = Astro.props;
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: new URL(c.href, Astro.site).href } : {}),
+  })),
+};
+---
+
+<nav aria-label="Breadcrumb">
+  <ol class="flex flex-wrap items-center gap-1 text-sm text-muted">
+    {
+      items.map((c, i) => (
+        <li class="flex items-center gap-1">
+          {i > 0 && <ChevronRight size={14} class="opacity-50" aria-hidden="true" />}
+          {c.href ? (
+            <a href={c.href} class="hover:text-ink">{c.label}</a>
+          ) : (
+            <span aria-current="page" class="line-clamp-1 text-ink">{c.label}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

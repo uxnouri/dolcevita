@@ -1,0 +1,149 @@
+---
+import Search from "@lucide/astro/icons/search";
+import ShoppingBag from "@lucide/astro/icons/shopping-bag";
+import Menu from "@lucide/astro/icons/menu";
+import X from "@lucide/astro/icons/x";
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import Phone from "@lucide/astro/icons/phone";
+import { path, useT, type Lang } from "../i18n";
+import { topCategories } from "../lib/catalog";
+import { SITE, telHref } from "../lib/site";
+
+interface Props {
+  lang: Lang;
+  alternate: string;
+}
+const { lang, alternate } = Astro.props;
+const t = useT(lang);
+const current = Astro.url.pathname;
+
+const links = [
+  { href: path(lang, "shop"), label: t("nav.shop") },
+  { href: path(lang, "blog"), label: t("nav.blog") },
+  { href: path(lang, "about"), label: t("nav.about") },
+  { href: path(lang, "contact"), label: t("nav.contact") },
+];
+const isActive = (href: string) => current.startsWith(href);
+---
+
+<header
+  data-header
+  class="sticky top-0 z-40 border-b border-transparent bg-paper/85 backdrop-blur-md transition-[border-color] duration-200 data-[scrolled]:border-ink/10"
+>
+  <div class="container-site flex h-16 items-center gap-2 sm:h-[4.5rem]">
+    <a href={path(lang, "home")} class="pressable -ml-1 flex shrink-0 items-center p-1" aria-label={SITE.name}>
+      <img src="/brand/logo.svg" alt={SITE.name} width="1019" height="296" class="h-9 w-auto sm:h-10" fetchpriority="high" />
+    </a>
+
+    <nav class="ml-8 hidden lg:block" aria-label="Main">
+      <ul class="flex items-center gap-1">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                aria-current={isActive(l.href) ? "page" : undefined}
+                class="pressable rounded-full px-4 py-2 text-[15px] font-medium text-ink/70 hover:text-ink aria-[current=page]:bg-ink/5 aria-[current=page]:text-ink"
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-0.5">
+      <button type="button" class="icon-btn" data-open="search-dialog" aria-label={t("nav.search")}>
+        <Search size={20} stroke-width={1.75} />
+      </button>
+      <a
+        href={alternate}
+        hreflang={lang === "fr" ? "en" : "fr"}
+        lang={lang === "fr" ? "en" : "fr"}
+        class="pressable grid h-11 min-w-11 place-items-center rounded-full px-2 text-[13px] font-bold tracking-wide hover:bg-ink/5"
+        aria-label={t("nav.switch")}
+        data-astro-prefetch="false"
+      >
+        {lang === "fr" ? "EN" : "FR"}
+      </a>
+      <button type="button" class="icon-btn relative" data-open="cart-drawer" aria-label={t("nav.cart")}>
+        <ShoppingBag size={20} stroke-width={1.75} />
+        <span
+          data-cart-count
+          class="absolute top-1 right-0.5 grid h-[18px] min-w-[18px] scale-90 place-items-center rounded-full bg-brand px-1 text-[10px] font-bold text-white tabular-nums opacity-0 transition-[opacity,transform] duration-200 ease-(--ease-out) data-[filled]:scale-100 data-[filled]:opacity-100"
+          >0</span
+        >
+      </button>
+      <button type="button" class="icon-btn lg:hidden" data-open="menu-drawer" aria-label={t("nav.menu")}>
+        <Menu size={22} stroke-width={1.75} />
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<dialog id="menu-drawer" class="sheet" aria-label={t("nav.menu")}>
+  <div class="flex h-full flex-col">
+    <div class="flex h-16 items-center justify-between border-b border-ink/10 px-4">
+      <span class="eyebrow">{t("nav.menu")}</span>
+      <button type="button" class="icon-btn" data-close aria-label={t("nav.close")}><X size={22} /></button>
+    </div>
+    <div class="flex-1 overflow-y-auto overscroll-contain px-4 py-6">
+      <ul class="space-y-1">
+        <li>
+          <a href={path(lang, "home")} class="pressable flex items-center justify-between rounded-2xl px-3 py-3 text-2xl font-semibold tracking-tight active:bg-ink/5">{t("nav.home")}</a>
+        </li>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} class="pressable flex items-center justify-between rounded-2xl px-3 py-3 text-2xl font-semibold tracking-tight active:bg-ink/5">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="eyebrow mt-8 mb-3 px-3">{t("nav.categories")}</p>
+      <ul class="grid grid-cols-2 gap-1">
+        {
+          topCategories.map((c) => (
+            <li>
+              <a href={path(lang, "category", c.slug)} class="pressable block rounded-xl px-3 py-2.5 text-[15px] text-ink/80 active:bg-ink/5">
+                {c.label[lang]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="border-t border-ink/10 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <a href={telHref(SITE.phones[0])} class="btn-primary w-full">
+        <Phone size={18} />
+        {SITE.phones[0]}
+      </a>
+      <a href={alternate} class="btn-ghost mt-2 w-full" data-astro-prefetch="false">
+        {t("nav.switch")}
+        <ArrowRight size={18} />
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<!-- Search -->
+<dialog id="search-dialog" class="modal" aria-label={t("nav.search")}>
+  <form action={path(lang, "shop")} method="get" role="search" class="flex items-center gap-2 p-2">
+    <Search size={20} class="ml-3 shrink-0 text-muted" aria-hidden="true" />
+    <label for="site-search" class="sr-only">{t("nav.search")}</label>
+    <input
+      id="site-search"
+      name="q"
+      type="search"
+      autocomplete="off"
+      enterkeyhint="search"
+      placeholder={t("search.placeholder")}
+      class="h-12 min-w-0 flex-1 bg-transparent text-lg outline-none placeholder:text-muted/70"
+    />
+    <button type="submit" class="btn-primary h-11 px-5">{t("search.submit")}</button>
+  </form>
+</dialog>

@@ -1,0 +1,89 @@
+---
+import { Image } from "astro:assets";
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import Hammer from "@lucide/astro/icons/hammer";
+import Leaf from "@lucide/astro/icons/leaf";
+import Ruler from "@lucide/astro/icons/ruler";
+import ShieldCheck from "@lucide/astro/icons/shield-check";
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumbs from "../Breadcrumbs.astro";
+import { path, useT, type Lang } from "../../i18n";
+import { siteImage } from "../../lib/catalog";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const other: Lang = lang === "fr" ? "en" : "fr";
+
+const copy = {
+  fr: {
+    title: "Le savoir-faire artisanal, au service de votre intérieur.",
+    p1: "Dolce Vita Design est spécialisé dans le mobilier artisanal, fabriqué à la main en alliant techniques traditionnelles du bois et lignes contemporaines.",
+    p2: "Nous sommes fiers de proposer un mobilier de grande qualité, à un prix juste, qui transforme une maison en véritable chez-soi. Salon, chambre ou espace de travail : nous avons les pièces qu’il vous faut pour créer un lieu chaleureux, confortable et élégant.",
+    p3: "Pour nous, un meuble est bien plus qu’un objet qui remplit l’espace : c’est le reflet de votre personnalité et de votre façon de vivre.",
+  },
+  en: {
+    title: "Artisanal craftsmanship, in service of your home.",
+    p1: "Dolce Vita Design specialises in artisanal, handcrafted furniture that blends traditional woodworking techniques with contemporary lines.",
+    p2: "We take pride in offering top-quality, fairly priced furniture that turns a house into a home. Whether you are furnishing your living room, bedroom or workspace, we have the pieces to create a cosy, comfortable and stylish space.",
+    p3: "We believe furniture is more than something that fills a room: it is a reflection of who you are, your personality and your lifestyle.",
+  },
+}[lang];
+
+const values = [
+  { icon: Hammer, title: t("promise.craft.title"), text: t("promise.craft.text") },
+  { icon: Leaf, title: t("promise.eco.title"), text: t("promise.eco.text") },
+  { icon: Ruler, title: t("promise.custom.title"), text: t("promise.custom.text") },
+  { icon: ShieldCheck, title: t("promise.durable.title"), text: t("promise.durable.text") },
+];
+---
+
+<Layout lang={lang} title={t("about.title")} description={copy.p1} alternate={path(other, "about")}>
+  <div class="container-site pt-6 sm:pt-10">
+    <Breadcrumbs items={[{ label: t("nav.home"), href: path(lang, "home") }, { label: t("about.title") }]} lang={lang} />
+    <p class="eyebrow mt-8">{t("about.title")}</p>
+    <h1 class="mt-3 max-w-4xl text-4xl leading-[1.05] font-bold sm:text-6xl">{copy.title}</h1>
+
+    <Image
+      src={siteImage("2025-04-about-us-2-modern.jpg")}
+      alt=""
+      widths={[640, 960, 1328]}
+      sizes="(min-width: 1408px) 1328px, 100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="mt-10 aspect-[4/3] w-full rounded-[1.75rem] object-cover sm:aspect-[1328/765] sm:rounded-[2.25rem]"
+    />
+
+    <div class="mt-14 grid gap-10 lg:grid-cols-12">
+      <p class="text-2xl leading-snug font-semibold tracking-tight lg:col-span-5">{t("about.lead")}</p>
+      <div class="space-y-5 text-lg leading-relaxed text-muted lg:col-span-6 lg:col-start-7">
+        <p>{copy.p1}</p>
+        <p>{copy.p2}</p>
+        <p>{copy.p3}</p>
+        <a href={path(lang, "shop")} class="btn-primary mt-4">{t("hero.cta")}<ArrowRight size={18} /></a>
+      </div>
+    </div>
+
+    <ul class="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        values.map((v, i) => (
+          <li class="rounded-2xl bg-sand p-6" data-reveal style={`--i:${i}`}>
+            <v.icon size={24} stroke-width={1.75} class="text-brand" />
+            <h2 class="mt-5 text-lg font-bold tracking-tight">{v.title}</h2>
+            <p class="mt-2 leading-relaxed text-muted">{v.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <Image
+      src={siteImage("2025-04-about-us-1-modern.jpg")}
+      alt=""
+      widths={[640, 960, 1328]}
+      sizes="(min-width: 1408px) 1328px, 100vw"
+      class="mt-20 aspect-[4/3] w-full rounded-[1.75rem] object-cover sm:aspect-[1328/765] sm:rounded-[2.25rem]"
+    />
+  </div>
+</Layout>

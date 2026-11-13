@@ -1,0 +1,218 @@
+[
+  {
+    "id": 53,
+    "slug": "accessories",
+    "name": "Accessories",
+    "parent": null,
+    "count": 20,
+    "image": "2025-01-cat-accessories.png"
+  },
+  {
+    "id": 123,
+    "slug": "armchair",
+    "name": "Armchair",
+    "parent": "sofas",
+    "count": 20,
+    "image": null
+  },
+  {
+    "id": 57,
+    "slug": "balcony-and-garden",
+    "name": "Balcony and garden",
+    "parent": null,
+    "count": 24,
+    "image": null
+  },
+  {
+    "id": 59,
+    "slug": "bathroom",
+    "name": "Bathroom",
+    "parent": null,
+    "count": 15,
+    "image": "2025-01-cat-lighting.png"
+  },
+  {
+    "id": 61,
+    "slug": "bedroom",
+    "name": "Bedroom",
+    "parent": null,
+    "count": 25,
+    "image": "2025-04-cat-bedroom.png"
+  },
+  {
+    "id": 68,
+    "slug": "cabinets",
+    "name": "Cabinets",
+    "parent": null,
+    "count": 7,
+    "image": "2025-01-cat-cabinet.png"
+  },
+  {
+    "id": 69,
+    "slug": "chairs",
+    "name": "Chairs",
+    "parent": null,
+    "count": 25,
+    "image": "2025-01-cat-chair.png"
+  },
+  {
+    "id": 72,
+    "slug": "childrens-room",
+    "name": "Children’s room",
+    "parent": null,
+    "count": 15,
+    "image": null
+  },
+  {
+    "id": 76,
+    "slug": "desks",
+    "name": "Desks",
+    "parent": null,
+    "count": 20,
+    "image": "2025-01-cat-desk.png"
+  },
+  {
+    "id": 77,
+    "slug": "dining-room",
+    "name": "Dining room",
+    "parent": null,
+    "count": 12,
+    "image": null
+  },
+  {
+    "id": 124,
+    "slug": "double",
+    "name": "Double",
+    "parent": "sofas",
+    "count": 10,
+    "image": null
+  },
+  {
+    "id": 83,
+    "slug": "hall",
+    "name": "Hall",
+    "parent": null,
+    "count": 10,
+    "image": null
+  },
+  {
+    "id": 125,
+    "slug": "handing",
+    "name": "Handing",
+    "parent": "sofas",
+    "count": 6,
+    "image": null
+  },
+  {
+    "id": 86,
+    "slug": "inspirations",
+    "name": "Inspirations",
+    "parent": null,
+    "count": 20,
+    "image": null
+  },
+  {
+    "id": 87,
+    "slug": "kitchen",
+    "name": "Kitchen",
+    "parent": null,
+    "count": 18,
+    "image": "2025-01-cat-table.png"
+  },
+  {
+    "id": 91,
+    "slug": "lighting",
+    "name": "Lighting",
+    "parent": null,
+    "count": 24,
+    "image": "2025-01-cat-lighting.png"
+  },
+  {
+    "id": 92,
+    "slug": "living-room",
+    "name": "Living room",
+    "parent": null,
+    "count": 20,
+    "image": "2025-04-cat-living-room.png"
+  },
+  {
+    "id": 126,
+    "slug": "long",
+    "name": "Long",
+    "parent": "sofas",
+    "count": 13,
+    "image": null
+  },
+  {
+    "id": 127,
+    "slug": "meeting-tables",
+    "name": "Meeting tables",
+    "parent": "tables",
+    "count": 20,
+    "image": "2025-01-cat-desk.png"
+  },
+  {
+    "id": 97,
+    "slug": "miscellaneous",
+    "name": "Miscellaneous",
+    "parent": null,
+    "count": 35,
+    "image": "2025-01-cat-miscellaneous.png"
+  },
+  {
+    "id": 128,
+    "slug": "modern",
+    "name": "Modern",
+    "parent": "sofas",
+    "count": 21,
+    "image": null
+  },
+  {
+    "id": 100,
+    "slug": "office",
+    "name": "Office",
+    "parent": null,
+    "count": 27,
+    "image": "2025-01-cat-office.png"
+  },
+  {
+    "id": 129,
+    "slug": "single",
+    "name": "Single",
+    "parent": "sofas",
+    "count": 24,
+    "image": null
+  },
+  {
+    "id": 112,
+    "slug": "sofas",
+    "name": "Sofas",
+    "parent": null,
+    "count": 36,
+    "image": "2025-01-cat-sofa.png"
+  },
+  {
+    "id": 113,
+    "slug": "stool",
+    "name": "Stool",
+    "parent": "sofas",
+    "count": 6,
+    "image": null
+  },
+  {
+    "id": 115,
+    "slug": "tables",
+    "name": "Tables",
+    "parent": null,
+    "count": 20,
+    "image": "2025-01-cat-table.png"
+  },
+  {
+    "id": 120,
+    "slug": "wardrobes",
+    "name": "Wardrobes",
+    "parent": null,
+    "count": 12,
+    "image": "2025-01-cat-wardrobe.png"
+  }
+]
