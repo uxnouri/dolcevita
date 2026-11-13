@@ -53,10 +53,10 @@ const schema = {
     <!-- Quick jump to the three services -->
     <ul class="mt-12 grid gap-3 sm:grid-cols-3">
       {
-        copy.services.map((s, i) => {
+        copy.services.map((s) => {
           const Icon = icons[s.id as keyof typeof icons];
           return (
-            <li data-reveal style={`--i:${i}`}>
+            <li>
               <a href={`#${s.id}`} class="pressable flex h-full items-center gap-4 rounded-2xl bg-sand p-5 hover:bg-stone">
                 <span class="grid size-12 shrink-0 place-items-center rounded-full bg-brand text-white">
                   <Icon size={22} stroke-width={1.75} />
@@ -74,7 +74,7 @@ const schema = {
       {
         copy.services.map((s, i) => (
           <section id={s.id} class="grid scroll-mt-24 items-center gap-8 lg:grid-cols-2 lg:gap-16" aria-labelledby={`${s.id}-title`}>
-            <div class:list={["overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]", i % 2 === 1 && "lg:order-2"]} data-reveal>
+            <div class:list={["overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]", i % 2 === 1 && "lg:order-2"]}>
               <Image
                 src={siteImage(s.image)}
                 alt=""
@@ -83,7 +83,7 @@ const schema = {
                 class="aspect-[4/3] size-full object-cover"
               />
             </div>
-            <div data-reveal style="--i:1">
+            <div>
               <p class="text-sm font-bold text-olive tabular-nums">0{i + 1}</p>
               <h2 id={`${s.id}-title`} class="mt-2 text-3xl font-bold sm:text-5xl">{s.title}</h2>
               <p class="mt-5 max-w-lg text-lg leading-relaxed text-muted">{s.text}</p>
@@ -109,7 +109,7 @@ const schema = {
       <ol class="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {
           copy.process.map((step, i) => (
-            <li data-reveal style={`--i:${i}`}>
+            <li>
               <span class="grid size-11 place-items-center rounded-full bg-white text-lg font-bold text-brand tabular-nums">{i + 1}</span>
               <h3 class="mt-5 text-lg font-bold tracking-tight">{step.title}</h3>
               <p class="mt-2 leading-relaxed text-muted">{step.text}</p>

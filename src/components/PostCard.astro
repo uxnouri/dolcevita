@@ -7,13 +7,12 @@ import type { Post } from "../lib/blog";
 interface Props {
   post: Post;
   lang: Lang;
-  index?: number;
 }
-const { post, lang, index = 0 } = Astro.props;
+const { post, lang } = Astro.props;
 const href = path(lang, "blog", post.slug);
 ---
 
-<article class="group" data-reveal style={`--i:${index % 3}`}>
+<article class="group">
   <a href={href} class="block overflow-hidden rounded-2xl bg-stone" tabindex="-1" aria-hidden="true">
     {
       post.image && (
@@ -22,7 +21,7 @@ const href = path(lang, "blog", post.slug);
           alt=""
           widths={[400, 640, 880]}
           sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw"
-          class="aspect-[3/2] w-full object-cover transition-transform duration-700 ease-(--ease-out) group-hover:scale-[1.03]"
+          class="aspect-[3/2] w-full object-cover transition-transform duration-250 ease-(--ease-out) group-hover:scale-[1.03] motion-reduce:transition-none"
         />
       )
     }

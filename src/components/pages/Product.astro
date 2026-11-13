@@ -10,7 +10,8 @@ import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import ProductCard from "../ProductCard.astro";
 import { alternates, formatPrice, path, useT, type Lang } from "../../i18n";
-import { colorLabel, discount, getCategory, primaryCategory, productImage, related, styleLabel, type Product } from "../../lib/catalog";
+import { colorLabel, discount, getCategory, oldPrice, primaryCategory, productImage, related, styleLabel, type Product } from "../../lib/catalog";
+import CategoryIcon from "../CategoryIcon.astro";
 import { SITE } from "../../lib/site";
 
 interface Props {
@@ -24,8 +25,10 @@ const cats = p.categories.map(getCategory).filter((c) => !!c);
 const main = primaryCategory(p);
 const off = discount(p);
 const url = new URL(path(lang, "product", p.slug), Astro.site).href;
-const thumb = await getImage({ src: images[0], width: 160, height: 160, format: "webp" });
-const og = await getImage({ src: images[0], width: 1200, height: 1200, format: "jpg", background: "#ffffff" });
+const thumb = images[0] ? await getImage({ src: images[0], width: 160, height: 160, format: "webp" }) : undefined;
+const og = images[0]
+  ? await getImage({ src: images[0], width: 1200, height: 1200, format: "jpg", background: "#ffffff" })
+  : { src: "/og.jpg" };
 const waText = t("product.whatsappMessage", { name: p.name, url });
 const money = (n: number) => formatPrice(n, lang, SITE.currency);
 
@@ -75,7 +78,11 @@ const crumbs = [
         <div class="relative">
           <div class="rail gap-0! rounded-[1.75rem] bg-sand" data-gallery-rail style="scroll-padding-inline:0">
             {
-              images.map((img, i) => (
+              images.length === 0 ? (
+                <div class="grid aspect-square w-full place-items-center text-brand/40">
+                  <CategoryIcon slug={main?.slug ?? "canapes"} size={96} />
+                </div>
+              ) : images.map((img, i) => (
                 <div class="aspect-square w-full shrink-0">
                   <Image
                     src={img}
@@ -140,9 +147,9 @@ const crumbs = [
             )
           }
 
-          <p class="mt-5 flex items-baseline gap-3 tabular-nums">
+          <p class="mt-5 flex flex-wrap items-baseline gap-x-3 tabular-nums">
             <span class:list={["text-3xl font-bold", off > 0 && "text-brand"]}>{money(p.price)}</span>
-            {p.regularPrice && <s class="text-lg text-muted">{money(p.regularPrice)}</s>}
+            {oldPrice(p) && <s class="text-lg whitespace-nowrap text-muted">{money(oldPrice(p)!)}</s>}
           </p>
           <p class:list={["mt-2 flex items-center gap-2 text-sm font-semibold", p.inStock ? "text-brand" : "text-sale"]}>
             <span class:list={["size-2 rounded-full", p.inStock ? "bg-brand" : "bg-sale"]}></span>
@@ -184,7 +191,7 @@ const crumbs = [
               data-slug={p.slug}
               data-name={p.name}
               data-price={p.price}
-              data-image={thumb.src}
+              data-image={thumb?.src ?? ""}
               disabled={!p.inStock}
             >
               <ShoppingBag size={20} />
@@ -235,7 +242,7 @@ const crumbs = [
     <section class="mt-24" aria-labelledby="related-title">
       <h2 id="related-title" class="text-3xl font-bold sm:text-4xl">{t("product.related")}</h2>
       <div class="mt-8 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-4">
-        {related(p).map((r, i) => <ProductCard product={r} lang={lang} index={i} />)}
+        {related(p).map((r) => <ProductCard product={r} lang={lang} />)}
       </div>
     </section>
   </div>

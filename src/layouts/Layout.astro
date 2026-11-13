@@ -49,10 +49,10 @@ const org = {
 ---
 
 <!doctype html>
-<html lang={lang} dir={meta.dir} class="scroll-smooth">
+<html lang={lang} dir={meta.dir}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     {noindex && <meta name="robots" content="noindex" />}
@@ -63,6 +63,7 @@ const org = {
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#f7f5f0" />
+    <meta name="color-scheme" content="light" />
     <link rel="preload" href={manrope} as="font" type="font/woff2" crossorigin />
     {lang === "ar" && <link rel="preload" href={cairo} as="font" type="font/woff2" crossorigin />}
 
@@ -76,7 +77,6 @@ const org = {
     {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={LANG_META[l].og} />)}
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script is:inline>document.documentElement.classList.add("js");</script>
     <script type="application/ld+json" set:html={JSON.stringify([org, ...schema])} />
   </head>
   <body class="min-h-dvh">

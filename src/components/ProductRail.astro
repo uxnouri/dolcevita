@@ -38,11 +38,11 @@ const t = useT(lang);
   <div class="container-site mt-8 px-0 sm:px-0 lg:px-0">
     <div class="rail px-4 sm:px-6 lg:px-10">
       {
-        products.map((p, i) => (
+        products.map((p) => (
           <ProductCard
             product={p}
             lang={lang}
-            index={i}
+           
             class="w-[68%] shrink-0 sm:w-[40%] md:w-[30%] lg:w-[23%] xl:w-[calc(20%-0.8rem)]"
             sizes="(min-width: 1280px) 17rem, (min-width: 1024px) 23vw, (min-width: 768px) 30vw, 68vw"
           />

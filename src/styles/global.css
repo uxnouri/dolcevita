@@ -125,6 +125,12 @@
 @layer components {
   .container-site {
     @apply mx-auto w-full max-w-(--container-site) px-4 sm:px-6 lg:px-10;
+    /* Landscape phones: keep content clear of the notch (viewport-fit=cover). */
+    padding-left: max(var(--pad, 1rem), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--pad, 1rem), env(safe-area-inset-right, 0px));
+    --pad: 1rem;
+    @media (width >= 40rem) { --pad: 1.5rem; }
+    @media (width >= 64rem) { --pad: 2.5rem; }
   }
 
   .btn-primary {
@@ -144,6 +150,22 @@
 
   .icon-btn {
     @apply pressable grid size-11 place-items-center rounded-full text-ink;
+  }
+
+  button,
+  .btn,
+  .icon-btn,
+  [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  a,
+  button,
+  summary,
+  [role="button"],
+  label,
+  select {
+    touch-action: manipulation;
   }
   @media (hover: hover) and (pointer: fine) {
     .icon-btn:hover { @apply bg-ink/5; }
@@ -182,6 +204,9 @@ html:has(dialog[open]) {
   --sheet-from: -100%;
 }
 dialog.sheet {
+  padding-left: env(safe-area-inset-left, 0px) !important;
+  padding-right: env(safe-area-inset-right, 0px) !important;
+  touch-action: pan-y; /* vertical scroll stays native; horizontal swipes close the sheet */
   margin: 0;
   margin-inline-start: auto;
   height: 100dvh;
@@ -268,25 +293,9 @@ dialog.modal[open] {
   }
 }
 
-/* Scroll-reveal: content is visible by default; JS opts in, so no-JS and crawlers see everything. */
-.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 60ms);
-}
-.js [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;
-  }
-  .js [data-reveal] {
-    transform: none;
-    transition: opacity 300ms ease;
   }
   .pressable:active { transform: none; }
 }

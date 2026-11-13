@@ -4,7 +4,26 @@ import categoriesData from "../data/categories.json";
 import type { Lang } from "../i18n";
 import { normalizeSearch } from "./search";
 
-export type Product = (typeof productsData)[number];
+/** One product in src/data/products.json. Optional data is `null`, never missing. */
+export type Product = {
+  id: number;
+  slug: string;
+  name: string;
+  sku: string | null;
+  /** Current price in dirhams. */
+  price: number;
+  /** Previous price, shown struck through only when higher than `price`. */
+  regularPrice: number | null;
+  inStock: boolean;
+  rating: number;
+  reviews: number;
+  /** Category slugs; empty = hidden from the site. */
+  categories: string[];
+  colors: string[];
+  styles: string[];
+  /** File names in src/assets/products/; may be empty for a product not photographed yet. */
+  images: string[];
+};
 export type Category = (typeof categoriesData)[number] & { label: Record<Lang, string> };
 
 type Glob = Record<string, { default: ImageMetadata }>;
@@ -61,7 +80,7 @@ export const colorLabel = (c: string, lang: Lang) => COLORS[lang]?.[c] ?? c;
 export const styleLabel = (s: string, lang: Lang) => STYLES[lang]?.[s] ?? s;
 
 /** Only products filed in one of the client's categories are on the site (see scripts/client-categories.ts). */
-export const products: Product[] = productsData.filter((p) => p.categories.length > 0);
+export const products: Product[] = (productsData as Product[]).filter((p) => p.categories.length > 0);
 export const categories: Category[] = categoriesData.map((c) => ({ ...c, label: LABELS[c.slug] }));
 
 /** All categories in the client's order, including made-to-order ones with no products online yet. */
@@ -114,4 +133,7 @@ export function primaryCategory(p: Product) {
 }
 
 export const discount = (p: Product) =>
-  p.regularPrice ? Math.round((1 - p.price / p.regularPrice) * 100) : 0;
+  p.regularPrice && p.regularPrice > p.price ? Math.round((1 - p.price / p.regularPrice) * 100) : 0;
+
+/** Old price to strike through, only when it's genuinely higher than the current one. */
+export const oldPrice = (p: Product) => (p.regularPrice && p.regularPrice > p.price ? p.regularPrice : null);

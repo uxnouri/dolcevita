@@ -48,7 +48,7 @@ const PLUS = icon('<path d="M5 12h14"/><path d="M12 5v14"/>');
 function render(items = read()) {
   const count = items.reduce((n, i) => n + i.qty, 0);
   document.querySelectorAll<HTMLElement>("[data-cart-count]").forEach((el) => {
-    el.textContent = String(count);
+    el.textContent = count > 99 ? "99+" : String(count);
     el.toggleAttribute("data-filled", count > 0);
   });
   if (!drawer || !config) return;
@@ -66,7 +66,7 @@ function render(items = read()) {
       const href = config.productBase.replace("__slug__", i.slug);
       return `<li class="flex gap-4 py-4" data-slug="${escape(i.slug)}">
         <a href="${href}" class="size-20 shrink-0 overflow-hidden rounded-xl bg-sand">
-          <img src="${escape(i.image)}" alt="" width="80" height="80" class="size-full object-contain mix-blend-multiply" loading="lazy">
+          ${i.image ? `<img src="${escape(i.image)}" alt="" width="80" height="80" class="size-full object-contain mix-blend-multiply" loading="lazy">` : ""}
         </a>
         <div class="flex min-w-0 flex-1 flex-col">
           <a href="${href}" class="truncate font-semibold">${escape(i.name)}</a>
@@ -74,7 +74,7 @@ function render(items = read()) {
           <div class="mt-auto flex items-center justify-between pt-2">
             <div class="flex items-center rounded-full border border-ink/15">
               <button type="button" class="pressable grid size-9 place-items-center rounded-full" data-qty="-1" aria-label="${escape(s.decrease)}">${MINUS}</button>
-              <span class="w-6 text-center text-sm font-semibold tabular-nums">${i.qty}</span>
+              <span class="min-w-6 px-1 text-center text-sm font-semibold tabular-nums">${i.qty}</span>
               <button type="button" class="pressable grid size-9 place-items-center rounded-full" data-qty="1" aria-label="${escape(s.increase)}">${PLUS}</button>
             </div>
             <button type="button" class="text-sm text-muted underline-offset-4 hover:text-ink hover:underline" data-remove>${escape(s.remove)}</button>
@@ -122,11 +122,25 @@ document.addEventListener("click", (e) => {
     const item = items.find((i) => i.slug === slug);
     if (!item) return;
     item.qty += Number(qtyBtn.dataset.qty);
-    write(item.qty > 0 ? items : items.filter((i) => i !== item));
+    if (item.qty > 0) write(items);
+    else removeRow(row, () => write(items.filter((i) => i !== item)));
   } else if (target.closest("[data-remove]")) {
-    write(read().filter((i) => i.slug !== slug));
+    removeRow(row, () => write(read().filter((i) => i.slug !== slug)));
   }
 });
+
+/** Fade a cart line out (150ms, opacity + slight scale) before re-rendering, so it doesn't just vanish. */
+function removeRow(row: HTMLElement, commit: () => void) {
+  if (row.dataset.removing) return;
+  row.dataset.removing = "true";
+  row.style.pointerEvents = "none";
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const anim = row.animate(
+    [{ opacity: 1, transform: "none" }, { opacity: 0, transform: reduce ? "none" : "scale(0.98)" }],
+    { duration: 150, easing: "cubic-bezier(0.23, 1, 0.32, 1)", fill: "forwards" },
+  );
+  anim.finished.then(commit, commit);
+}
 
 // Keep several open tabs in sync.
 window.addEventListener("storage", (e) => e.key === KEY && render());

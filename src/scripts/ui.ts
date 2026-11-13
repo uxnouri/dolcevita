@@ -47,24 +47,6 @@ if (header) {
   );
 }
 
-// ---- Scroll reveal (once, staggered via --i) -----------------------------------------------
-const revealables = document.querySelectorAll<HTMLElement>("[data-reveal]");
-if (revealables.length) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add("is-visible");
-        io.unobserve(entry.target);
-      }
-    },
-    // Huge side margins: items off-screen *horizontally* (inside swipe rails) count as visible,
-    // so swiping never waits on a fade. Only vertical scrolling reveals.
-    { rootMargin: "0px 1000% -8% 1000%" },
-  );
-  revealables.forEach((el) => io.observe(el));
-}
-
 // ---- Rails: prev/next buttons scroll by one "page" -----------------------------------------
 document.querySelectorAll<HTMLElement>("[data-rail]").forEach((wrap) => {
   const rail = wrap.querySelector<HTMLElement>(".rail");
@@ -106,3 +88,100 @@ document.querySelectorAll<HTMLElement>("[data-dropdown]").forEach((dropdown) => 
     if (!dropdown.contains(e.relatedTarget as Node)) setOpen(false);
   });
 });
+
+// ---- Swipe-to-dismiss for side sheets (touch) -------------------------------------------------
+// Track phase: the sheet follows the finger 1:1 (direct transform, no transition).
+// Release phase: dismiss on distance (40% of width) OR a flick (> 0.11 px/ms), else snap back fast.
+// Sheets enter from the inline end, so they leave the same way: right in FR/EN, left in Arabic.
+document.querySelectorAll<HTMLDialogElement>("dialog.sheet").forEach((sheet) => {
+  let startX = 0;
+  let startY = 0;
+  let lastX = 0;
+  let lastT = 0;
+  let velocity = 0;
+  let pointerId: number | null = null;
+  let dragging = false;
+  let direction = 1;
+
+  const reset = () => {
+    pointerId = null;
+    dragging = false;
+  };
+
+  sheet.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "touch" || !sheet.open || pointerId !== null) return; // one finger only
+    pointerId = e.pointerId;
+    startX = lastX = e.clientX;
+    startY = e.clientY;
+    lastT = e.timeStamp;
+    velocity = 0;
+    direction = getComputedStyle(sheet).direction === "rtl" ? -1 : 1;
+  });
+
+  sheet.addEventListener("pointermove", (e) => {
+    if (e.pointerId !== pointerId) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (!dragging) {
+      if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) return reset(); // vertical: let it scroll
+      if (Math.abs(dx) < 8) return;
+      dragging = true;
+      try {
+        sheet.setPointerCapture(e.pointerId);
+      } catch {
+        /* capture is an enhancement; the drag still works without it */
+      }
+      sheet.style.transition = "none";
+    }
+    const dt = Math.max(1, e.timeStamp - lastT);
+    velocity = (e.clientX - lastX) / dt;
+    lastX = e.clientX;
+    lastT = e.timeStamp;
+    const toward = dx * direction; // > 0 = toward the dismiss edge
+    // Wrong way: progressive resistance (Apple's rubber-band), never a hard stop.
+    const offset = toward > 0 ? toward : -rubberband(-toward, sheet.offsetWidth);
+    sheet.style.transform = `translateX(${offset * direction}px)`;
+  });
+
+  const release = (e: PointerEvent) => {
+    if (e.pointerId !== pointerId) return;
+    const wasDragging = dragging;
+    reset();
+    if (!wasDragging) return;
+    const toward = (e.clientX - startX) * direction;
+    const flick = velocity * direction > 0.11;
+    // A drag must never also "click" whatever was under the finger. Browsers usually don't fire one
+    // after a pan, so the blocker expires quickly instead of eating the user's next real tap.
+    const block = (c: Event) => {
+      c.stopPropagation();
+      c.preventDefault();
+    };
+    sheet.addEventListener("click", block, { capture: true, once: true });
+    setTimeout(() => sheet.removeEventListener("click", block, { capture: true }), 350);
+    if (toward > sheet.offsetWidth * 0.4 || (flick && toward > 0)) {
+      // Velocity handoff: leave at the speed the finger threw it (clamped 120–300ms), from where it is now.
+      const remaining = Math.max(0, sheet.offsetWidth - toward);
+      const speed = Math.max(velocity * direction, 0.6); // px/ms; slow releases still close briskly
+      const ms = Math.round(Math.min(300, Math.max(120, remaining / speed)));
+      sheet.style.transition = `transform ${ms}ms cubic-bezier(0.23, 1, 0.32, 1), overlay ${ms}ms allow-discrete, display ${ms}ms allow-discrete`;
+      sheet.style.transform = "";
+      sheet.close();
+      setTimeout(() => (sheet.style.transition = ""), ms + 50);
+    } else {
+      sheet.style.transition = "transform 200ms cubic-bezier(0.23, 1, 0.32, 1)";
+      sheet.style.transform = "";
+      sheet.addEventListener("transitionend", () => (sheet.style.transition = ""), { once: true });
+    }
+  };
+  sheet.addEventListener("pointerup", release);
+  sheet.addEventListener("pointercancel", release);
+});
+
+/** Apple's rubber-band: the further past the edge, the less the element follows. */
+function rubberband(overshoot: number, dimension: number, constant = 0.55) {
+  return (overshoot * dimension * constant) / (dimension + constant * Math.abs(overshoot));
+}
+
+// iOS Safari only applies :active on touch when the page listens for touchstart.
+// Without this, the scale(0.97) press feedback never shows on iPhones.
+document.addEventListener("touchstart", () => {}, { passive: true });

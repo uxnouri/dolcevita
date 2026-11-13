@@ -2,7 +2,8 @@
 import { Image, getImage } from "astro:assets";
 import Plus from "@lucide/astro/icons/plus";
 import { formatPrice, path, useT, type Lang } from "../i18n";
-import { discount, primaryCategory, productImage, type Product } from "../lib/catalog";
+import { discount, oldPrice, primaryCategory, productImage, type Product } from "../lib/catalog";
+import CategoryIcon from "./CategoryIcon.astro";
 import { SITE } from "../lib/site";
 
 interface Props {
@@ -12,29 +13,33 @@ interface Props {
   sizes?: string;
   eager?: boolean;
   class?: string;
-  index?: number;
 }
-const { product: p, lang, sizes = "(min-width: 1280px) 22rem, (min-width: 768px) 30vw, 46vw", eager = false, class: className, index = 0 } = Astro.props;
+const { product: p, lang, sizes = "(min-width: 1280px) 22rem, (min-width: 768px) 30vw, 46vw", eager = false, class: className } = Astro.props;
 const t = useT(lang);
-const img = productImage(p.images[0]);
-const thumb = await getImage({ src: img, width: 160, height: 160, format: "webp" });
+// A product can be added before it's photographed: never let a missing image break the build.
+const img = p.images[0] ? productImage(p.images[0]) : undefined;
+const thumb = img ? await getImage({ src: img, width: 160, height: 160, format: "webp" }) : undefined;
 const href = path(lang, "product", p.slug);
 const off = discount(p);
 const category = primaryCategory(p);
 ---
 
-<article class:list={["group", className]} data-reveal style={`--i:${index % 4}`}>
+<article class:list={["group", className]}>
   <div class="relative">
   <a href={href} class="block" tabindex="-1" aria-hidden="true">
-    <div class="relative aspect-square overflow-hidden rounded-2xl bg-sand">
-      <Image
-        src={img}
-        alt=""
-        widths={[240, 360, 520, 720]}
-        sizes={sizes}
-        loading={eager ? "eager" : "lazy"}
-        class="size-full object-contain p-[8%] mix-blend-multiply transition-transform duration-500 ease-(--ease-out) group-hover:scale-[1.04] motion-reduce:transition-none"
-      />
+    <div class="relative aspect-square overflow-hidden rounded-2xl bg-sand transition-colors duration-150 ease-[ease] group-hover:bg-stone">
+      {img ? (
+        <Image
+          src={img}
+          alt=""
+          widths={[240, 360, 520, 720]}
+          sizes={sizes}
+          loading={eager ? "eager" : "lazy"}
+          class="size-full object-contain p-[8%] mix-blend-multiply"
+        />
+      ) : (
+        <span class="grid size-full place-items-center text-brand/40"><CategoryIcon slug={category?.slug ?? "canapes"} size={56} /></span>
+      )}
       <div class="absolute start-3 top-3 flex gap-1.5">
         {off > 0 && <span dir="ltr" class="rounded-full bg-brand px-2.5 py-1 text-xs font-bold text-white tabular-nums">−{off}%</span>}
         {!p.inStock && <span class="rounded-full bg-ink px-2.5 py-1 text-xs font-bold text-white">{t("product.soldOut")}</span>}
@@ -51,7 +56,7 @@ const category = primaryCategory(p);
         data-slug={p.slug}
         data-name={p.name}
         data-price={p.price}
-        data-image={thumb.src}
+        data-image={thumb?.src ?? ""}
         aria-label={`${t("product.add")} · ${p.name}`}
       >
         <Plus size={20} stroke-width={2} />
@@ -62,12 +67,12 @@ const category = primaryCategory(p);
 
   <div class="mt-3 px-0.5">
     {category && <p class="text-xs text-muted">{category.label[lang]}</p>}
-    <h3 class="mt-0.5 text-[15px] leading-snug font-semibold tracking-normal">
+    <h3 class="mt-0.5 line-clamp-3 text-[15px] leading-snug font-semibold tracking-normal" title={p.name}>
       <a href={href} class="hover:text-brand">{p.name}</a>
     </h3>
-    <p class="mt-1 flex items-baseline gap-2 text-[15px] tabular-nums">
-      <span class:list={["font-bold", off > 0 && "text-brand"]}>{formatPrice(p.price, lang, SITE.currency)}</span>
-      {p.regularPrice && <s class="text-sm text-muted">{formatPrice(p.regularPrice, lang, SITE.currency)}</s>}
+    <p class="mt-1 flex flex-wrap items-baseline gap-x-2 text-[15px] tabular-nums">
+      <span class:list={["font-bold whitespace-nowrap", off > 0 && "text-brand"]}>{formatPrice(p.price, lang, SITE.currency)}</span>
+      {oldPrice(p) && <s class="text-sm whitespace-nowrap text-muted">{formatPrice(oldPrice(p)!, lang, SITE.currency)}</s>}
     </p>
   </div>
 </article>

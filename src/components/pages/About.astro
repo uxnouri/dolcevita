@@ -73,8 +73,8 @@ const values = [
 
     <ul class="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {
-        values.map((v, i) => (
-          <li class="rounded-2xl bg-sand p-6" data-reveal style={`--i:${i}`}>
+        values.map((v) => (
+          <li class="rounded-2xl bg-sand p-6">
             <v.icon size={24} stroke-width={1.75} class="text-brand" />
             <h2 class="mt-5 text-lg font-bold tracking-tight">{v.title}</h2>
             <p class="mt-2 leading-relaxed text-muted">{v.text}</p>

@@ -95,7 +95,7 @@ const schema = {
   <section class="container-site mt-24" aria-labelledby="more-title">
     <h2 id="more-title" class="text-3xl font-bold">{t("blog.more")}</h2>
     <div class="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      {more.map((p, i) => <PostCard post={p} lang={lang} index={i} />)}
+      {more.map((p) => <PostCard post={p} lang={lang} />)}
     </div>
   </section>
 </Layout>
