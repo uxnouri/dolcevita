@@ -31,10 +31,22 @@ const asset = (url: string, folder: string) => {
 
 const cents = (v: string, minor: number) => Math.round(Number(v)) / 10 ** minor;
 
+/**
+ * The old WooCommerce store priced everything in USD. The site sells in dirhams, so USD prices are
+ * converted at this rate (mid-market, early November 2026) and rounded to the nearest 10 DH.
+ */
+const USD_TO_MAD = 9.82;
+const toMAD = (value: number, currency: string) => {
+  if (currency === "MAD") return value;
+  if (currency !== "USD") throw new Error(`No conversion rate for ${currency}`);
+  return Math.max(10, Math.round((value * USD_TO_MAD) / 10) * 10);
+};
+
 const outProducts = products.map((p: any) => {
   const minor = p.prices.currency_minor_unit;
-  const price = cents(p.prices.price_range?.min_amount ?? p.prices.price, minor);
-  const regular = cents(p.prices.price_range?.max_amount ?? p.prices.regular_price, minor);
+  const currency = p.prices.currency_code;
+  const price = toMAD(cents(p.prices.price_range?.min_amount ?? p.prices.price, minor), currency);
+  const regular = toMAD(cents(p.prices.price_range?.max_amount ?? p.prices.regular_price, minor), currency);
   return {
     id: p.id,
     slug: p.slug,

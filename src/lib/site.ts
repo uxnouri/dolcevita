@@ -15,7 +15,7 @@ export const SITE = {
   /** Add your Instagram profile URL to show the icon in the footer. */
   instagram: "",
   /** Prices in the catalogue are stored in this currency. */
-  currency: "USD",
+  currency: "MAD",
 } as const;
 
 export const telHref = (phone: string) => `tel:${phone.replace(/\s/g, "")}`;

@@ -3,6 +3,7 @@
  * so there is no server, no payment form and nothing to maintain.
  */
 import { openDialog } from "./ui";
+import { formatMoney } from "../lib/money";
 
 type Item = { slug: string; name: string; price: number; image: string; qty: number };
 type Config = {
@@ -13,7 +14,8 @@ type Config = {
   strings: Record<"remove" | "increase" | "decrease" | "message" | "total", string>;
 };
 
-const KEY = "dv-cart";
+// Bump the suffix whenever stored prices would become stale (e.g. a currency change).
+const KEY = "dv-cart:mad";
 const drawer = document.getElementById("cart-drawer") as HTMLDialogElement | null;
 const config: Config | null = drawer ? JSON.parse(drawer.dataset.cartConfig!) : null;
 
@@ -33,12 +35,7 @@ const write = (items: Item[]) => {
   render(items);
 };
 
-const money = (n: number) =>
-  new Intl.NumberFormat(config?.lang === "fr" ? "fr-FR" : "en-US", {
-    style: "currency",
-    currency: config?.currency ?? "USD",
-    maximumFractionDigits: n % 1 === 0 ? 0 : 2,
-  }).format(n);
+const money = (n: number) => formatMoney(n, config?.lang ?? "fr", config?.currency ?? "MAD");
 
 const escape = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);

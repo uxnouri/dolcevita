@@ -1,3 +1,5 @@
+import { formatMoney } from "../lib/money";
+
 export const LANGS = ["fr", "en"] as const;
 export type Lang = (typeof LANGS)[number];
 export const DEFAULT_LANG: Lang = "fr";
@@ -20,11 +22,7 @@ export function path(lang: Lang, route: RouteKey, slug?: string) {
 }
 
 export function formatPrice(value: number, lang: Lang, currency: string) {
-  return new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en-US", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: value % 1 === 0 ? 0 : 2,
-  }).format(value);
+  return formatMoney(value, lang, currency);
 }
 
 export function formatDate(iso: string, lang: Lang) {

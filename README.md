@@ -55,6 +55,10 @@ French is the default language at the root; English lives under `/en/`.
 | Colours, fonts, motion curves | `src/styles/global.css` (`@theme`) |
 | Images | `src/assets/{products,site,blog,categories}/` |
 
+## Prices
+
+Prices are in **Moroccan dirhams**, stored as plain numbers in `src/data/products.json` (`price` and, when on sale, `regularPrice`), and shown as "5 880 DH" in French and "5,880 MAD" in English (`src/lib/money.ts`). The old WooCommerce store priced in USD; those were converted once at 9.82 MAD/USD and rounded to the nearest 10 DH, so set real prices directly in the JSON.
+
 ## Orders
 
 There's no payment backend. The cart is stored in the visitor's browser, and **"Finaliser sur WhatsApp"** opens WhatsApp with the full order (items, quantities, total) addressed to the number in `src/lib/site.ts`. Each product page also has a direct "Commander sur WhatsApp" button.
