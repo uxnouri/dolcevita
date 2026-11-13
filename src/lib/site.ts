@@ -2,7 +2,7 @@
 export const SITE = {
   name: "Dolce Vita Design",
   url: "https://dolcevitadesign.ma",
-  email: "hi@dolcevitadesign.ma",
+  email: "contact@dvd.ma",
   phones: ["+212 66 127 2617", "+212 61 176 3241"],
   /** Number used for WhatsApp orders (digits only, international format). */
   whatsapp: "212661272617",
