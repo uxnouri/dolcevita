@@ -1,0 +1,137 @@
+---
+import { Image } from "astro:assets";
+import Box from "@lucide/astro/icons/box";
+import Ruler from "@lucide/astro/icons/ruler";
+import Sofa from "@lucide/astro/icons/sofa";
+import Check from "@lucide/astro/icons/check";
+import MessageCircle from "@lucide/astro/icons/message-circle";
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumbs from "../Breadcrumbs.astro";
+import { alternates, path, useT, type Lang } from "../../i18n";
+import { siteImage } from "../../lib/catalog";
+import { SERVICES } from "../../lib/services";
+import { SITE } from "../../lib/site";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const copy = SERVICES[lang];
+const icons = { "conception-3d": Box, amenagement: Ruler, "ameublement-decoration": Sofa } as const;
+const whatsapp = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(copy.whatsappMessage)}`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: copy.eyebrow,
+  provider: { "@type": "FurnitureStore", name: SITE.name },
+  areaServed: { "@type": "Country", name: "Morocco" },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: copy.eyebrow,
+    itemListElement: copy.services.map((s) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: s.title } })),
+  },
+};
+---
+
+<Layout lang={lang} title={t("nav.services")} description={copy.lead} alternates={alternates("services")} schema={[schema]}>
+  <div class="container-site pt-6 sm:pt-10">
+    <Breadcrumbs items={[{ label: t("nav.home"), href: path(lang, "home") }, { label: t("nav.services") }]} lang={lang} />
+
+    <header class="mt-8 max-w-4xl">
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1 class="mt-3 text-4xl leading-[1.05] font-bold sm:text-6xl">{copy.title}</h1>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{copy.lead}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={whatsapp} target="_blank" rel="noopener" class="btn-primary"><MessageCircle size={18} />{copy.ctaWhatsapp}</a>
+        <a href={path(lang, "contact")} class="btn-ghost">{t("nav.contact")}</a>
+      </div>
+    </header>
+
+    <!-- Quick jump to the three services -->
+    <ul class="mt-12 grid gap-3 sm:grid-cols-3">
+      {
+        copy.services.map((s, i) => {
+          const Icon = icons[s.id as keyof typeof icons];
+          return (
+            <li data-reveal style={`--i:${i}`}>
+              <a href={`#${s.id}`} class="pressable flex h-full items-center gap-4 rounded-2xl bg-sand p-5 hover:bg-stone">
+                <span class="grid size-12 shrink-0 place-items-center rounded-full bg-brand text-white">
+                  <Icon size={22} stroke-width={1.75} />
+                </span>
+                <span class="font-bold leading-snug">{s.title}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <!-- The three services -->
+    <div class="mt-20 space-y-20 sm:mt-28 sm:space-y-28">
+      {
+        copy.services.map((s, i) => (
+          <section id={s.id} class="grid scroll-mt-24 items-center gap-8 lg:grid-cols-2 lg:gap-16" aria-labelledby={`${s.id}-title`}>
+            <div class:list={["overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]", i % 2 === 1 && "lg:order-2"]} data-reveal>
+              <Image
+                src={siteImage(s.image)}
+                alt=""
+                widths={[480, 720, 1000, 1328]}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                class="aspect-[4/3] size-full object-cover"
+              />
+            </div>
+            <div data-reveal style="--i:1">
+              <p class="text-sm font-bold text-olive tabular-nums">0{i + 1}</p>
+              <h2 id={`${s.id}-title`} class="mt-2 text-3xl font-bold sm:text-5xl">{s.title}</h2>
+              <p class="mt-5 max-w-lg text-lg leading-relaxed text-muted">{s.text}</p>
+              <ul class="mt-6 space-y-3">
+                {s.points.map((point) => (
+                  <li class="flex items-start gap-3 font-medium">
+                    <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-brand/10 text-brand">
+                      <Check size={14} stroke-width={2.5} />
+                    </span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <!-- Process -->
+    <section class="mt-24 rounded-[1.75rem] bg-sand px-6 py-12 sm:mt-32 sm:rounded-[2.25rem] sm:px-12 sm:py-16" aria-labelledby="process-title">
+      <h2 id="process-title" class="text-3xl font-bold sm:text-4xl">{copy.processTitle}</h2>
+      <ol class="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          copy.process.map((step, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <span class="grid size-11 place-items-center rounded-full bg-white text-lg font-bold text-brand tabular-nums">{i + 1}</span>
+              <h3 class="mt-5 text-lg font-bold tracking-tight">{step.title}</h3>
+              <p class="mt-2 leading-relaxed text-muted">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- Call to action -->
+    <section class="mt-6 overflow-hidden rounded-[1.75rem] bg-brand-dark px-6 py-12 text-white sm:rounded-[2.25rem] sm:px-12 sm:py-16">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold sm:text-4xl">{copy.ctaTitle}</h2>
+        <p class="mt-4 text-lg leading-relaxed text-white/75">{copy.ctaText}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={whatsapp} target="_blank" rel="noopener" class="btn-light"><MessageCircle size={18} />{copy.ctaWhatsapp}</a>
+          <a href={path(lang, "contact")} class="btn border border-white/30 text-white hover:bg-white/10">
+            {t("nav.contact")}
+            <ArrowRight size={18} class="flip-rtl" />
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

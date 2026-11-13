@@ -42,6 +42,7 @@ French is the default language at the root; English lives under `/en/` and Arabi
 | Category | `/categorie/<slug>/` | `/en/category/<slug>/` | `/ar/category/<slug>/` |
 | Product | `/produit/<slug>/` | `/en/product/<slug>/` | `/ar/product/<slug>/` |
 | Journal | `/blog/` | `/en/blog/` | `/ar/blog/` |
+| Services | `/services/` | `/en/services/` | `/ar/services/` |
 | About | `/a-propos/` | `/en/about/` | `/ar/about/` |
 | Contact | `/contact/` | `/en/contact/` | `/ar/contact/` |
 
@@ -59,6 +60,14 @@ When styling, use logical Tailwind classes (`ms-`/`me-`, `ps-`/`pe-`, `start-`/`
 | Journal titles and article text | `src/lib/blog.ts`, `src/data/posts.json` |
 | Colours, fonts, motion curves | `src/styles/global.css` (`@theme`) |
 | Images | `src/assets/{products,site,blog,categories}/` |
+
+## Catalogue and services
+
+The shop is organised in the client's 12 categories, in this order: Lits, Tables de chevet, Tables basses, Canapés, Rideaux, Poufs, Meubles TV, Commodes, Miroirs, Chaises, Fauteuils, Tables à manger (names in all three languages and icons: `src/lib/catalog.ts`, `src/components/CategoryIcon.astro`).
+
+- A product appears on the site only if its `categories` in `src/data/products.json` contains at least one of those slugs (`lits`, `tables-de-chevet`, `tables-basses`, `canapes`, `rideaux`, `poufs`, `meubles-tv`, `commodes`, `miroirs`, `chaises`, `fauteuils`, `tables-a-manger`). The old demo lamps, desks, wardrobes and cushions have `categories: []`, so they're hidden but kept; give one a category to bring it back.
+- A category with no products yet (currently Lits, Rideaux, Miroirs) shows a "made to order" panel with a WhatsApp button instead of an empty grid.
+- The turnkey service page (Conception 3D, Aménagement, Ameublement & décoration d'intérieur) is written in `src/lib/services.ts`.
 
 ## Prices
 

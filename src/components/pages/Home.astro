@@ -11,7 +11,9 @@ import Layout from "../../layouts/Layout.astro";
 import ProductRail from "../ProductRail.astro";
 import PostCard from "../PostCard.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
-import { bestsellers, latest, offer, siteImage } from "../../lib/catalog";
+import { bestsellers, latest, siteImage, topCategories } from "../../lib/catalog";
+import CategoryIcon from "../CategoryIcon.astro";
+import { SERVICES } from "../../lib/services";
 import { posts } from "../../lib/blog";
 import { SITE } from "../../lib/site";
 
@@ -24,14 +26,10 @@ const t = useT(lang);
 const hero = siteImage("revslider-home-12-modern-slide1-demo121.jpg");
 
 const bannersTop = [
-  { img: "2025-04-modern-banner1.jpg", label: t("banner.beige"), href: path(lang, "category", "living-room") },
-  { img: "2025-04-modern-banner2.jpg", label: t("banner.kitchen"), href: path(lang, "category", "kitchen") },
+  { img: "revslider-home-12-modern-slide2-demo121.jpg", label: t("banner.living"), href: path(lang, "category", "canapes") },
+  { img: "2025-04-modern-banner4.jpg", label: t("banner.seating"), href: path(lang, "category", "fauteuils") },
 ];
-const bannersBottom = [
-  { img: "revslider-home-12-modern-slide2-demo121.jpg", label: t("banner.living"), href: path(lang, "category", "living-room") },
-  { img: "2025-04-modern-banner4.jpg", label: t("banner.terrace"), href: path(lang, "category", "balcony-and-garden") },
-  { img: "2025-04-modern-banner5.jpg", label: t("banner.bath"), href: path(lang, "category", "bathroom") },
-];
+const services = SERVICES[lang];
 
 const promises = [
   { icon: Hammer, title: t("promise.craft.title"), text: t("promise.craft.text") },
@@ -80,22 +78,20 @@ const promises = [
     <div class="container-site">
       <h2 id="offer-title" class="eyebrow">{t("home.offer")}</h2>
     </div>
-    <ul class="rail container-site mt-4 sm:grid sm:grid-cols-4 sm:overflow-visible lg:grid-cols-8">
+    <ul class="rail container-site mt-4 sm:grid sm:grid-cols-4 sm:overflow-visible lg:grid-cols-6">
       {
-        offer.map((o, i) => (
-          <li class="w-[38%] shrink-0 sm:w-auto" data-reveal style={`--i:${i % 8}`}>
+        topCategories.map((c, i) => (
+          <li class="w-[34%] shrink-0 sm:w-auto" data-reveal style={`--i:${i % 6}`}>
             <a
-              href={path(lang, "category", o.slug)}
+              href={path(lang, "category", c.slug)}
               class="pressable group flex h-full flex-col items-center gap-3 rounded-2xl bg-sand px-3 pt-5 pb-4 text-center hover:bg-stone"
             >
-              <Image
-                src={siteImage(o.icon)}
-                alt=""
-                height={64}
-                densities={[1, 2]}
-                class="h-14 w-auto object-contain mix-blend-multiply transition-transform duration-300 ease-(--ease-out) group-hover:-translate-y-0.5"
+              <CategoryIcon
+                slug={c.slug}
+                size={36}
+                class="text-brand transition-transform duration-300 ease-(--ease-out) group-hover:-translate-y-0.5"
               />
-              <span class="text-[15px] font-semibold">{o.category.label[lang]}</span>
+              <span class="text-[15px] leading-tight font-semibold">{c.label[lang]}</span>
             </a>
           </li>
         ))
@@ -108,7 +104,7 @@ const promises = [
     {
       bannersTop.map((b, i) => (
         <a href={b.href} class="banner group" data-reveal style={`--i:${i}`}>
-          <Image src={siteImage(b.img)} alt="" widths={[480, 720, 960, 1328]} sizes="(min-width: 640px) 50vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[1328/1050]" />
+          <Image src={siteImage(b.img)} alt="" widths={[480, 720, 960, 1328]} sizes="(min-width: 640px) 50vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[5/4]" />
           <span class="banner-label">
             {b.label}
             <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} class="flip-rtl" /></span>
@@ -120,18 +116,31 @@ const promises = [
 
   <ProductRail lang={lang} id="latest" title={t("home.latest")} lead={t("home.latestLead")} products={latest} />
 
-  <section class="container-site mt-20 grid gap-3 sm:mt-28 sm:grid-cols-3 sm:gap-4">
-    {
-      bannersBottom.map((b, i) => (
-        <a href={b.href} class="banner group" data-reveal style={`--i:${i}`}>
-          <Image src={siteImage(b.img)} alt="" widths={[480, 720, 960]} sizes="(min-width: 640px) 33vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[4/5]" />
-          <span class="banner-label">
-            {b.label}
-            <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} class="flip-rtl" /></span>
-          </span>
-        </a>
-      ))
-    }
+  <!-- Turnkey services -->
+  <section class="container-site mt-20 sm:mt-28" aria-labelledby="services-title">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+      <div class="max-w-2xl">
+        <p class="eyebrow">{services.eyebrow}</p>
+        <h2 id="services-title" class="mt-2 text-3xl font-bold sm:text-4xl">{services.title}</h2>
+      </div>
+      <a href={path(lang, "services")} class="btn-ghost shrink-0 self-start sm:self-auto">
+        {t("home.services.cta")}
+        <ArrowRight size={18} class="flip-rtl" />
+      </a>
+    </div>
+    <div class="mt-8 grid gap-3 sm:grid-cols-3 sm:gap-4">
+      {
+        services.services.map((s, i) => (
+          <a href={`${path(lang, "services")}#${s.id}`} class="banner group" data-reveal style={`--i:${i}`}>
+            <Image src={siteImage(s.image)} alt="" widths={[480, 720, 960]} sizes="(min-width: 640px) 33vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[4/5]" />
+            <span class="banner-label">
+              <span><span class="block text-sm font-bold text-white/70 tabular-nums">0{i + 1}</span>{s.title}</span>
+              <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} class="flip-rtl" /></span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
   </section>
 
   <ProductRail lang={lang} id="bestsellers" title={t("home.best")} lead={t("home.bestLead")} products={bestsellers} />

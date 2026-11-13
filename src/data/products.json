@@ -9,11 +9,7 @@
     "inStock": true,
     "rating": 5,
     "reviews": 1,
-    "categories": [
-      "accessories",
-      "bedroom",
-      "childrens-room"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -42,11 +38,7 @@
     "rating": 5,
     "reviews": 1,
     "categories": [
-      "armchair",
-      "chairs",
-      "inspirations",
-      "modern",
-      "single"
+      "fauteuils"
     ],
     "colors": [
       "Brown",
@@ -76,11 +68,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "hall",
-      "living-room",
-      "long",
-      "modern"
+      "canapes"
     ],
     "colors": [
       "Brown",
@@ -111,11 +99,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "dining-room",
-      "handing",
-      "long",
-      "modern"
+      "canapes"
     ],
     "colors": [
       "Brown",
@@ -145,12 +129,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bathroom",
-      "bedroom",
-      "childrens-room",
-      "lighting"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -180,11 +159,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "chairs",
-      "miscellaneous",
-      "office",
-      "single"
+      "fauteuils"
     ],
     "colors": [
       "Brown",
@@ -215,11 +190,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "chairs",
-      "miscellaneous",
-      "modern",
-      "single"
+      "fauteuils"
     ],
     "colors": [
       "Brown",
@@ -250,11 +221,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "chairs",
-      "handing",
-      "miscellaneous",
-      "single"
+      "canapes"
     ],
     "colors": [
       "Brown",
@@ -284,12 +251,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "inspirations",
-      "miscellaneous",
-      "office"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -318,12 +280,8 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bathroom",
-      "cabinets",
-      "desks",
-      "meeting-tables",
-      "office",
-      "wardrobes"
+      "commodes",
+      "tables-de-chevet"
     ],
     "colors": [
       "Brown",
@@ -353,12 +311,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "childrens-room",
-      "lighting"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -387,12 +340,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "childrens-room",
-      "lighting"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -422,11 +370,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "chairs",
-      "modern",
-      "single",
-      "stool"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -448,12 +392,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -475,11 +414,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "chairs",
-      "handing",
-      "living-room",
-      "modern",
-      "single"
+      "fauteuils"
     ],
     "colors": [],
     "styles": [],
@@ -501,13 +436,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "cabinets",
-      "desks",
-      "meeting-tables",
-      "office",
-      "wardrobes"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -527,13 +456,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "kitchen",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -554,12 +477,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "dining-room",
-      "lighting"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -581,12 +499,7 @@
     "rating": 4.5,
     "reviews": 2,
     "categories": [
-      "armchair",
-      "chairs",
-      "handing",
-      "modern",
-      "single",
-      "stool"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -608,12 +521,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "chairs",
-      "desks",
-      "office",
-      "single",
-      "stool"
+      "chaises"
     ],
     "colors": [],
     "styles": [],
@@ -634,12 +542,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -661,12 +564,7 @@
     "rating": 5,
     "reviews": 1,
     "categories": [
-      "armchair",
-      "chairs",
-      "handing",
-      "modern",
-      "single",
-      "stool"
+      "fauteuils"
     ],
     "colors": [],
     "styles": [],
@@ -691,11 +589,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "chairs",
-      "long",
-      "modern",
-      "single"
+      "fauteuils"
     ],
     "colors": [],
     "styles": [],
@@ -717,13 +611,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "lighting",
-      "miscellaneous",
-      "office"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -745,11 +633,8 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "cabinets",
-      "desks",
-      "meeting-tables",
-      "office"
+      "tables-de-chevet",
+      "commodes"
     ],
     "colors": [],
     "styles": [],
@@ -770,12 +655,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "kitchen",
-      "lighting"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -796,12 +676,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "desks",
-      "meeting-tables",
-      "office",
-      "wardrobes"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -822,10 +697,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "balcony-and-garden",
-      "chairs",
-      "living-room"
+      "fauteuils"
     ],
     "colors": [],
     "styles": [],
@@ -847,11 +719,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "lighting"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -873,11 +741,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "chairs",
-      "double",
-      "living-room",
-      "long",
-      "single"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -900,11 +764,7 @@
     "rating": 4,
     "reviews": 1,
     "categories": [
-      "armchair",
-      "chairs",
-      "inspirations",
-      "single",
-      "wardrobes"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -927,11 +787,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "balcony-and-garden",
-      "chairs",
-      "kitchen",
-      "single"
+      "chaises"
     ],
     "colors": [],
     "styles": [],
@@ -954,11 +810,7 @@
     "rating": 4.67,
     "reviews": 3,
     "categories": [
-      "balcony-and-garden",
-      "chairs",
-      "inspirations",
-      "single",
-      "stool"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -979,12 +831,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "hall",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -1015,13 +862,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "hall",
-      "inspirations",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -1050,11 +891,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "double",
-      "living-room",
-      "long",
-      "miscellaneous",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -1077,12 +914,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "double",
-      "living-room",
-      "long",
-      "miscellaneous",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -1105,12 +937,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "double",
-      "hall",
-      "long",
-      "miscellaneous",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -1133,12 +960,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "childrens-room",
-      "dining-room",
-      "double",
-      "long",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -1161,10 +983,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "meeting-tables",
-      "office"
+      "tables-a-manger"
     ],
     "colors": [],
     "styles": [],
@@ -1187,11 +1006,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "meeting-tables",
-      "miscellaneous",
-      "office"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -1214,11 +1029,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "meeting-tables",
-      "miscellaneous"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -1240,13 +1051,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "balcony-and-garden",
-      "desks",
-      "meeting-tables",
-      "miscellaneous",
-      "wardrobes"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1267,11 +1072,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "dining-room",
-      "meeting-tables",
-      "office"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -1294,11 +1095,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "meeting-tables",
-      "office"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -1320,11 +1117,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "meeting-tables",
-      "office"
+      "tables-a-manger"
     ],
     "colors": [],
     "styles": [],
@@ -1347,11 +1140,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "meeting-tables",
-      "office"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -1373,13 +1162,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bedroom",
-      "cabinets",
-      "childrens-room",
-      "office",
-      "wardrobes"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1400,11 +1183,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "living-room",
-      "meeting-tables"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -1426,10 +1205,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "dining-room",
-      "meeting-tables"
+      "tables-a-manger"
     ],
     "colors": [],
     "styles": [],
@@ -1452,12 +1228,7 @@
     "rating": 5,
     "reviews": 1,
     "categories": [
-      "balcony-and-garden",
-      "bedroom",
-      "desks",
-      "meeting-tables",
-      "office",
-      "wardrobes"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -1479,12 +1250,7 @@
     "rating": 5,
     "reviews": 1,
     "categories": [
-      "armchair",
-      "bedroom",
-      "chairs",
-      "living-room",
-      "modern",
-      "single"
+      "fauteuils"
     ],
     "colors": [],
     "styles": [
@@ -1510,13 +1276,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "balcony-and-garden",
-      "dining-room",
-      "kitchen",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1536,14 +1296,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "dining-room",
-      "inspirations",
-      "kitchen",
-      "lighting",
-      "miscellaneous",
-      "office"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -1573,10 +1326,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "accessories",
-      "inspirations",
-      "living-room",
-      "miscellaneous"
+      "poufs"
     ],
     "colors": [
       "Brown",
@@ -1605,13 +1355,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "cabinets",
-      "inspirations",
-      "living-room",
-      "office",
-      "wardrobes"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1631,12 +1375,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bedroom",
-      "cabinets",
-      "childrens-room",
-      "wardrobes"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1656,14 +1395,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "dining-room",
-      "inspirations",
-      "kitchen",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1685,11 +1417,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "meeting-tables",
-      "office"
+      "tables-a-manger"
     ],
     "colors": [],
     "styles": [],
@@ -1710,12 +1438,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bedroom",
-      "inspirations",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1735,13 +1458,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bedroom",
-      "hall",
-      "lighting",
-      "miscellaneous",
-      "office"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1763,12 +1480,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "dining-room",
-      "double",
-      "kitchen",
-      "living-room",
-      "long",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -1790,14 +1502,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bedroom",
-      "dining-room",
-      "inspirations",
-      "kitchen",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -1819,12 +1524,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "inspirations",
-      "kitchen",
-      "lighting",
-      "miscellaneous",
-      "office"
+      "tables-de-chevet"
     ],
     "colors": [],
     "styles": [],
@@ -1847,11 +1547,7 @@
     "rating": 5,
     "reviews": 2,
     "categories": [
-      "armchair",
-      "chairs",
-      "inspirations",
-      "single",
-      "wardrobes"
+      "fauteuils"
     ],
     "colors": [
       "Brown",
@@ -1878,12 +1574,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "balcony-and-garden",
-      "chairs",
-      "dining-room",
-      "kitchen",
-      "single"
+      "chaises"
     ],
     "colors": [],
     "styles": [],
@@ -1902,11 +1593,7 @@
     "rating": 5,
     "reviews": 1,
     "categories": [
-      "dining-room",
-      "double",
-      "living-room",
-      "long",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -1929,11 +1616,7 @@
     "rating": 4.33,
     "reviews": 3,
     "categories": [
-      "armchair",
-      "balcony-and-garden",
-      "living-room",
-      "miscellaneous",
-      "single"
+      "fauteuils"
     ],
     "colors": [
       "Brown",
@@ -1964,11 +1647,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "inspirations",
-      "living-room",
-      "modern",
-      "single"
+      "chaises"
     ],
     "colors": [
       "Brown",
@@ -2000,12 +1679,7 @@
     "inStock": true,
     "rating": 4.67,
     "reviews": 3,
-    "categories": [
-      "bedroom",
-      "inspirations",
-      "lighting",
-      "living-room"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -2027,10 +1701,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "meeting-tables"
+      "tables-a-manger"
     ],
     "colors": [],
     "styles": [],
@@ -2052,11 +1723,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "double",
-      "hall",
-      "long",
-      "miscellaneous",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -2077,13 +1744,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bathroom",
-      "bedroom",
-      "childrens-room",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -2112,12 +1773,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "inspirations",
-      "living-room",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [
       "Brown",
       "Burgundy Red",
@@ -2146,11 +1802,8 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "kitchen",
-      "meeting-tables",
-      "office"
+      "meubles-tv",
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -2171,13 +1824,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bedroom",
-      "cabinets",
-      "childrens-room",
-      "inspirations",
-      "wardrobes"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -2198,11 +1845,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "chairs",
-      "childrens-room",
-      "office",
-      "single"
+      "chaises"
     ],
     "colors": [],
     "styles": [],
@@ -2224,11 +1867,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "chairs",
-      "childrens-room",
-      "office",
-      "single"
+      "chaises"
     ],
     "colors": [],
     "styles": [],
@@ -2249,13 +1888,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bathroom",
-      "bedroom",
-      "hall",
-      "lighting"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -2277,12 +1910,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "desks",
-      "hall",
-      "meeting-tables",
-      "office",
-      "wardrobes"
+      "tables-basses"
     ],
     "colors": [],
     "styles": [],
@@ -2303,12 +1931,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "inspirations",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -2328,14 +1951,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bedroom",
-      "hall",
-      "inspirations",
-      "lighting",
-      "living-room"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -2357,12 +1973,7 @@
     "rating": 4,
     "reviews": 1,
     "categories": [
-      "chairs",
-      "double",
-      "living-room",
-      "long",
-      "miscellaneous",
-      "modern"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -2383,13 +1994,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "accessories",
-      "bedroom",
-      "hall",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -2410,12 +2015,7 @@
     "inStock": true,
     "rating": 0,
     "reviews": 0,
-    "categories": [
-      "bedroom",
-      "childrens-room",
-      "lighting",
-      "miscellaneous"
-    ],
+    "categories": [],
     "colors": [],
     "styles": [],
     "images": [
@@ -2437,13 +2037,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "bedroom",
-      "chairs",
-      "handing",
-      "inspirations",
-      "modern",
-      "single"
+      "fauteuils"
     ],
     "colors": [],
     "styles": [],
@@ -2466,11 +2060,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "balcony-and-garden",
-      "chairs",
-      "miscellaneous",
-      "single",
-      "stool"
+      "fauteuils"
     ],
     "colors": [],
     "styles": [],
@@ -2492,11 +2082,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "chairs",
-      "meeting-tables",
-      "miscellaneous",
-      "office"
+      "chaises"
     ],
     "colors": [],
     "styles": [],
@@ -2518,10 +2104,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "chairs",
-      "childrens-room",
-      "miscellaneous",
-      "office"
+      "chaises"
     ],
     "colors": [],
     "styles": [],
@@ -2543,11 +2126,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "bedroom",
-      "childrens-room",
-      "double",
-      "living-room",
-      "long"
+      "canapes"
     ],
     "colors": [],
     "styles": [],
@@ -2570,12 +2149,7 @@
     "rating": 0,
     "reviews": 0,
     "categories": [
-      "armchair",
-      "childrens-room",
-      "living-room",
-      "modern",
-      "single",
-      "sofas"
+      "canapes"
     ],
     "colors": [
       "Brown",

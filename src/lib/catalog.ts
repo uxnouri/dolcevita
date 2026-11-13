@@ -21,34 +21,20 @@ export const productImage = (name: string) => pick(productImgs, "products", name
 export const siteImage = (name: string) => pick(siteImgs, "site", name);
 export const blogImage = (name: string) => pick(blogImgs, "blog", name);
 
+/** The client's product range, in the order they listed it. */
 const LABELS: Record<string, Record<Lang, string>> = {
-  accessories: { fr: "Accessoires", en: "Accessories", ar: "إكسسوارات" },
-  armchair: { fr: "Fauteuils", en: "Armchairs", ar: "كراسي بذراعين" },
-  "balcony-and-garden": { fr: "Balcon & jardin", en: "Balcony & garden", ar: "الشرفة والحديقة" },
-  bathroom: { fr: "Salle de bain", en: "Bathroom", ar: "الحمّام" },
-  bedroom: { fr: "Chambre", en: "Bedroom", ar: "غرفة النوم" },
-  cabinets: { fr: "Rangements", en: "Cabinets", ar: "خزائن" },
-  chairs: { fr: "Chaises", en: "Chairs", ar: "كراسي" },
-  "childrens-room": { fr: "Chambre d’enfant", en: "Children’s room", ar: "غرفة الأطفال" },
-  desks: { fr: "Bureaux", en: "Desks", ar: "مكاتب" },
-  "dining-room": { fr: "Salle à manger", en: "Dining room", ar: "غرفة الطعام" },
-  double: { fr: "Canapés 2 places", en: "Two-seaters", ar: "كنبات بمقعدين" },
-  hall: { fr: "Entrée", en: "Hall", ar: "المدخل" },
-  handing: { fr: "Suspendus", en: "Hanging", ar: "معلّقات" },
-  inspirations: { fr: "Inspirations", en: "Inspirations", ar: "إلهام" },
-  kitchen: { fr: "Cuisine", en: "Kitchen", ar: "المطبخ" },
-  lighting: { fr: "Luminaires", en: "Lighting", ar: "إنارة" },
-  "living-room": { fr: "Salon", en: "Living room", ar: "الصالون" },
-  long: { fr: "Canapés longs", en: "Long sofas", ar: "كنبات طويلة" },
-  "meeting-tables": { fr: "Tables de réunion", en: "Meeting tables", ar: "طاولات اجتماعات" },
-  miscellaneous: { fr: "Divers", en: "Miscellaneous", ar: "متفرقات" },
-  modern: { fr: "Modernes", en: "Modern", ar: "عصرية" },
-  office: { fr: "Espace de travail", en: "Office", ar: "مساحة العمل" },
-  single: { fr: "Places simples", en: "Single seaters", ar: "مقاعد فردية" },
-  sofas: { fr: "Canapés", en: "Sofas", ar: "كنبات" },
-  stool: { fr: "Tabourets", en: "Stools", ar: "مقاعد صغيرة" },
-  tables: { fr: "Tables", en: "Tables", ar: "طاولات" },
-  wardrobes: { fr: "Armoires", en: "Wardrobes", ar: "دواليب" },
+  lits: { fr: "Lits", en: "Beds", ar: "أسرّة" },
+  "tables-de-chevet": { fr: "Tables de chevet", en: "Bedside tables", ar: "طاولات السرير" },
+  "tables-basses": { fr: "Tables basses", en: "Coffee tables", ar: "طاولات القهوة" },
+  canapes: { fr: "Canapés", en: "Sofas", ar: "كنبات" },
+  rideaux: { fr: "Rideaux", en: "Curtains", ar: "ستائر" },
+  poufs: { fr: "Poufs", en: "Poufs", ar: "بوفات" },
+  "meubles-tv": { fr: "Meubles TV", en: "TV units", ar: "وحدات التلفاز" },
+  commodes: { fr: "Commodes", en: "Chests of drawers", ar: "خزائن الأدراج" },
+  miroirs: { fr: "Miroirs", en: "Mirrors", ar: "مرايا" },
+  chaises: { fr: "Chaises", en: "Chairs", ar: "كراسي" },
+  fauteuils: { fr: "Fauteuils", en: "Armchairs", ar: "كراسي بذراعين" },
+  "tables-a-manger": { fr: "Tables à manger", en: "Dining tables", ar: "طاولات الطعام" },
 };
 
 const COLOR_FR: Record<string, string> = {
@@ -74,27 +60,18 @@ const STYLES: Partial<Record<Lang, Record<string, string>>> = { fr: STYLE_FR, ar
 export const colorLabel = (c: string, lang: Lang) => COLORS[lang]?.[c] ?? c;
 export const styleLabel = (s: string, lang: Lang) => STYLES[lang]?.[s] ?? s;
 
-export const products: Product[] = productsData;
-export const categories: Category[] = categoriesData.map((c) => ({
-  ...c,
-  label: LABELS[c.slug] ?? { fr: c.name, en: c.name, ar: c.name },
-}));
+/** Only products filed in one of the client's categories are on the site (see scripts/client-categories.ts). */
+export const products: Product[] = productsData.filter((p) => p.categories.length > 0);
+export const categories: Category[] = categoriesData.map((c) => ({ ...c, label: LABELS[c.slug] }));
 
-/** Most descriptive category for a product: what it *is* (sofa, lamp…) before where it goes. */
+/** All categories in the client's order, including made-to-order ones with no products online yet. */
+export const topCategories = categories;
+
+/** Most descriptive category when a product is in several (a drawer nightstand is a bedside table first). */
 const PRIMARY_ORDER = [
-  "sofas", "chairs", "tables", "lighting", "desks", "wardrobes", "cabinets", "meeting-tables",
-  "office", "living-room", "bedroom", "dining-room", "kitchen", "bathroom", "balcony-and-garden",
-  "childrens-room", "hall", "accessories", "inspirations", "miscellaneous",
+  "canapes", "fauteuils", "chaises", "tables-a-manger", "meubles-tv", "tables-basses", "tables-de-chevet",
+  "commodes", "poufs", "lits", "miroirs", "rideaux",
 ];
-
-/** Top-level categories that actually contain products, in a browsing-friendly order. */
-const rank = (slug: string) => {
-  const i = PRIMARY_ORDER.indexOf(slug);
-  return i === -1 ? PRIMARY_ORDER.length : i;
-};
-export const topCategories = categories
-  .filter((c) => !c.parent && products.some((p) => p.categories.includes(c.slug)))
-  .sort((a, b) => rank(a.slug) - rank(b.slug));
 
 export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
 export const productsIn = (slug: string) =>
@@ -104,28 +81,16 @@ export const getProduct = (slug: string) => products.find((p) => p.slug === slug
 const bySlugs = (slugs: string[]) => slugs.map(getProduct).filter((p): p is Product => !!p);
 
 export const latest = bySlugs([
-  "valdez-3-seater-sofa", "arlomore-table-lamp", "calligaris-lazy-armchair", "luxe-chair-white",
-  "sofa-in-a-box-3-seater", "natural-linen-pillow", "bess-decorative-throw-pillow",
+  "valdez-3-seater-sofa", "calligaris-lazy-armchair", "creative-glass-coffee-table", "luxe-chair-white",
+  "sofa-in-a-box-3-seater", "oval-wood-dining-table", "cottage-bedside-nightstand",
   "avyanna-occasional-chair", "leather-and-fabric-sofas",
 ]);
 
 export const bestsellers = bySlugs([
-  "sofa-with-rolled-armrest", "valdez-3-seater-sofa", "modern-tapered-fabric-light",
-  "gentoo-rectangular-desk", "modern-faux-leather-sofa", "leather-and-fabric-sofas",
+  "sofa-with-rolled-armrest", "valdez-3-seater-sofa", "cammi-blue-leather-armchair",
+  "rustic-wooden-coffee-table", "modern-faux-leather-sofa", "four-hands-gregory-dining-chair",
   "plush-round-floor-cushion", "living-room-accent-chair",
 ]);
-
-/** Category shortcuts on the home page ("Our offer"), with their cut-out icons. */
-export const offer = [
-  { slug: "sofas", icon: "2025-01-cat-sofa.png" },
-  { slug: "wardrobes", icon: "2025-01-cat-wardrobe.png" },
-  { slug: "chairs", icon: "2025-01-cat-chair.png" },
-  { slug: "desks", icon: "2025-01-cat-desk.png" },
-  { slug: "tables", icon: "2025-01-cat-table.png" },
-  { slug: "lighting", icon: "2025-01-cat-lighting.png" },
-  { slug: "cabinets", icon: "2025-01-cat-cabinet.png" },
-  { slug: "office", icon: "2025-01-cat-office.png" },
-].map((o) => ({ ...o, category: getCategory(o.slug)! }));
 
 export function related(product: Product, n = 4) {
   const main = primaryCategory(product)?.slug ?? product.categories[0];

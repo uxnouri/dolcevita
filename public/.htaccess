@@ -16,8 +16,22 @@ RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
 RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L,NE]
 
 # ---- Old WordPress / WooCommerce URLs → new pages (keeps Google rankings) ----
+# Products that are no longer sold (not in the client's 12 categories) → shop.
+RewriteRule ^(?:product|produit|en/product|ar/product)/(?:bess-decorative-throw-pillow|arlomore-table-lamp|natural-linen-pillow|modern-ceramic-table-lamp|metal-engrace-table-lamp|rita-table-lamp-rta|gentoo-rectangular-desk|promenade-white-table-lamp)/?$ /boutique/ [R=301,L]
+RewriteRule ^(?:product|produit|en/product|ar/product)/(?:cordoba-large-table-lamp|currey-co-lilou-table-lamp|arianna-table-lamp|prestige-white-lamp|straight-panel-end-desk|table-lamp-belaya-ceramic|bathroom-vanity-vessel-sink|burlap-fabric-rolled)/?$ /boutique/ [R=301,L]
+RewriteRule ^(?:product|produit|en/product|ar/product)/(?:home-office-modular-desk|tall-wooden-bedroom-armoires|traditional-ivory-table-lamp|rechargeable-table-lamp|modern-wooden-large-wardrobe|large-wardrobe-closet|reading-bed-side-lamp|touch-bedside-table-lamp)/?$ /boutique/ [R=301,L]
+RewriteRule ^(?:product|produit|en/product|ar/product)/(?:farmhouse-rustic-lamp|dimmable-nightstand-lamp|modern-tapered-fabric-light|traditional-lamp-for-bedroom|luxe-sofa-accessories|cabinet-cupboard-with-4-doors|modern-white-desk-lamp|touch-dimmable-desk-lamp)/?$ /boutique/ [R=301,L]
+RewriteRule ^(?:product|produit|en/product|ar/product)/(?:fine-art-decoration-lamp|traditional-retro-desk-lamp|farmhouse-table-lamps)/?$ /boutique/ [R=301,L]
 RewriteRule ^product/([^/]+)/?$ /produit/$1/ [R=301,L]
-RewriteRule ^product-category/(?:[^/]+/)*([^/]+)/?$ /categorie/$1/ [R=301,L]
+# Old WooCommerce categories → the client's categories.
+RewriteRule ^product-category/(?:[^/]+/)*(?:sofas|long|double|single|modern|handing|living-room)/?$ /categorie/canapes/ [R=301,L]
+RewriteRule ^product-category/(?:[^/]+/)*armchair/?$ /categorie/fauteuils/ [R=301,L]
+RewriteRule ^product-category/(?:[^/]+/)*chairs/?$ /categorie/chaises/ [R=301,L]
+RewriteRule ^product-category/(?:[^/]+/)*stool/?$ /categorie/poufs/ [R=301,L]
+RewriteRule ^product-category/(?:[^/]+/)*(?:tables|meeting-tables|dining-room)/?$ /categorie/tables-a-manger/ [R=301,L]
+RewriteRule ^product-category/(?:[^/]+/)*(?:cabinets|wardrobes)/?$ /categorie/commodes/ [R=301,L]
+RewriteRule ^product-category/(?:[^/]+/)*bedroom/?$ /categorie/lits/ [R=301,L]
+RewriteRule ^product-category/ /boutique/ [R=301,L]
 RewriteRule ^(?:product-brand|product-tag)/ /boutique/ [R=301,L]
 RewriteRule ^(?:shop|shop-2)/?$ /boutique/ [R=301,L]
 RewriteRule ^(?:cart|cart-2|checkout|checkout-2|my-account|my-account-2|wishlist|compare|order-tracking)(?:/.*)?$ /boutique/ [R=301,L]

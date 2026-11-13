@@ -1,0 +1,42 @@
+---
+/**
+ * Line icons for the 12 product categories, all on Lucide's 24px grid and stroke style.
+ * Beds, sofas, armchairs, poufs and mirrors use Lucide's own paths; the rest are drawn to match.
+ */
+interface Props {
+  slug: string;
+  size?: number;
+  class?: string;
+}
+const { slug, size = 28, class: className } = Astro.props;
+
+const ICONS: Record<string, string> = {
+  lits: '<path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6"/><path d="M2 18h20"/>',
+  "tables-de-chevet": '<rect x="5" y="4" width="14" height="13" rx="1.5"/><path d="M5 10.5h14"/><path d="M11 7.25h2M11 13.75h2"/><path d="M7 17v3M17 17v3"/>',
+  "tables-basses": '<rect x="2" y="10" width="20" height="3" rx="1"/><path d="M5 13v6M19 13v6"/><path d="M5 16.5h14"/>',
+  canapes: '<path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/>',
+  rideaux: '<path d="M2 3h20"/><path d="M4 3v18h4c-1.5-5-.5-10 3-14V3"/><path d="M20 3v18h-4c1.5-5 .5-10-3-14V3"/>',
+  poufs: '<ellipse cx="12" cy="8" rx="9" ry="3"/><path d="M3 8v8a9 3 0 0 0 18 0V8"/>',
+  "meubles-tv": '<rect x="5" y="2" width="14" height="9" rx="1.5"/><path d="M12 11v2"/><rect x="2" y="13" width="20" height="6" rx="1.5"/><path d="M12 13v6"/><path d="M4 19v2M20 19v2"/>',
+  commodes: '<rect x="3" y="3" width="18" height="15" rx="1.5"/><path d="M3 8h18M3 13h18"/><path d="M10 5.5h4M10 10.5h4M10 15.5h4"/><path d="M5 18v3M19 18v3"/>',
+  miroirs: '<path d="M10 6.6 8.6 8"/><path d="M12 18v4"/><path d="M15 7.5 9.5 13"/><path d="M7 22h10"/><circle cx="12" cy="10" r="8"/>',
+  chaises: '<rect x="7" y="2" width="10" height="7" rx="1.5"/><path d="M8.5 9v3M15.5 9v3"/><rect x="5" y="12" width="14" height="3" rx="1"/><path d="M7 15v6M17 15v6"/>',
+  fauteuils: '<path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"/><path d="M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z"/><path d="M5 18v2"/><path d="M19 18v2"/>',
+  "tables-a-manger": '<rect x="2" y="6" width="20" height="3" rx="1"/><path d="M5 9v12M19 9v12"/>',
+};
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={className}
+  set:html={ICONS[slug] ?? ICONS.canapes}
+/>

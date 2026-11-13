@@ -1,12 +1,15 @@
 ---
 import ChevronDown from "@lucide/astro/icons/chevron-down";
 import SearchX from "@lucide/astro/icons/search-x";
+import MessageCircle from "@lucide/astro/icons/message-circle";
+import CategoryIcon from "../CategoryIcon.astro";
 import Layout from "../../layouts/Layout.astro";
 import ProductCard from "../ProductCard.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
 import { getCategory, products, productsIn, searchText, topCategories } from "../../lib/catalog";
 import { normalizeSearch } from "../../lib/search";
+import { SITE } from "../../lib/site";
 
 interface Props {
   lang: Lang;
@@ -25,6 +28,10 @@ const crumbs = [
   { label: title },
 ];
 const strings = { count: t("shop.count") };
+const madeToOrder = cat && list.length === 0;
+const whatsapp = cat
+  ? `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t("shop.madeToOrder.whatsapp", { category: cat.label[lang] }))}`
+  : "";
 ---
 
 <Layout lang={lang} title={title} alternates={alts} description={cat ? undefined : t("shop.lead")}>
@@ -32,7 +39,14 @@ const strings = { count: t("shop.count") };
     <Breadcrumbs items={crumbs} lang={lang} />
     <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h1 class="text-4xl font-bold sm:text-6xl" data-shop-title>{title}</h1>
+        <h1 class="flex items-center gap-4 text-4xl font-bold sm:text-6xl" data-shop-title>
+          {cat && (
+            <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-sand text-brand sm:size-16">
+              <CategoryIcon slug={cat.slug} size={32} />
+            </span>
+          )}
+          {title}
+        </h1>
         {!cat && <p class="mt-3 max-w-xl text-lg text-muted">{t("shop.lead")}</p>}
       </div>
     </div>
@@ -63,6 +77,22 @@ const strings = { count: t("shop.count") };
       </ul>
     </nav>
 
+    {madeToOrder ? (
+      <section class="mt-8 grid items-center gap-6 rounded-[1.75rem] bg-sand p-6 sm:p-10 md:grid-cols-[auto_1fr]">
+        <span class="grid size-20 place-items-center rounded-full bg-white text-brand">
+          <CategoryIcon slug={cat.slug} size={40} />
+        </span>
+        <div>
+          <h2 class="text-2xl font-bold sm:text-3xl">{t("shop.madeToOrder.title")}</h2>
+          <p class="mt-3 max-w-2xl text-lg leading-relaxed text-muted">{t("shop.madeToOrder.text")}</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href={whatsapp} target="_blank" rel="noopener" class="btn-primary"><MessageCircle size={18} />{t("product.whatsapp")}</a>
+            <a href={path(lang, "services")} class="btn-ghost">{t("nav.services")}</a>
+          </div>
+        </div>
+      </section>
+    ) : (
+    <>
     <div class="mt-6 flex items-center justify-between gap-4 border-y border-ink/10 py-3">
       <p class="text-sm text-muted tabular-nums" data-shop-count data-strings={JSON.stringify(strings)} aria-live="polite">
         {t("shop.count", { n: list.length })}
@@ -94,13 +124,25 @@ const strings = { count: t("shop.count") };
       <p class="mt-4 text-lg text-muted">{t("shop.empty")}</p>
       <a href={path(lang, "shop")} class="btn-ghost mt-6">{t("shop.reset")}</a>
     </div>
+
+    {cat && (
+      <aside class="mt-16 flex flex-col items-start justify-between gap-4 rounded-2xl bg-sand p-6 sm:flex-row sm:items-center">
+        <p class="max-w-2xl leading-relaxed text-muted"><strong class="text-ink">{t("shop.madeToOrder.title")}.</strong> {t("shop.madeToOrder.text")}</p>
+        <a href={whatsapp} target="_blank" rel="noopener" class="btn-primary shrink-0"><MessageCircle size={18} />{t("product.whatsapp")}</a>
+      </aside>
+    )}
+    </>
+    )}
   </div>
 </Layout>
 
 <script>
   import { matches } from "../../lib/search";
 
-  const grid = document.querySelector<HTMLElement>("[data-grid]")!;
+  const grid = document.querySelector<HTMLElement>("[data-grid]");
+  if (grid) initShop(grid);
+
+  function initShop(grid: HTMLElement) {
   const items = [...grid.querySelectorAll<HTMLElement>("[data-item]")];
   const count = document.querySelector<HTMLElement>("[data-shop-count]")!;
   const strings = JSON.parse(count.dataset.strings!);
@@ -134,4 +176,5 @@ const strings = { count: t("shop.count") };
     });
     grid.append(...sorted);
   });
+  }
 </script>
