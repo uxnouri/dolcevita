@@ -7,7 +7,7 @@ import Ruler from "@lucide/astro/icons/ruler";
 import ShieldCheck from "@lucide/astro/icons/shield-check";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
-import { path, useT, type Lang } from "../../i18n";
+import { alternates, path, useT, type Lang } from "../../i18n";
 import { siteImage } from "../../lib/catalog";
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useT(lang);
-const other: Lang = lang === "fr" ? "en" : "fr";
 
 const copy = {
   fr: {
@@ -30,6 +29,12 @@ const copy = {
     p2: "We take pride in offering top-quality, fairly priced furniture that turns a house into a home. Whether you are furnishing your living room, bedroom or workspace, we have the pieces to create a cosy, comfortable and stylish space.",
     p3: "We believe furniture is more than something that fills a room: it is a reflection of who you are, your personality and your lifestyle.",
   },
+  ar: {
+    title: "حِرفية أصيلة في خدمة بيتك.",
+    p1: "تتخصص دولتشي فيتا ديزاين في الأثاث الحرفي المصنوع يدويًا، الذي يجمع بين تقنيات النجارة التقليدية والخطوط العصرية.",
+    p2: "نفخر بتقديم أثاث عالي الجودة وبسعر عادل، يحوّل المنزل إلى بيت حقيقي. سواء كنت تؤثث الصالون أو غرفة النوم أو مساحة العمل، لدينا القطع التي تحتاجها لخلق مكان دافئ ومريح وأنيق.",
+    p3: "بالنسبة لنا، قطعة الأثاث أكثر من مجرد شيء يملأ الفراغ: إنها انعكاس لشخصيتك ولأسلوب حياتك.",
+  },
 }[lang];
 
 const values = [
@@ -40,7 +45,7 @@ const values = [
 ];
 ---
 
-<Layout lang={lang} title={t("about.title")} description={copy.p1} alternate={path(other, "about")}>
+<Layout lang={lang} title={t("about.title")} description={copy.p1} alternates={alternates("about")}>
   <div class="container-site pt-6 sm:pt-10">
     <Breadcrumbs items={[{ label: t("nav.home"), href: path(lang, "home") }, { label: t("about.title") }]} lang={lang} />
     <p class="eyebrow mt-8">{t("about.title")}</p>
@@ -62,7 +67,7 @@ const values = [
         <p>{copy.p1}</p>
         <p>{copy.p2}</p>
         <p>{copy.p3}</p>
-        <a href={path(lang, "shop")} class="btn-primary mt-4">{t("hero.cta")}<ArrowRight size={18} /></a>
+        <a href={path(lang, "shop")} class="btn-primary mt-4">{t("hero.cta")}<ArrowRight size={18} class="flip-rtl" /></a>
       </div>
     </div>
 

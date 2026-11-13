@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import PostCard from "../PostCard.astro";
-import { path, useT, type Lang } from "../../i18n";
+import { alternates, path, useT, type Lang } from "../../i18n";
 import { posts } from "../../lib/blog";
 
 interface Props {
@@ -10,10 +10,9 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useT(lang);
-const other: Lang = lang === "fr" ? "en" : "fr";
 ---
 
-<Layout lang={lang} title={t("blog.title")} description={t("blog.lead")} alternate={path(other, "blog")}>
+<Layout lang={lang} title={t("blog.title")} description={t("blog.lead")} alternates={alternates("blog")}>
   <div class="container-site pt-6 sm:pt-10">
     <Breadcrumbs items={[{ label: t("nav.home"), href: path(lang, "home") }, { label: t("blog.title") }]} lang={lang} />
     <h1 class="mt-6 text-4xl font-bold sm:text-6xl">{t("blog.title")}</h1>

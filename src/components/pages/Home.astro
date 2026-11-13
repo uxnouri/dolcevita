@@ -10,7 +10,7 @@ import MapPin from "@lucide/astro/icons/map-pin";
 import Layout from "../../layouts/Layout.astro";
 import ProductRail from "../ProductRail.astro";
 import PostCard from "../PostCard.astro";
-import { path, useT, type Lang } from "../../i18n";
+import { alternates, path, useT, type Lang } from "../../i18n";
 import { bestsellers, latest, offer, siteImage } from "../../lib/catalog";
 import { posts } from "../../lib/blog";
 import { SITE } from "../../lib/site";
@@ -20,7 +20,6 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useT(lang);
-const other: Lang = lang === "fr" ? "en" : "fr";
 
 const hero = siteImage("revslider-home-12-modern-slide1-demo121.jpg");
 
@@ -42,7 +41,7 @@ const promises = [
 ];
 ---
 
-<Layout lang={lang} alternate={path(other, "home")}>
+<Layout lang={lang} alternates={alternates("home")}>
   <!-- Hero -->
   <section class="container-site pt-2 sm:pt-4">
     <div class="hero relative isolate flex min-h-[min(82svh,46rem)] flex-col justify-end overflow-hidden rounded-[1.75rem] bg-stone sm:min-h-[min(86svh,52rem)] sm:rounded-[2.25rem]">
@@ -66,7 +65,7 @@ const promises = [
         <div class="hero-in mt-8 flex flex-wrap gap-3" style="--d:3">
           <a href={path(lang, "shop")} class="btn-light">
             {t("hero.cta")}
-            <ArrowRight size={18} />
+            <ArrowRight size={18} class="flip-rtl" />
           </a>
           <a href={path(lang, "contact")} class="btn border border-white/40 text-white backdrop-blur-sm hover:bg-white/10">
             {t("hero.secondary")}
@@ -112,14 +111,14 @@ const promises = [
           <Image src={siteImage(b.img)} alt="" widths={[480, 720, 960, 1328]} sizes="(min-width: 640px) 50vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[1328/1050]" />
           <span class="banner-label">
             {b.label}
-            <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} /></span>
+            <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} class="flip-rtl" /></span>
           </span>
         </a>
       ))
     }
   </section>
 
-  <ProductRail lang={lang} title={t("home.latest")} lead={t("home.latestLead")} products={latest} />
+  <ProductRail lang={lang} id="latest" title={t("home.latest")} lead={t("home.latestLead")} products={latest} />
 
   <section class="container-site mt-20 grid gap-3 sm:mt-28 sm:grid-cols-3 sm:gap-4">
     {
@@ -128,14 +127,14 @@ const promises = [
           <Image src={siteImage(b.img)} alt="" widths={[480, 720, 960]} sizes="(min-width: 640px) 33vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[4/5]" />
           <span class="banner-label">
             {b.label}
-            <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} /></span>
+            <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} class="flip-rtl" /></span>
           </span>
         </a>
       ))
     }
   </section>
 
-  <ProductRail lang={lang} title={t("home.best")} lead={t("home.bestLead")} products={bestsellers} />
+  <ProductRail lang={lang} id="bestsellers" title={t("home.best")} lead={t("home.bestLead")} products={bestsellers} />
 
   <!-- Promise -->
   <section class="container-site mt-20 sm:mt-28" aria-labelledby="promise-title">
@@ -171,7 +170,7 @@ const promises = [
         {SITE.address.street}, {SITE.address.city}
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href={SITE.mapUrl} target="_blank" rel="noopener" class="btn-primary">{t("visit.cta")}<ArrowUpRight size={18} /></a>
+        <a href={SITE.mapUrl} target="_blank" rel="noopener" class="btn-primary">{t("visit.cta")}<ArrowUpRight size={18} class="flip-rtl" /></a>
         <a href={path(lang, "contact")} class="btn-ghost">{t("nav.contact")}</a>
       </div>
     </div>

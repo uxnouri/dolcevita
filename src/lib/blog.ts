@@ -32,13 +32,36 @@ const TITLES_FR: Record<string, string> = {
   "2-2": "Les détails font toute la différence : nous y portons une attention particulière",
 };
 
-export type Post = { slug: string; date: string; image: string | null; title: Record<Lang, string> };
+const TITLES_AR: Record<string, string> = {
+  "transform-your-home-scandinavian-style-ideas-with-a-luxury-touch": "الطراز الإسكندنافي: أفكار لبيت بلمسة فاخرة",
+  "modular-kitchen-design-in-calgary-canada-roots-cabinet": "المطبخ المعياري، مدروس في أدق التفاصيل",
+  "create-your-modern-bohemian-home-office": "مكتب منزلي بوهيمي عصري بالنباتات والأشكال الهندسية",
+  "pop-border-designs-the-unexpected-twist-your-home-interiors-need": "الإطارات الزخرفية: لمسة غير متوقعة لديكور بيتك",
+  "5-stunning-bed-designs-make-a-cosy-bedroom-dreams-come-alive": "5 تصاميم أسرّة رائعة لغرفة نوم دافئة",
+  "style-marries-storage-10-stunning-living-room-almirah-designs": "حين يلتقي الجمال بالتخزين: 10 خزائن للصالون",
+  "the-ultimate-guide-to-designing-your-ideal-kitchen-10-key-essentials": "دليل تصميم المطبخ المثالي: 10 أساسيات",
+  "bring-your-kitchen-to-life-with-these-kitchen-colour-trends-in-2025": "ألوان المطبخ الرائجة لتمنح مساحتك الحياة",
+  "10-stunning-glass-shelving-ideas-to-elevate-your-home-decor": "10 أفكار لرفوف زجاجية ترتقي بديكور بيتك",
+  "5-bhk-house-designs-that-turn-heads-and-win-hearts": "البيوت الكبيرة: 5 تصاميم تلفت الأنظار",
+  "from-walls-to-ceilings-pop-moulding-ideas-for-a-simple-yet-stylish-home":
+    "من الجدران إلى الأسقف: زخارف جبسية بسيطة وأنيقة",
+  "find-the-hue-thats-perfect-for-you-drawing-room-colour-ideas": "اعثر على اللون المثالي: أفكار ألوان للصالون",
+  "vibrant-visions-captivating-living-room-colour-trends": "ألوان الصالون: الاتجاهات التي تأسر الأنظار",
+  "10-living-room-interior-design-trends-to-transform-your-space": "10 اتجاهات في الديكور لتجديد صالونك",
+  "we-use-only-the-best-and-newest-woodworking-machines-available-on-the-market":
+    "نعمل بأفضل وأحدث آلات النجارة في السوق",
+  "we-use-the-highest-quality-materials-hard-to-find-on-the-market-to-make-our-furniture-unique":
+    "خامات استثنائية لأثاث فريد",
+  "2-2": "التفاصيل تصنع الفرق: نوليها عناية خاصة",
+};
+
+export type Post ={ slug: string; date: string; image: string | null; title: Record<Lang, string> };
 
 export const posts: Post[] = postsData.map((p) => ({
   slug: p.slug,
   date: p.date,
   image: p.image,
-  title: { en: p.title, fr: TITLES_FR[p.slug] ?? p.title },
+  title: { en: p.title, fr: TITLES_FR[p.slug] ?? p.title, ar: TITLES_AR[p.slug] ?? p.title },
 }));
 
 export const getPost = (slug: string) => posts.find((p) => p.slug === slug);
@@ -111,5 +134,35 @@ export const ARTICLE: Record<Lang, Block[]> = {
     ] },
     { type: "h2", text: "Why Dolce Vita Design?" },
     { type: "p", text: "Our goal is high-quality furniture that is functional, stylish and above all comfortable, built to last for years. Furnishing a home isn’t about filling a space; it’s about creating a place that reflects who you are." },
+  ],
+  ar: [
+    { type: "lead", text: "عند تأثيث بيتك، الراحة والأناقة أمران أساسيان. لكن كيف تجد التوازن المناسب بينهما؟" },
+    { type: "p", text: "في دولتشي فيتا ديزاين، نؤمن بأن بيتك يجب أن يكون جميلًا، وأن يكون أيضًا ملاذًا: مكانًا للاسترخاء واستقبال الضيوف والشعور بالراحة. إليك كيف تحوّل بيتك إلى مساحة دافئة حقًا." },
+    { type: "image", src: "2025-03-blog-detail-1-rounded.jpg" },
+    { type: "h2", text: "الصالون، قلب البيت" },
+    { type: "p", text: "هو المكان الذي نقضي فيه أطول وقت مع العائلة والأصدقاء. ابدأ بالأساسيات: كنبة مريحة تناسب ذوقك وأسلوب حياتك." },
+    { type: "list", items: [
+      ["كنبات مريحة", "تجمع بين الراحة والأناقة، من طراز منتصف القرن إلى التصاميم العصرية."],
+      ["طاولات قهوة", "عملية وأنيقة في آن واحد، تشكّل مركز الصالون."],
+      ["وحدات التلفاز", "لتنظيم أجهزتك دون التضحية بالجمال."],
+    ] },
+    { type: "image", src: "2025-03-blog-detail-2-rounded.jpg" },
+    { type: "h2", text: "غرفة النوم، ملاذك الخاص" },
+    { type: "p", text: "يجب أن تكون غرفة نومك مكانًا هادئًا يساعد على الاسترخاء والنوم المريح." },
+    { type: "list", items: [
+      ["اختر سريرًا مريحًا:", "بلوح رأس منجّد أو بإطار خشبي، السرير هو نجم الغرفة."],
+      ["فكّر في التخزين:", "الخزائن والكومودينو والدواليب تحافظ على ترتيب المكان وأناقته."],
+      ["أضف أقمشة ناعمة:", "أغطية السرير والبطانيات والوسائد تمنح اللمسة الأخيرة."],
+    ] },
+    { type: "image", src: "2025-03-blog-detail-3-rounded.jpg" },
+    { type: "h2", text: "المكتب المنزلي، بين العملي والأنيق" },
+    { type: "p", text: "أصبح المكتب في البيت ضرورة، لكن لا داعي لأن يكون مملًا: مساحة عمل جميلة تساعدك على التركيز والراحة." },
+    { type: "list", items: [
+      ["كراسي مريحة", "تسمح لك بالعمل لساعات دون تعب."],
+      ["مكاتب عملية", "من الركن الصغير إلى سطح العمل الواسع."],
+      ["حلول تخزين", "خزائن ورفوف ومنظِّمات لذهن صافٍ ومكتب مرتب."],
+    ] },
+    { type: "h2", text: "لماذا دولتشي فيتا ديزاين؟" },
+    { type: "p", text: "هدفنا أثاث عالي الجودة، عملي وأنيق، ومريح قبل كل شيء، يرافقك لسنوات طويلة. تأثيث البيت لا يعني ملء الفراغ، بل خلق مكان يشبهك." },
   ],
 };

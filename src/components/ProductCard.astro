@@ -35,8 +35,8 @@ const category = primaryCategory(p);
         loading={eager ? "eager" : "lazy"}
         class="size-full object-contain p-[8%] mix-blend-multiply transition-transform duration-500 ease-(--ease-out) group-hover:scale-[1.04] motion-reduce:transition-none"
       />
-      <div class="absolute top-3 left-3 flex gap-1.5">
-        {off > 0 && <span class="rounded-full bg-brand px-2.5 py-1 text-xs font-bold text-white tabular-nums">−{off}%</span>}
+      <div class="absolute start-3 top-3 flex gap-1.5">
+        {off > 0 && <span dir="ltr" class="rounded-full bg-brand px-2.5 py-1 text-xs font-bold text-white tabular-nums">−{off}%</span>}
         {!p.inStock && <span class="rounded-full bg-ink px-2.5 py-1 text-xs font-bold text-white">{t("product.soldOut")}</span>}
       </div>
     </div>
@@ -46,7 +46,7 @@ const category = primaryCategory(p);
     p.inStock && (
       <button
         type="button"
-        class="pressable absolute right-3 bottom-3 grid size-11 place-items-center rounded-full bg-white text-ink shadow-[0_6px_20px_-6px_rgb(0_0_0/0.25)] hover:bg-ink hover:text-white"
+        class="pressable absolute end-3 bottom-3 grid size-11 place-items-center rounded-full bg-white text-ink shadow-[0_6px_20px_-6px_rgb(0_0_0/0.25)] hover:bg-ink hover:text-white"
         data-add-to-cart
         data-slug={p.slug}
         data-name={p.name}

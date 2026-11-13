@@ -1,24 +1,36 @@
 import { formatMoney } from "../lib/money";
 
-export const LANGS = ["fr", "en"] as const;
+export const LANGS = ["fr", "en", "ar"] as const;
 export type Lang = (typeof LANGS)[number];
 export const DEFAULT_LANG: Lang = "fr";
 
-/** Localised URL segments. French lives at the root, English under /en/. */
-const SEGMENTS = {
-  home: { fr: "", en: "" },
-  shop: { fr: "boutique", en: "shop" },
-  category: { fr: "categorie", en: "category" },
-  product: { fr: "produit", en: "product" },
-  blog: { fr: "blog", en: "blog" },
-  about: { fr: "a-propos", en: "about" },
-  contact: { fr: "contact", en: "contact" },
-} as const;
-export type RouteKey = keyof typeof SEGMENTS;
+/** How each language is presented in the language switcher (always in its own language). */
+export const LANG_META: Record<Lang, { name: string; short: string; dir: "ltr" | "rtl"; locale: string; og: string }> = {
+  fr: { name: "Français", short: "FR", dir: "ltr", locale: "fr-FR", og: "fr_FR" },
+  en: { name: "English", short: "EN", dir: "ltr", locale: "en-US", og: "en_US" },
+  ar: { name: "العربية", short: "ع", dir: "rtl", locale: "ar-MA", og: "ar_MA" },
+};
+
+/** Localised URL segments. French lives at the root, English under /en/, Arabic under /ar/. */
+const SEGMENTS: Record<string, Record<Lang, string>> = {
+  home: { fr: "", en: "", ar: "" },
+  shop: { fr: "boutique", en: "shop", ar: "shop" },
+  category: { fr: "categorie", en: "category", ar: "category" },
+  product: { fr: "produit", en: "product", ar: "product" },
+  blog: { fr: "blog", en: "blog", ar: "blog" },
+  about: { fr: "a-propos", en: "about", ar: "about" },
+  contact: { fr: "contact", en: "contact", ar: "contact" },
+};
+export type RouteKey = "home" | "shop" | "category" | "product" | "blog" | "about" | "contact";
 
 export function path(lang: Lang, route: RouteKey, slug?: string) {
   const parts = [lang === DEFAULT_LANG ? "" : lang, SEGMENTS[route][lang], slug].filter(Boolean);
   return parts.length ? `/${parts.join("/")}/` : "/";
+}
+
+/** The same page in every language, for the language switcher and hreflang tags. */
+export function alternates(route: RouteKey, slug?: string): Record<Lang, string> {
+  return Object.fromEntries(LANGS.map((l) => [l, path(l, route, slug)])) as Record<Lang, string>;
 }
 
 export function formatPrice(value: number, lang: Lang, currency: string) {
@@ -26,7 +38,7 @@ export function formatPrice(value: number, lang: Lang, currency: string) {
 }
 
 export function formatDate(iso: string, lang: Lang) {
-  return new Intl.DateTimeFormat(lang === "fr" ? "fr-FR" : "en-US", { dateStyle: "long" }).format(new Date(iso));
+  return new Intl.DateTimeFormat(LANG_META[lang].locale, { dateStyle: "long" }).format(new Date(iso));
 }
 
 const fr = {
@@ -43,7 +55,7 @@ const fr = {
   "nav.search": "Rechercher",
   "nav.cart": "Panier",
   "nav.skip": "Aller au contenu",
-  "nav.switch": "English",
+  "nav.language": "Langue",
   "search.placeholder": "Canapé, lampe, table…",
   "search.submit": "Rechercher",
   "hero.eyebrow": "Mobilier artisanal · Marrakech",
@@ -59,6 +71,8 @@ const fr = {
   "home.bestLead": "Les pièces que nos clients choisissent encore et encore.",
   "home.viewAll": "Voir tous les produits",
   "home.more": "Découvrir",
+  "rail.prev": "Précédent",
+  "rail.next": "Suivant",
   "home.promise": "Pourquoi Dolce Vita",
   "promise.craft.title": "Fait main",
   "promise.craft.text": "Chaque pièce est façonnée avec soin par des artisans expérimentés.",
@@ -164,7 +178,7 @@ const en: Record<UIKey, string> = {
   "nav.search": "Search",
   "nav.cart": "Cart",
   "nav.skip": "Skip to content",
-  "nav.switch": "Français",
+  "nav.language": "Language",
   "search.placeholder": "Sofa, lamp, table…",
   "search.submit": "Search",
   "hero.eyebrow": "Handcrafted furniture · Marrakech",
@@ -179,6 +193,8 @@ const en: Record<UIKey, string> = {
   "home.bestLead": "The pieces our customers come back for.",
   "home.viewAll": "Show all products",
   "home.more": "Explore",
+  "rail.prev": "Previous",
+  "rail.next": "Next",
   "home.promise": "Why Dolce Vita",
   "promise.craft.title": "Handcrafted",
   "promise.craft.text": "Every piece is carefully shaped by experienced artisans.",
@@ -268,7 +284,127 @@ const en: Record<UIKey, string> = {
   "404.cta": "Back to home",
 };
 
-const ui: Record<Lang, Record<UIKey, string>> = { fr, en };
+const ar: Record<UIKey, string> = {
+  "meta.description":
+    "دولتشي فيتا ديزاين، مراكش: أثاث حرفي وعصري. كنبات، كراسي بذراعين، طاولات، إنارة وخزائن مصنوعة لتدوم.",
+  "nav.home": "الرئيسية",
+  "nav.shop": "المتجر",
+  "nav.categories": "الفئات",
+  "nav.blog": "المجلة",
+  "nav.about": "من نحن",
+  "nav.contact": "اتصل بنا",
+  "nav.menu": "القائمة",
+  "nav.close": "إغلاق",
+  "nav.search": "بحث",
+  "nav.cart": "السلة",
+  "nav.skip": "انتقل إلى المحتوى",
+  "nav.language": "اللغة",
+  "search.placeholder": "كنبة، مصباح، طاولة…",
+  "search.submit": "بحث",
+  "hero.eyebrow": "أثاث حرفي · مراكش",
+  "hero.title": "فنّ العيش، في بيتك.",
+  "hero.lead": "قطع مصمَّمة لتدوم، مصنوعة بعناية ومختارة لتمنح كل غرفة الهدوء والدفء.",
+  "hero.cta": "اكتشف المتجر",
+  "hero.secondary": "زورونا",
+  "home.offer": "تشكيلتنا",
+  "home.latest": "وصل حديثًا",
+  "home.latestLead": "أحدث القطع التي وصلت إلى صالة العرض.",
+  "home.best": "الأكثر طلبًا",
+  "home.bestLead": "القطع التي يختارها زبناؤنا مرة بعد مرة.",
+  "home.viewAll": "عرض كل المنتجات",
+  "home.more": "اكتشف",
+  "rail.prev": "السابق",
+  "rail.next": "التالي",
+  "home.promise": "لماذا دولتشي فيتا",
+  "promise.craft.title": "صناعة يدوية",
+  "promise.craft.text": "كل قطعة يصنعها بعناية حرفيون ذوو خبرة.",
+  "promise.eco.title": "خامات مختارة",
+  "promise.eco.text": "أخشاب وأقمشة وتشطيبات منتقاة لجودتها ومتانتها.",
+  "promise.custom.title": "حسب الطلب",
+  "promise.custom.text": "المقاسات والألوان والأقمشة: نكيّف القطعة مع مساحتك.",
+  "promise.durable.title": "مصنوع ليدوم",
+  "promise.durable.text": "خامات نبيلة وهيكل متين لسنوات طويلة.",
+  "banner.beige": "ديكور بيج",
+  "banner.kitchen": "المطابخ",
+  "banner.living": "الصالونات",
+  "banner.terrace": "التراس والحديقة",
+  "banner.bath": "الحمّام",
+  "visit.title": "زورونا في صالة العرض",
+  "visit.text": "المس الخامات، جرّب المقاعد وتحدّث مع فريقنا عن مشروعك.",
+  "visit.cta": "الاتجاهات",
+  "product.sale": "تخفيض",
+  "product.soldOut": "نفد المخزون",
+  "product.inStock": "متوفر",
+  "product.add": "أضف إلى السلة",
+  "product.added": "أُضيف إلى السلة",
+  "product.whatsapp": "اطلب عبر واتساب",
+  "product.whatsappMessage": "مرحبًا، أنا مهتم بهذا المنتج: {name} ({url})",
+  "product.color": "الألوان",
+  "product.style": "الطراز",
+  "product.category": "الفئات",
+  "product.sku": "المرجع",
+  "product.description": "الوصف",
+  "product.descriptionText":
+    "قطعة أنيقة ومريحة، مصمَّمة لتنسجم بشكل طبيعي مع ديكور بيتك. هيكل متين، تشطيبات دقيقة وخامات مختارة لتحافظ على جمالها مع الوقت.",
+  "product.perks.advice": "استشارة شخصية عبر الهاتف أو واتساب",
+  "product.perks.custom": "تخصيص حسب الطلب",
+  "product.perks.showroom": "يمكنك رؤيتها في صالة العرض بمراكش",
+  "product.related": "قد يعجبك أيضًا",
+  "product.rating": "من 5",
+  "product.photo": "صورة {n}",
+  "shop.title": "المتجر",
+  "shop.lead": "كل أثاثنا، من القطعة الأساسية إلى التفصيل الصغير الذي يصنع الفرق.",
+  "shop.all": "الكل",
+  "shop.count": "{n} منتج",
+  "shop.sort": "ترتيب",
+  "shop.sort.default": "الأنسب",
+  "shop.sort.priceAsc": "السعر: من الأقل إلى الأعلى",
+  "shop.sort.priceDesc": "السعر: من الأعلى إلى الأقل",
+  "shop.sort.name": "الاسم (A–Z)",
+  "shop.empty": "لا توجد منتجات تطابق بحثك.",
+  "shop.reset": "عرض الكل",
+  "shop.filter": "تصفية حسب الفئة",
+  "cart.title": "سلة التسوق",
+  "cart.empty": "سلتك فارغة.",
+  "cart.emptyCta": "تصفح المتجر",
+  "cart.total": "المجموع",
+  "cart.remove": "حذف",
+  "cart.increase": "زيادة الكمية",
+  "cart.decrease": "تقليل الكمية",
+  "cart.checkout": "إتمام الطلب عبر واتساب",
+  "cart.note": "نؤكد معك توفر المنتجات والتوصيل وطريقة الدفع.",
+  "cart.message": "مرحبًا دولتشي فيتا ديزاين، أرغب في طلب:",
+  "blog.title": "المجلة",
+  "blog.lead": "أفكار واتجاهات ونصائح لبيت يشبهك.",
+  "blog.read": "اقرأ المقال",
+  "blog.back": "كل المقالات",
+  "blog.more": "مقالات أخرى",
+  "about.title": "من نحن",
+  "about.lead": "أثاث حرفي، خبرة تقليدية وخطوط عصرية.",
+  "contact.title": "اتصل بنا",
+  "contact.lead": "لديك سؤال أو مشروع حسب الطلب؟ راسلنا أو زرنا في صالة العرض.",
+  "contact.address": "صالة العرض",
+  "contact.phone": "الهاتف",
+  "contact.email": "البريد الإلكتروني",
+  "contact.map": "عرض على الخريطة",
+  "contact.form.title": "أرسل لنا رسالة",
+  "contact.form.name": "الاسم",
+  "contact.form.message": "رسالتك",
+  "contact.form.send": "أرسل عبر واتساب",
+  "contact.form.mail": "أو راسلنا عبر البريد الإلكتروني",
+  "contact.form.greeting": "مرحبًا، اسمي {name}.",
+  "footer.tagline": "أثاث حرفي وعصري، مصمَّم ليرافق حياتك اليومية.",
+  "footer.shop": "المتجر",
+  "footer.company": "الدار",
+  "footer.visit": "صالة العرض",
+  "footer.rights": "جميع الحقوق محفوظة.",
+  "footer.top": "العودة إلى الأعلى",
+  "404.title": "الصفحة غير موجودة",
+  "404.text": "ربما تم نقل الصفحة التي تبحث عنها.",
+  "404.cta": "العودة إلى الرئيسية",
+};
+
+const ui: Record<Lang, Record<UIKey, string>> = { fr, en, ar };
 
 export function useT(lang: Lang) {
   return (key: UIKey, vars?: Record<string, string | number>) => {

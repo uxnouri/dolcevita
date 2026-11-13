@@ -7,7 +7,7 @@ import { formatMoney } from "../lib/money";
 
 type Item = { slug: string; name: string; price: number; image: string; qty: number };
 type Config = {
-  lang: "fr" | "en";
+  lang: "fr" | "en" | "ar";
   currency: string;
   whatsapp: string;
   productBase: string;

@@ -3,7 +3,7 @@ import { Image, getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import PostCard from "../PostCard.astro";
-import { formatDate, path, useT, type Lang } from "../../i18n";
+import { alternates, formatDate, path, useT, type Lang } from "../../i18n";
 import { ARTICLE, posts, type Post } from "../../lib/blog";
 import { blogImage, siteImage } from "../../lib/catalog";
 import { SITE } from "../../lib/site";
@@ -14,7 +14,6 @@ interface Props {
 }
 const { lang, post } = Astro.props;
 const t = useT(lang);
-const other: Lang = lang === "fr" ? "en" : "fr";
 const cover = post.image ? blogImage(post.image) : null;
 const og = cover ? await getImage({ src: cover, width: 1200, format: "jpg" }) : null;
 const blocks = ARTICLE[lang];
@@ -36,7 +35,7 @@ const schema = {
   lang={lang}
   title={post.title[lang]}
   description={blocks[0].type === "lead" ? blocks[0].text : undefined}
-  alternate={path(other, "blog", post.slug)}
+  alternates={alternates("blog", post.slug)}
   image={og?.src}
   schema={[schema]}
 >

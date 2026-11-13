@@ -1,11 +1,12 @@
 # Dolce Vita Design
 
-Fast, bilingual (French / English) static website for **Dolce Vita Design**, Marrakech. It replaces the old WordPress/WooCommerce site at dolcevitadesign.ma.
+Fast, trilingual (French / English / Arabic) static website for **Dolce Vita Design**, Marrakech. It replaces the old WordPress/WooCommerce site at dolcevitadesign.ma.
 
 - **Astro 7** (static output, zero framework JS)
 - **Tailwind CSS 4**
 - **Lucide** icons (`@lucide/astro`, rendered to inline SVG at build time)
 - Images optimised at build time to responsive WebP (`astro:assets` + sharp)
+- Arabic is fully right-to-left, set in Cairo (loaded only when Arabic text is on the page)
 - About 1 KB of JavaScript per page: native `<dialog>`, `IntersectionObserver`, `localStorage`
 
 ## Commands
@@ -18,6 +19,7 @@ Node isn't required. Everything runs with [Bun](https://bun.sh).
 | `bun run dev` | Dev server at `http://localhost:4321` |
 | `bun run build` | Production build into `dist/` |
 | `bun run preview` | Serve the built `dist/` locally |
+| `bun run check` | Type-check the site |
 
 If a command complains about Node, prefix it with `bun --bun`, e.g. `bun --bun astro build`.
 
@@ -31,33 +33,36 @@ If a command complains about Node, prefix it with `bun --bun`, e.g. `bun --bun a
 
 ## URLs
 
-French is the default language at the root; English lives under `/en/`.
+French is the default language at the root; English lives under `/en/` and Arabic under `/ar/`. The language menu in the header (and in the mobile menu) always links to the same page in the other languages.
 
-| Page | French | English |
-| --- | --- | --- |
-| Home | `/` | `/en/` |
-| Shop | `/boutique/` | `/en/shop/` |
-| Category | `/categorie/<slug>/` | `/en/category/<slug>/` |
-| Product | `/produit/<slug>/` | `/en/product/<slug>/` |
-| Journal | `/blog/` | `/en/blog/` |
-| About | `/a-propos/` | `/en/about/` |
-| Contact | `/contact/` | `/en/contact/` |
+| Page | French | English | Arabic |
+| --- | --- | --- | --- |
+| Home | `/` | `/en/` | `/ar/` |
+| Shop | `/boutique/` | `/en/shop/` | `/ar/shop/` |
+| Category | `/categorie/<slug>/` | `/en/category/<slug>/` | `/ar/category/<slug>/` |
+| Product | `/produit/<slug>/` | `/en/product/<slug>/` | `/ar/product/<slug>/` |
+| Journal | `/blog/` | `/en/blog/` | `/ar/blog/` |
+| About | `/a-propos/` | `/en/about/` | `/ar/about/` |
+| Contact | `/contact/` | `/en/contact/` | `/ar/contact/` |
+
+When styling, use logical Tailwind classes (`ms-`/`me-`, `ps-`/`pe-`, `start-`/`end-`) instead of left/right ones so Arabic mirrors correctly, and add `class="flip-rtl"` to directional icons (arrows, chevrons).
 
 ## Where to edit things
 
 | What | File |
 | --- | --- |
 | Phone numbers, WhatsApp number, email, address, map link, Instagram, currency | `src/lib/site.ts` |
-| All interface text (FR + EN) | `src/i18n/index.ts` |
+| All interface text (FR + EN + AR) | `src/i18n/index.ts` |
 | Products (name, price, images, categories, colours) | `src/data/products.json` |
-| Category names in French/English, home page featured products | `src/lib/catalog.ts` |
+| Category, colour and style names per language, home page featured products | `src/lib/catalog.ts` |
+| Search synonyms (French/Arabic words → English product names) | `src/lib/search.ts` |
 | Journal titles and article text | `src/lib/blog.ts`, `src/data/posts.json` |
 | Colours, fonts, motion curves | `src/styles/global.css` (`@theme`) |
 | Images | `src/assets/{products,site,blog,categories}/` |
 
 ## Prices
 
-Prices are in **Moroccan dirhams**, stored as plain numbers in `src/data/products.json` (`price` and, when on sale, `regularPrice`), and shown as "5 880 DH" in French and "5,880 MAD" in English (`src/lib/money.ts`). The old WooCommerce store priced in USD; those were converted once at 9.82 MAD/USD and rounded to the nearest 10 DH, so set real prices directly in the JSON.
+Prices are in **Moroccan dirhams**, stored as plain numbers in `src/data/products.json` (`price` and, when on sale, `regularPrice`), and shown as "5 880 DH" in French, "5,880 MAD" in English and "5.880 درهم" in Arabic (`src/lib/money.ts`). The old WooCommerce store priced in USD; those were converted once at 9.82 MAD/USD and rounded to the nearest 10 DH, so set real prices directly in the JSON.
 
 ## Orders
 

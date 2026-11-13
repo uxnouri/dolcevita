@@ -4,8 +4,9 @@ import SearchX from "@lucide/astro/icons/search-x";
 import Layout from "../../layouts/Layout.astro";
 import ProductCard from "../ProductCard.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
-import { path, useT, type Lang } from "../../i18n";
+import { alternates, path, useT, type Lang } from "../../i18n";
 import { getCategory, products, productsIn, searchText, topCategories } from "../../lib/catalog";
+import { normalizeSearch } from "../../lib/search";
 
 interface Props {
   lang: Lang;
@@ -14,21 +15,19 @@ interface Props {
 }
 const { lang, category } = Astro.props;
 const t = useT(lang);
-const other: Lang = lang === "fr" ? "en" : "fr";
 const cat = category ? getCategory(category) : undefined;
 const list = cat ? productsIn(cat.slug) : products;
 const title = cat ? cat.label[lang] : t("shop.title");
-const alternate = cat ? path(other, "category", cat.slug) : path(other, "shop");
+const alts = cat ? alternates("category", cat.slug) : alternates("shop");
 const crumbs = [
   { label: t("nav.home"), href: path(lang, "home") },
   ...(cat ? [{ label: t("nav.shop"), href: path(lang, "shop") }] : []),
   { label: title },
 ];
-const normalize = (s: string) => s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
 const strings = { count: t("shop.count") };
 ---
 
-<Layout lang={lang} title={title} alternate={alternate} description={cat ? undefined : t("shop.lead")}>
+<Layout lang={lang} title={title} alternates={alts} description={cat ? undefined : t("shop.lead")}>
   <div class="container-site pt-6 sm:pt-10">
     <Breadcrumbs items={crumbs} lang={lang} />
     <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -70,20 +69,20 @@ const strings = { count: t("shop.count") };
       </p>
       <label class="relative flex items-center gap-2 text-sm">
         <span class="text-muted">{t("shop.sort")}</span>
-        <select data-sort class="h-10 cursor-pointer appearance-none rounded-full border border-ink/15 bg-transparent pr-9 pl-4 font-semibold">
+        <select data-sort class="h-10 cursor-pointer appearance-none rounded-full border border-ink/15 bg-transparent ps-4 pe-9 font-semibold">
           <option value="default">{t("shop.sort.default")}</option>
           <option value="price-asc">{t("shop.sort.priceAsc")}</option>
           <option value="price-desc">{t("shop.sort.priceDesc")}</option>
           <option value="name">{t("shop.sort.name")}</option>
         </select>
-        <ChevronDown size={16} class="pointer-events-none absolute right-3" />
+        <ChevronDown size={16} class="pointer-events-none absolute end-3" />
       </label>
     </div>
 
     <div data-grid class="mt-8 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
       {
         list.map((p, i) => (
-          <div data-item data-index={i} data-price={p.price} data-name={normalize(p.name)} data-search={searchText(p)} class="contents">
+          <div data-item data-index={i} data-price={p.price} data-name={normalizeSearch(p.name)} data-search={searchText(p)} class="contents">
             <ProductCard product={p} lang={lang} index={i} eager={i < 4} sizes="(min-width: 1408px) 20rem, (min-width: 1024px) 24vw, (min-width: 768px) 32vw, 50vw" />
           </div>
         ))
@@ -99,31 +98,19 @@ const strings = { count: t("shop.count") };
 </Layout>
 
 <script>
+  import { matches } from "../../lib/search";
+
   const grid = document.querySelector<HTMLElement>("[data-grid]")!;
   const items = [...grid.querySelectorAll<HTMLElement>("[data-item]")];
   const count = document.querySelector<HTMLElement>("[data-shop-count]")!;
   const strings = JSON.parse(count.dataset.strings!);
-  const normalize = (s: string) => s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
 
-  // Product names are in English: map common French words so French searches still match.
-  const SYNONYMS: Record<string, string[]> = {
-    lampe: ["lamp", "light"], luminaire: ["lamp", "light"], lumiere: ["light", "lamp"], lampadaire: ["floor", "lamp"],
-    canape: ["sofa", "couch"], fauteuil: ["armchair", "chair"], chaise: ["chair"], siege: ["chair", "seat"],
-    coussin: ["cushion", "pillow"], oreiller: ["pillow"], bureau: ["desk", "office"], armoire: ["wardrobe", "armoire"],
-    tabouret: ["stool"], lit: ["bed"], miroir: ["mirror"], etagere: ["shelf"], commode: ["drawer", "dresser"],
-    tiroir: ["drawer"], placard: ["cabinet", "cupboard"], cuir: ["leather"], bois: ["wood"], velours: ["velvet"],
-    rond: ["round"], ronde: ["round"], blanc: ["white"], blanche: ["white"], noir: ["black"], basse: ["coffee"],
-    chevet: ["nightstand", "bedside"], jardin: ["garden", "outdoor"], exterieur: ["outdoor"], tissu: ["fabric"],
-  };
-
-  // Search (?q=) comes from the header search dialog.
-  const q = normalize(new URLSearchParams(location.search).get("q") ?? "");
-  if (q) {
-    const terms = q.split(/\s+/);
+  // Search (?q=) comes from the header search dialog. Works in French, English and Arabic.
+  const query = new URLSearchParams(location.search).get("q")?.trim() ?? "";
+  if (query) {
     let shown = 0;
     for (const el of items) {
-      const text = el.dataset.search!;
-      const match = terms.every((term) => [term, ...(SYNONYMS[term] ?? SYNONYMS[term.replace(/s$/, "")] ?? [])].some((w) => text.includes(w)));
+      const match = matches(el.dataset.search!, query);
       el.hidden = !match;
       // `display: contents` ignores [hidden], so hide the card itself too.
       (el.firstElementChild as HTMLElement).hidden = !match;
@@ -132,7 +119,7 @@ const strings = { count: t("shop.count") };
     count.textContent = strings.count.replace("{n}", shown);
     document.querySelector<HTMLElement>("[data-empty]")!.hidden = shown > 0;
     const input = document.querySelector<HTMLInputElement>("#site-search");
-    if (input) input.value = new URLSearchParams(location.search).get("q") ?? "";
+    if (input) input.value = query;
   }
 
   // Sort: reorder existing nodes, no re-render.

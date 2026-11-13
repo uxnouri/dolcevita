@@ -6,7 +6,7 @@ import MessageCircle from "@lucide/astro/icons/message-circle";
 import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
-import { path, useT, type Lang } from "../../i18n";
+import { alternates, path, useT, type Lang } from "../../i18n";
 import { SITE, telHref } from "../../lib/site";
 
 interface Props {
@@ -14,12 +14,11 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useT(lang);
-const other: Lang = lang === "fr" ? "en" : "fr";
 const field =
   "mt-2 block w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-base outline-none transition-[border-color,box-shadow] duration-150 focus:border-brand focus:ring-4 focus:ring-brand/15";
 ---
 
-<Layout lang={lang} title={t("contact.title")} description={t("contact.lead")} alternate={path(other, "contact")}>
+<Layout lang={lang} title={t("contact.title")} description={t("contact.lead")} alternates={alternates("contact")}>
   <div class="container-site pt-6 sm:pt-10">
     <Breadcrumbs items={[{ label: t("nav.home"), href: path(lang, "home") }, { label: t("contact.title") }]} lang={lang} />
     <h1 class="mt-6 text-4xl font-bold sm:text-6xl">{t("contact.title")}</h1>
@@ -33,7 +32,7 @@ const field =
             <span class="flex-1">
               <span class="block text-sm text-muted">{t("contact.address")}</span>
               <span class="mt-0.5 block font-semibold">{SITE.address.street}, {SITE.address.city}</span>
-              <span class="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-brand">{t("contact.map")}<ArrowUpRight size={14} /></span>
+              <span class="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-brand">{t("contact.map")}<ArrowUpRight size={14} class="flip-rtl" /></span>
             </span>
           </a>
         </li>
@@ -41,7 +40,7 @@ const field =
           <span class="grid size-11 shrink-0 place-items-center rounded-full bg-brand text-white"><Phone size={20} /></span>
           <span>
             <span class="block text-sm text-muted">{t("contact.phone")}</span>
-            {SITE.phones.map((p) => <a href={telHref(p)} class="mt-0.5 block font-semibold hover:text-brand">{p}</a>)}
+            {SITE.phones.map((p) => <a href={telHref(p)} dir="ltr" class="mt-0.5 block font-semibold hover:text-brand">{p}</a>)}
           </span>
         </li>
         <li>

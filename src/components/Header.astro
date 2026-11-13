@@ -3,17 +3,17 @@ import Search from "@lucide/astro/icons/search";
 import ShoppingBag from "@lucide/astro/icons/shopping-bag";
 import Menu from "@lucide/astro/icons/menu";
 import X from "@lucide/astro/icons/x";
-import ArrowRight from "@lucide/astro/icons/arrow-right";
 import Phone from "@lucide/astro/icons/phone";
 import { path, useT, type Lang } from "../i18n";
 import { topCategories } from "../lib/catalog";
 import { SITE, telHref } from "../lib/site";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
 
 interface Props {
   lang: Lang;
-  alternate: string;
+  alternates: Record<Lang, string>;
 }
-const { lang, alternate } = Astro.props;
+const { lang, alternates } = Astro.props;
 const t = useT(lang);
 const current = Astro.url.pathname;
 
@@ -31,11 +31,11 @@ const isActive = (href: string) => current.startsWith(href);
   class="sticky top-0 z-40 border-b border-transparent bg-paper/85 backdrop-blur-md transition-[border-color] duration-200 data-[scrolled]:border-ink/10"
 >
   <div class="container-site flex h-16 items-center gap-2 sm:h-[4.5rem]">
-    <a href={path(lang, "home")} class="pressable -ml-1 flex shrink-0 items-center p-1" aria-label={SITE.name}>
+    <a href={path(lang, "home")} class="pressable -ms-1 flex shrink-0 items-center p-1" aria-label={SITE.name}>
       <img src="/brand/logo.svg" alt={SITE.name} width="1019" height="296" class="h-9 w-auto sm:h-10" fetchpriority="high" />
     </a>
 
-    <nav class="ml-8 hidden lg:block" aria-label="Main">
+    <nav class="ms-8 hidden lg:block" aria-label="Main">
       <ul class="flex items-center gap-1">
         {
           links.map((l) => (
@@ -53,25 +53,16 @@ const isActive = (href: string) => current.startsWith(href);
       </ul>
     </nav>
 
-    <div class="ml-auto flex items-center gap-0.5">
+    <div class="ms-auto flex items-center gap-0.5">
       <button type="button" class="icon-btn" data-open="search-dialog" aria-label={t("nav.search")}>
         <Search size={20} stroke-width={1.75} />
       </button>
-      <a
-        href={alternate}
-        hreflang={lang === "fr" ? "en" : "fr"}
-        lang={lang === "fr" ? "en" : "fr"}
-        class="pressable grid h-11 min-w-11 place-items-center rounded-full px-2 text-[13px] font-bold tracking-wide hover:bg-ink/5"
-        aria-label={t("nav.switch")}
-        data-astro-prefetch="false"
-      >
-        {lang === "fr" ? "EN" : "FR"}
-      </a>
+      <LanguageSwitcher lang={lang} alternates={alternates} />
       <button type="button" class="icon-btn relative" data-open="cart-drawer" aria-label={t("nav.cart")}>
         <ShoppingBag size={20} stroke-width={1.75} />
         <span
           data-cart-count
-          class="absolute top-1 right-0.5 grid h-[18px] min-w-[18px] scale-90 place-items-center rounded-full bg-brand px-1 text-[10px] font-bold text-white tabular-nums opacity-0 transition-[opacity,transform] duration-200 ease-(--ease-out) data-[filled]:scale-100 data-[filled]:opacity-100"
+          class="absolute end-0.5 top-1 grid h-[18px] min-w-[18px] scale-90 place-items-center rounded-full bg-brand px-1 text-[10px] font-bold text-white tabular-nums opacity-0 transition-[opacity,transform] duration-200 ease-(--ease-out) data-[filled]:scale-100 data-[filled]:opacity-100"
           >0</span
         >
       </button>
@@ -117,14 +108,11 @@ const isActive = (href: string) => current.startsWith(href);
         }
       </ul>
     </div>
-    <div class="border-t border-ink/10 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-      <a href={telHref(SITE.phones[0])} class="btn-primary w-full">
+    <div class="space-y-4 border-t border-ink/10 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <LanguageSwitcher lang={lang} alternates={alternates} variant="list" />
+      <a href={telHref(SITE.phones[0])} class="btn-primary w-full" dir="ltr">
         <Phone size={18} />
         {SITE.phones[0]}
-      </a>
-      <a href={alternate} class="btn-ghost mt-2 w-full" data-astro-prefetch="false">
-        {t("nav.switch")}
-        <ArrowRight size={18} />
       </a>
     </div>
   </div>
@@ -133,7 +121,7 @@ const isActive = (href: string) => current.startsWith(href);
 <!-- Search -->
 <dialog id="search-dialog" class="modal" aria-label={t("nav.search")}>
   <form action={path(lang, "shop")} method="get" role="search" class="flex items-center gap-2 p-2">
-    <Search size={20} class="ml-3 shrink-0 text-muted" aria-hidden="true" />
+    <Search size={20} class="ms-3 shrink-0 text-muted" aria-hidden="true" />
     <label for="site-search" class="sr-only">{t("nav.search")}</label>
     <input
       id="site-search"

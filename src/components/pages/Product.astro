@@ -9,7 +9,7 @@ import Store from "@lucide/astro/icons/store";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import ProductCard from "../ProductCard.astro";
-import { formatPrice, path, useT, type Lang } from "../../i18n";
+import { alternates, formatPrice, path, useT, type Lang } from "../../i18n";
 import { colorLabel, discount, getCategory, primaryCategory, productImage, related, styleLabel, type Product } from "../../lib/catalog";
 import { SITE } from "../../lib/site";
 
@@ -19,7 +19,6 @@ interface Props {
 }
 const { lang, product: p } = Astro.props;
 const t = useT(lang);
-const other: Lang = lang === "fr" ? "en" : "fr";
 const images = p.images.map(productImage);
 const cats = p.categories.map(getCategory).filter((c) => !!c);
 const main = primaryCategory(p);
@@ -63,7 +62,7 @@ const crumbs = [
   lang={lang}
   title={p.name}
   description={`${p.name}. ${t("product.descriptionText")}`}
-  alternate={path(other, "product", p.slug)}
+  alternates={alternates("product", p.slug)}
   image={og.src}
   schema={[schema]}
 >
@@ -91,13 +90,13 @@ const crumbs = [
               ))
             }
           </div>
-          <div class="absolute top-4 left-4 flex gap-1.5">
-            {off > 0 && <span class="rounded-full bg-brand px-3 py-1 text-sm font-bold text-white">−{off}%</span>}
+          <div class="absolute start-4 top-4 flex gap-1.5">
+            {off > 0 && <span dir="ltr" class="rounded-full bg-brand px-3 py-1 text-sm font-bold text-white">−{off}%</span>}
             {!p.inStock && <span class="rounded-full bg-ink px-3 py-1 text-sm font-bold text-white">{t("product.soldOut")}</span>}
           </div>
           {
             images.length > 1 && (
-              <span class="absolute right-4 bottom-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold tabular-nums lg:hidden" data-gallery-counter>
+              <span class="absolute end-4 bottom-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold tabular-nums lg:hidden" data-gallery-counter>
                 1 / {images.length}
               </span>
             )
@@ -248,9 +247,11 @@ const crumbs = [
     const thumbs = [...gallery.querySelectorAll<HTMLButtonElement>("[data-gallery-thumb]")];
     const counter = gallery.querySelector<HTMLElement>("[data-gallery-counter]");
     const total = thumbs.length;
+    // In right-to-left pages scrollLeft runs from 0 towards negative values.
+    const dir = getComputedStyle(rail).direction === "rtl" ? -1 : 1;
 
     thumbs.forEach((btn, i) =>
-      btn.addEventListener("click", () => rail.scrollTo({ left: i * rail.clientWidth, behavior: "smooth" })),
+      btn.addEventListener("click", () => rail.scrollTo({ left: i * rail.clientWidth * dir, behavior: "smooth" })),
     );
 
     let frame = 0;
@@ -259,7 +260,7 @@ const crumbs = [
       () => {
         cancelAnimationFrame(frame);
         frame = requestAnimationFrame(() => {
-          const i = Math.round(rail.scrollLeft / rail.clientWidth);
+          const i = Math.round(Math.abs(rail.scrollLeft) / rail.clientWidth);
           thumbs.forEach((t, n) => (n === i ? t.setAttribute("aria-current", "true") : t.removeAttribute("aria-current")));
           if (counter) counter.textContent = `${i + 1} / ${total}`;
         });

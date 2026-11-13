@@ -3,7 +3,7 @@
  * Usage: bun scripts/import-wordpress.ts <dir-with-products.json,cats.json,posts.json>
  */
 import { mkdir, writeFile, exists } from "node:fs/promises";
-import { join, extname } from "node:path";
+import { join } from "node:path";
 
 const src = process.argv[2];
 if (!src) throw new Error("Pass the crawl directory");

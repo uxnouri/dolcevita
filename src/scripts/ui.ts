@@ -71,13 +71,38 @@ document.querySelectorAll<HTMLElement>("[data-rail]").forEach((wrap) => {
   const prev = wrap.querySelector<HTMLButtonElement>("[data-rail-prev]");
   const next = wrap.querySelector<HTMLButtonElement>("[data-rail-next]");
   if (!rail || !prev || !next) return;
+  // In right-to-left pages scrollLeft runs from 0 towards negative values.
+  const sign = getComputedStyle(rail).direction === "rtl" ? -1 : 1;
   const update = () => {
-    prev.disabled = rail.scrollLeft < 8;
-    next.disabled = rail.scrollLeft + rail.clientWidth > rail.scrollWidth - 8;
+    const pos = Math.abs(rail.scrollLeft);
+    prev.disabled = pos < 8;
+    next.disabled = pos + rail.clientWidth > rail.scrollWidth - 8;
   };
-  const by = (dir: number) => rail.scrollBy({ left: dir * rail.clientWidth * 0.9, behavior: "smooth" });
+  const by = (dir: number) => rail.scrollBy({ left: dir * sign * rail.clientWidth * 0.9, behavior: "smooth" });
   prev.addEventListener("click", () => by(-1));
   next.addEventListener("click", () => by(1));
   rail.addEventListener("scroll", update, { passive: true });
   update();
+});
+
+// ---- Dropdowns (language menu) --------------------------------------------------------------
+document.querySelectorAll<HTMLElement>("[data-dropdown]").forEach((dropdown) => {
+  const trigger = dropdown.querySelector<HTMLButtonElement>("[data-dropdown-trigger]")!;
+  const setOpen = (open: boolean) => {
+    dropdown.toggleAttribute("data-expanded", open);
+    trigger.setAttribute("aria-expanded", String(open));
+  };
+  trigger.addEventListener("click", () => setOpen(!dropdown.hasAttribute("data-expanded")));
+  document.addEventListener("click", (e) => {
+    if (!dropdown.contains(e.target as Node)) setOpen(false);
+  });
+  dropdown.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && dropdown.hasAttribute("data-expanded")) {
+      setOpen(false);
+      trigger.focus();
+    }
+  });
+  dropdown.addEventListener("focusout", (e) => {
+    if (!dropdown.contains(e.relatedTarget as Node)) setOpen(false);
+  });
 });
