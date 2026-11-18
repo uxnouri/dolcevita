@@ -23,7 +23,7 @@ type ServicesCopy = {
 };
 
 const IMAGES = {
-  "conception-3d": "2025-04-modern-banner1.jpg",
+  "conception-3d": "service-conception-3d.webp",
   amenagement: "2025-04-modern-banner2.jpg",
   "ameublement-decoration": "2025-04-modern-banner5.jpg",
 };
