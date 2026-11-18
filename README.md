@@ -55,6 +55,7 @@ When styling, use logical Tailwind classes (`ms-`/`me-`, `ps-`/`pe-`, `start-`/`
 | Phone numbers, WhatsApp number, email, address, map link, Instagram, currency | `src/lib/site.ts` |
 | All interface text (FR + EN + AR) | `src/i18n/index.ts` |
 | Products (name, price, images, categories, colours) | `src/data/products.json` |
+| Product descriptions (FR + EN + AR, by product slug) | `src/lib/descriptions.ts` |
 | Category, colour and style names per language, home page featured products | `src/lib/catalog.ts` |
 | Search synonyms (French/Arabic words → English product names) | `src/lib/search.ts` |
 | Journal titles and article text | `src/lib/blog.ts`, `src/data/posts.json` |
@@ -65,7 +66,7 @@ When styling, use logical Tailwind classes (`ms-`/`me-`, `ps-`/`pe-`, `start-`/`
 
 The shop is organised in the client's 12 categories, in this order: Lits, Tables de chevet, Tables basses, Canapés, Rideaux, Poufs, Meubles TV, Commodes, Miroirs, Chaises, Fauteuils, Tables à manger (names in all three languages and icons: `src/lib/catalog.ts`, `src/components/CategoryIcon.astro`).
 
-The products are the client's own (33 products, 49 photos, November 2026). Each one in `src/data/products.json` has:
+The products are the client's own (40 products, 56 photos, November 2026). Each one in `src/data/products.json` has:
 
 | Field | Meaning |
 | --- | --- |
@@ -76,13 +77,14 @@ The products are the client's own (33 products, 49 photos, November 2026). Each 
 | `images` | Files in `src/assets/products/`, gallery order |
 | `colors` + `colorImages` | Colour variants: each colour (English key, translated in `src/lib/catalog.ts`) and the index of its photo. Shoppers pick a colour chip; it switches the photo and goes into the cart and WhatsApp message |
 
+- Each product's description (product page, Google snippet, schema.org) comes from `src/lib/descriptions.ts`, keyed by slug, so re-running the photo import never touches it. A product without an entry shows the generic text `product.descriptionText`. When you rename a product's slug, rename its key there too.
 - A category with no products yet (currently Rideaux, Meubles TV, Commodes, Tables à manger) shows a "made to order" panel with a WhatsApp button instead of an empty grid.
 - The home page "Nouveautés" and "Nos coups de cœur" selections are lists of slugs in `src/lib/catalog.ts`.
 - The turnkey service page (Conception 3D, Aménagement, Ameublement & décoration d'intérieur) is written in `src/lib/services.ts`.
 
 ### Adding photos
 
-`scripts/import-client-photos.ts` converted the client's photo folder: it maps each photo to a product (the catalogue is defined at the top of the script), resizes to 1600 px WebP and turns the studio backdrop pure white so photos blend into the sand-coloured cards. Running it again **regenerates `products.json` and overwrites edits** (such as prices). For a new product after that, add the photo to `src/assets/products/` (white background works best) and a new entry to `products.json` by hand.
+`scripts/import-client-photos.ts` converted the client's photo folder: it maps each photo to a product (the catalogue is defined at the top of the script), resizes to 1600 px WebP and turns the studio backdrop pure white so photos blend into the sand-coloured cards. The `CATALOGUE` list at the top of the script is the source of truth for names, photos and categories: to add or rename a product, put the photo in the client folder, edit the list and run it again. It **regenerates `products.json` and overwrites edits made there** (such as prices), so once prices arrive, either add a `price` field to the script or edit `products.json` by hand and stop re-running the import.
 
 ## Images and speed
 

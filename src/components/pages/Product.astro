@@ -14,6 +14,7 @@ import { alternates, formatPrice, path, useT, type Lang } from "../../i18n";
 import { colorLabel, discount, getCategory, oldPrice, primaryCategory, productImage, productName, related, styleLabel, variants, type Product } from "../../lib/catalog";
 import CategoryIcon from "../CategoryIcon.astro";
 import { SITE } from "../../lib/site";
+import { DESCRIPTIONS } from "../../lib/descriptions";
 
 interface Props {
   lang: Lang;
@@ -47,13 +48,15 @@ const initialName = vs[0]?.cartName ?? name;
 const waTemplate = t("product.whatsappMessage", { name: "{name}", url });
 const waHref = (n: string) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(waTemplate.replace("{name}", n))}`;
 
+const description = DESCRIPTIONS[p.slug]?.[lang] ?? t("product.descriptionText");
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "Product",
   name,
   sku: p.sku ?? undefined,
   image: new URL(og.src, Astro.site).href,
-  description: t("product.descriptionText"),
+  description,
   brand: { "@type": "Brand", name: SITE.name },
   category: main?.label[lang],
   // Google requires a price on an Offer; products priced on request are listed without one.
@@ -84,7 +87,7 @@ const crumbs = [
 <Layout
   lang={lang}
   title={name}
-  description={`${name}. ${t("product.descriptionText")}`}
+  description={DESCRIPTIONS[p.slug] ? description : `${name}. ${description}`}
   alternates={alternates("product", p.slug)}
   image={og.src}
   schema={[schema]}
@@ -261,7 +264,7 @@ const crumbs = [
 
           <div class="mt-8">
             <h2 class="text-lg font-bold tracking-tight">{t("product.description")}</h2>
-            <p class="mt-3 leading-relaxed text-muted">{t("product.descriptionText")}</p>
+            <p class="mt-3 leading-relaxed text-muted">{description}</p>
           </div>
 
           <dl class="mt-6 space-y-2 border-t border-ink/10 pt-5 text-sm">
