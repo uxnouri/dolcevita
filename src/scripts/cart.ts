@@ -5,17 +5,18 @@
 import { openDialog } from "./ui";
 import { formatMoney } from "../lib/money";
 
-type Item = { slug: string; name: string; price: number; image: string; qty: number };
+/** `slug` is "product-slug" or "product-slug:colourIndex" for a colour variant. `price` null = on request. */
+type Item = { slug: string; name: string; price: number | null; image: string; qty: number };
 type Config = {
   lang: "fr" | "en" | "ar";
   currency: string;
   whatsapp: string;
   productBase: string;
-  strings: Record<"remove" | "increase" | "decrease" | "message" | "total", string>;
+  strings: Record<"remove" | "increase" | "decrease" | "message" | "total" | "quote" | "priceOnRequest", string>;
 };
 
-// Bump the suffix whenever stored prices would become stale (e.g. a currency change).
-const KEY = "dv-cart:mad";
+// Bump the suffix whenever stored items would become stale (currency change, new catalogue).
+const KEY = "dv-cart:v3";
 const drawer = document.getElementById("cart-drawer") as HTMLDialogElement | null;
 const config: Config | null = drawer ? JSON.parse(drawer.dataset.cartConfig!) : null;
 
@@ -36,6 +37,7 @@ const write = (items: Item[]) => {
 };
 
 const money = (n: number) => formatMoney(n, config?.lang ?? "fr", config?.currency ?? "MAD");
+const priceText = (p: number | null) => (p === null ? config!.strings.priceOnRequest : money(p));
 
 const escape = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -63,14 +65,14 @@ function render(items = read()) {
   const s = config.strings;
   list.innerHTML = items
     .map((i) => {
-      const href = config.productBase.replace("__slug__", i.slug);
+      const href = config.productBase.replace("__slug__", i.slug.split(":")[0]);
       return `<li class="flex gap-4 py-4" data-slug="${escape(i.slug)}">
         <a href="${href}" class="size-20 shrink-0 overflow-hidden rounded-xl bg-sand">
           ${i.image ? `<img src="${escape(i.image)}" alt="" width="80" height="80" class="size-full object-contain mix-blend-multiply" loading="lazy">` : ""}
         </a>
         <div class="flex min-w-0 flex-1 flex-col">
           <a href="${href}" class="truncate font-semibold">${escape(i.name)}</a>
-          <span class="text-sm text-muted tabular-nums">${money(i.price)}</span>
+          <span class="text-sm text-muted tabular-nums">${escape(priceText(i.price))}</span>
           <div class="mt-auto flex items-center justify-between pt-2">
             <div class="flex items-center rounded-full border border-ink/15">
               <button type="button" class="pressable grid size-9 place-items-center rounded-full" data-qty="-1" aria-label="${escape(s.decrease)}">${MINUS}</button>
@@ -84,11 +86,14 @@ function render(items = read()) {
     })
     .join("");
 
-  const total = items.reduce((n, i) => n + i.price * i.qty, 0);
-  drawer.querySelector("[data-cart-total]")!.textContent = money(total);
+  // Any item priced on request turns the whole order into a quote.
+  const onRequest = items.some((i) => i.price === null);
+  const total = items.reduce((n, i) => n + (i.price ?? 0) * i.qty, 0);
+  const totalText = onRequest ? s.quote : money(total);
+  drawer.querySelector("[data-cart-total]")!.textContent = totalText;
 
-  const lines = items.map((i) => `• ${i.qty} × ${i.name} (${money(i.price)})`);
-  const text = [s.message, "", ...lines, "", `${s.total}: ${money(total)}`].join("\n");
+  const lines = items.map((i) => `• ${i.qty} × ${i.name}${i.price === null ? "" : ` (${money(i.price)})`}`);
+  const text = [s.message, "", ...lines, "", `${s.total}: ${totalText}`].join("\n");
   drawer.querySelector<HTMLAnchorElement>("[data-cart-checkout]")!.href =
     `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(text)}`;
 }
@@ -108,7 +113,7 @@ document.addEventListener("click", (e) => {
   if (addBtn) {
     e.preventDefault();
     const d = addBtn.dataset;
-    add({ slug: d.slug!, name: d.name!, price: Number(d.price), image: d.image! });
+    add({ slug: d.slug!, name: d.name!, price: d.price ? Number(d.price) : null, image: d.image ?? "" });
     openDialog("cart-drawer");
     return;
   }

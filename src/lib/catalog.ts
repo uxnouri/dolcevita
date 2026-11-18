@@ -8,10 +8,11 @@ import { normalizeSearch } from "./search";
 export type Product = {
   id: number;
   slug: string;
-  name: string;
+  /** Product name in each language. */
+  name: Record<Lang, string>;
   sku: string | null;
-  /** Current price in dirhams. */
-  price: number;
+  /** Current price in dirhams; `null` shows "Prix sur demande" (price on request). */
+  price: number | null;
   /** Previous price, shown struck through only when higher than `price`. */
   regularPrice: number | null;
   inStock: boolean;
@@ -19,7 +20,10 @@ export type Product = {
   reviews: number;
   /** Category slugs; empty = hidden from the site. */
   categories: string[];
+  /** Colour keys (translated below). */
   colors: string[];
+  /** For each colour, the index in `images` showing it. Empty when the photos aren't per colour. */
+  colorImages: number[];
   styles: string[];
   /** File names in src/assets/products/; may be empty for a product not photographed yet. */
   images: string[];
@@ -57,18 +61,22 @@ const LABELS: Record<string, Record<Lang, string>> = {
 };
 
 const COLOR_FR: Record<string, string> = {
-  Beige: "Beige", Black: "Noir", Blue: "Bleu", Brown: "Marron", "Burgundy Red": "Bordeaux", Gray: "Gris",
-  Grey: "Gris", Green: "Vert", "Lavender Purple": "Lavande", Orange: "Orange", Pink: "Rose", Red: "Rouge",
-  White: "Blanc", Yellow: "Jaune", Cream: "Crème", Navy: "Marine", Teal: "Bleu canard",
+  Beige: "Beige", Black: "Noir", Blue: "Bleu", Brown: "Marron", Burgundy: "Bordeaux", Gray: "Gris", Green: "Vert",
+  Mustard: "Moutarde", Navy: "Bleu marine", Red: "Rouge", Terracotta: "Terracotta", White: "Blanc", Cream: "Crème",
+  "Dark wood": "Bois foncé", "Natural wood": "Bois naturel", "White & black": "Blanc et noir",
+  "Beige & walnut": "Beige et noyer", "Navy & teak": "Marine et teck", "Cream & black": "Crème et noir",
+  "Cream & walnut": "Crème et noyer", "Ivory bouclé": "Bouclé ivoire", "Beige velvet": "Velours beige",
 };
 const STYLE_FR: Record<string, string> = {
   Modern: "Moderne", Victorian: "Victorien", Classic: "Classique", Industrial: "Industriel",
   "Art Deco": "Art déco", "Mid-century": "Mid-century", Traditional: "Traditionnel",
 };
 const COLOR_AR: Record<string, string> = {
-  Beige: "بيج", Black: "أسود", Blue: "أزرق", Brown: "بني", "Burgundy Red": "عنابي", Gray: "رمادي", Grey: "رمادي",
-  Green: "أخضر", "Lavender Purple": "بنفسجي فاتح", Orange: "برتقالي", Pink: "وردي", Red: "أحمر", White: "أبيض",
-  Yellow: "أصفر", Cream: "كريمي", Navy: "كحلي", Teal: "أزرق مخضر",
+  Beige: "بيج", Black: "أسود", Blue: "أزرق", Brown: "بني", Burgundy: "عنابي", Gray: "رمادي", Green: "أخضر",
+  Mustard: "خردلي", Navy: "كحلي", Red: "أحمر", Terracotta: "تيراكوتا", White: "أبيض", Cream: "كريمي",
+  "Dark wood": "خشب داكن", "Natural wood": "خشب طبيعي", "White & black": "أبيض وأسود",
+  "Beige & walnut": "بيج وجوز", "Navy & teak": "كحلي وساج", "Cream & black": "كريمي وأسود",
+  "Cream & walnut": "كريمي وجوز", "Ivory bouclé": "بوكليه عاجي", "Beige velvet": "مخمل بيج",
 };
 const STYLE_AR: Record<string, string> = {
   Modern: "عصري", Victorian: "فيكتوري", Classic: "كلاسيكي", Industrial: "صناعي", "Art Deco": "آرت ديكو",
@@ -79,7 +87,7 @@ const STYLES: Partial<Record<Lang, Record<string, string>>> = { fr: STYLE_FR, ar
 export const colorLabel = (c: string, lang: Lang) => COLORS[lang]?.[c] ?? c;
 export const styleLabel = (s: string, lang: Lang) => STYLES[lang]?.[s] ?? s;
 
-/** Only products filed in one of the client's categories are on the site (see scripts/client-categories.ts). */
+/** Products filed in at least one category are on the site (data: src/data/products.json). */
 export const products: Product[] = (productsData as Product[]).filter((p) => p.categories.length > 0);
 export const categories: Category[] = categoriesData.map((c) => ({ ...c, label: LABELS[c.slug] }));
 
@@ -93,6 +101,9 @@ const PRIMARY_ORDER = [
 ];
 
 export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
+/** The product's name in the page language (falls back to French). */
+export const productName = (p: Product, lang: Lang) => p.name[lang] || p.name.fr;
+
 export const productsIn = (slug: string) =>
   products.filter((p) => p.categories.includes(slug));
 export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
@@ -100,15 +111,14 @@ export const getProduct = (slug: string) => products.find((p) => p.slug === slug
 const bySlugs = (slugs: string[]) => slugs.map(getProduct).filter((p): p is Product => !!p);
 
 export const latest = bySlugs([
-  "valdez-3-seater-sofa", "calligaris-lazy-armchair", "creative-glass-coffee-table", "luxe-chair-white",
-  "sofa-in-a-box-3-seater", "oval-wood-dining-table", "cottage-bedside-nightstand",
-  "avyanna-occasional-chair", "leather-and-fabric-sofas",
+  "canape-banana", "fauteuil-bulle", "lit-bulle-ivoire", "miroir-organique", "table-basse-ovale-travertin-cannele",
+  "pouf-boucle-trois-niveaux", "canape-angle-boucle-terracotta", "fauteuil-lounge-boucle", "tables-gigognes-marbre-noir",
 ]);
 
-export const bestsellers = bySlugs([
-  "sofa-with-rolled-armrest", "valdez-3-seater-sofa", "cammi-blue-leather-armchair",
-  "rustic-wooden-coffee-table", "modern-faux-leather-sofa", "four-hands-gregory-dining-chair",
-  "plush-round-floor-cushion", "living-room-accent-chair",
+/** Home page "Nos coups de cœur": a hand-picked selection (no sales data yet, so no "bestseller" claims). */
+export const favourites = bySlugs([
+  "canape-capitonne-vert-emeraude", "fauteuil-scandinave", "table-basse-noyer-organique", "lit-capitonne-gris",
+  "pouf-geometrique", "chaise-accoudoirs-boucle", "table-basse-bois-verre", "canape-angle-boucle-creme",
 ]);
 
 export function related(product: Product, n = 4) {
@@ -124,7 +134,7 @@ export function searchText(p: Product) {
   const cats = p.categories.map(getCategory).flatMap((c) => (c ? Object.values(c.label) : []));
   const colors = p.colors.flatMap((c) => [c, colorLabel(c, "fr"), colorLabel(c, "ar")]);
   const styles = p.styles.flatMap((st) => [st, styleLabel(st, "fr"), styleLabel(st, "ar")]);
-  return normalizeSearch([p.name, ...cats, ...colors, ...styles].join(" "));
+  return normalizeSearch([...Object.values(p.name), ...cats, ...colors, ...styles].join(" "));
 }
 
 export function primaryCategory(p: Product) {
@@ -132,8 +142,17 @@ export function primaryCategory(p: Product) {
   return getCategory(slug);
 }
 
-export const discount = (p: Product) =>
-  p.regularPrice && p.regularPrice > p.price ? Math.round((1 - p.price / p.regularPrice) * 100) : 0;
+/** Old price to strike through, only when there is a price and the old one is genuinely higher. */
+export const oldPrice = (p: Product) =>
+  p.price !== null && p.regularPrice && p.regularPrice > p.price ? p.regularPrice : null;
 
-/** Old price to strike through, only when it's genuinely higher than the current one. */
-export const oldPrice = (p: Product) => (p.regularPrice && p.regularPrice > p.price ? p.regularPrice : null);
+export const discount = (p: Product) => {
+  const old = oldPrice(p);
+  return old && p.price !== null ? Math.round((1 - p.price / old) * 100) : 0;
+};
+
+/** Colour variants a shopper can pick (each colour has its own photo). */
+export const variants = (p: Product) =>
+  p.colorImages.length === p.colors.length && p.colors.length > 1
+    ? p.colors.map((color, i) => ({ color, image: p.colorImages[i] }))
+    : [];

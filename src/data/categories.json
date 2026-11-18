@@ -2,7 +2,7 @@
   {
     "id": 1,
     "slug": "lits",
-    "count": 0
+    "count": 5
   },
   {
     "id": 2,
@@ -12,12 +12,12 @@
   {
     "id": 3,
     "slug": "tables-basses",
-    "count": 9
+    "count": 12
   },
   {
     "id": 4,
     "slug": "canapes",
-    "count": 18
+    "count": 5
   },
   {
     "id": 5,
@@ -27,36 +27,36 @@
   {
     "id": 6,
     "slug": "poufs",
-    "count": 1
+    "count": 4
   },
   {
     "id": 7,
     "slug": "meubles-tv",
-    "count": 1
+    "count": 0
   },
   {
     "id": 8,
     "slug": "commodes",
-    "count": 2
+    "count": 0
   },
   {
     "id": 9,
     "slug": "miroirs",
-    "count": 0
+    "count": 1
   },
   {
     "id": 10,
     "slug": "chaises",
-    "count": 8
+    "count": 2
   },
   {
     "id": 11,
     "slug": "fauteuils",
-    "count": 12
+    "count": 5
   },
   {
     "id": 12,
     "slug": "tables-a-manger",
-    "count": 5
+    "count": 0
   }
 ]

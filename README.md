@@ -65,29 +65,31 @@ When styling, use logical Tailwind classes (`ms-`/`me-`, `ps-`/`pe-`, `start-`/`
 
 The shop is organised in the client's 12 categories, in this order: Lits, Tables de chevet, Tables basses, Canapés, Rideaux, Poufs, Meubles TV, Commodes, Miroirs, Chaises, Fauteuils, Tables à manger (names in all three languages and icons: `src/lib/catalog.ts`, `src/components/CategoryIcon.astro`).
 
-- A product appears on the site only if its `categories` in `src/data/products.json` contains at least one of those slugs (`lits`, `tables-de-chevet`, `tables-basses`, `canapes`, `rideaux`, `poufs`, `meubles-tv`, `commodes`, `miroirs`, `chaises`, `fauteuils`, `tables-a-manger`). The old demo lamps, desks, wardrobes and cushions have `categories: []`, so they're hidden but kept; give one a category to bring it back.
-- A category with no products yet (currently Lits, Rideaux, Miroirs) shows a "made to order" panel with a WhatsApp button instead of an empty grid.
+The products are the client's own (33 products, 49 photos, November 2026). Each one in `src/data/products.json` has:
+
+| Field | Meaning |
+| --- | --- |
+| `name` | `{ "fr", "en", "ar" }` |
+| `price` | Dirhams, or `null` to show "Prix sur demande" (and "Sur devis" as the cart total) |
+| `regularPrice` | Old price, struck through only when higher than `price` |
+| `categories` | Category slugs (`lits`, `tables-de-chevet`, `tables-basses`, `canapes`, `rideaux`, `poufs`, `meubles-tv`, `commodes`, `miroirs`, `chaises`, `fauteuils`, `tables-a-manger`); empty = hidden |
+| `images` | Files in `src/assets/products/`, gallery order |
+| `colors` + `colorImages` | Colour variants: each colour (English key, translated in `src/lib/catalog.ts`) and the index of its photo. Shoppers pick a colour chip; it switches the photo and goes into the cart and WhatsApp message |
+
+- A category with no products yet (currently Rideaux, Meubles TV, Commodes, Tables à manger) shows a "made to order" panel with a WhatsApp button instead of an empty grid.
+- The home page "Nouveautés" and "Nos coups de cœur" selections are lists of slugs in `src/lib/catalog.ts`.
 - The turnkey service page (Conception 3D, Aménagement, Ameublement & décoration d'intérieur) is written in `src/lib/services.ts`.
+
+### Adding photos
+
+`scripts/import-client-photos.ts` converted the client's photo folder: it maps each photo to a product (the catalogue is defined at the top of the script), resizes to 1600 px WebP and turns the studio backdrop pure white so photos blend into the sand-coloured cards. Running it again **regenerates `products.json` and overwrites edits** (such as prices). For a new product after that, add the photo to `src/assets/products/` (white background works best) and a new entry to `products.json` by hand.
 
 ## Prices
 
-Prices are in **Moroccan dirhams**, stored as plain numbers in `src/data/products.json` (`price` and, when on sale, `regularPrice`), and shown as "5 880 DH" in French, "5,880 MAD" in English and "5.880 درهم" in Arabic (`src/lib/money.ts`). The old WooCommerce store priced in USD; those were converted once at 9.82 MAD/USD and rounded to the nearest 10 DH, so set real prices directly in the JSON.
+Prices are in **Moroccan dirhams**, shown as "5 880 DH" in French, "5,880 MAD" in English and "5.880 درهم" in Arabic (`src/lib/money.ts`). The client hasn't sent prices yet, so every product is `null` ("Prix sur demande"). Set real numbers in `products.json`; the price sort options appear in the shop as soon as one product has a price.
 
 ## Orders
 
 There's no payment backend. The cart is stored in the visitor's browser, and **"Finaliser sur WhatsApp"** opens WhatsApp with the full order (items, quantities, total) addressed to the number in `src/lib/site.ts`. Each product page also has a direct "Commander sur WhatsApp" button.
-
-## Re-importing from WordPress
-
-`scripts/import-wordpress.ts` rebuilds `src/data/*.json` and downloads images from a WooCommerce Store API export:
-
-```bash
-curl -s "https://dolcevitadesign.ma/wp-json/wc/store/v1/products?per_page=100" -o crawl/products.json
-curl -s "https://dolcevitadesign.ma/wp-json/wc/store/v1/products/categories?per_page=100" -o crawl/cats.json
-curl -s "https://dolcevitadesign.ma/wp-json/wp/v2/posts?per_page=100&_embed=wp:featuredmedia" -o crawl/posts.json
-bun scripts/import-wordpress.ts crawl
-```
-
-Do this **before** switching the domain over, while WordPress is still online.
 
 `scripts/make-icons.ts` regenerates `public/og.jpg` (social share image) and `public/apple-touch-icon.png`.

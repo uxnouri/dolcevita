@@ -10,7 +10,7 @@ import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import ProductCard from "../ProductCard.astro";
 import { alternates, formatPrice, path, useT, type Lang } from "../../i18n";
-import { colorLabel, discount, getCategory, oldPrice, primaryCategory, productImage, related, styleLabel, type Product } from "../../lib/catalog";
+import { colorLabel, discount, getCategory, oldPrice, primaryCategory, productImage, productName, related, styleLabel, variants, type Product } from "../../lib/catalog";
 import CategoryIcon from "../CategoryIcon.astro";
 import { SITE } from "../../lib/site";
 
@@ -29,25 +29,44 @@ const thumb = images[0] ? await getImage({ src: images[0], width: 160, height: 1
 const og = images[0]
   ? await getImage({ src: images[0], width: 1200, height: 1200, format: "jpg", background: "#ffffff" })
   : { src: "/og.jpg" };
-const waText = t("product.whatsappMessage", { name: p.name, url });
+const name = productName(p, lang);
 const money = (n: number) => formatPrice(n, lang, SITE.currency);
+
+// Colour variants: each chip shows its photo and decides what goes into the cart / WhatsApp message.
+const vs = await Promise.all(
+  variants(p).map(async (v, i) => ({
+    ...v,
+    index: i,
+    label: colorLabel(v.color, lang),
+    cartName: `${name} — ${colorLabel(v.color, lang)}`,
+    thumb: images[v.image] ? (await getImage({ src: images[v.image], width: 160, height: 160, format: "webp" })).src : "",
+  })),
+);
+const initialName = vs[0]?.cartName ?? name;
+const waTemplate = t("product.whatsappMessage", { name: "{name}", url });
+const waHref = (n: string) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(waTemplate.replace("{name}", n))}`;
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: p.name,
+  name,
   sku: p.sku ?? undefined,
   image: new URL(og.src, Astro.site).href,
   description: t("product.descriptionText"),
   brand: { "@type": "Brand", name: SITE.name },
   category: main?.label[lang],
-  offers: {
-    "@type": "Offer",
-    url,
-    priceCurrency: SITE.currency,
-    price: p.price,
-    availability: p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-  },
+  // Google requires a price on an Offer; products priced on request are listed without one.
+  ...(p.price !== null
+    ? {
+        offers: {
+          "@type": "Offer",
+          url,
+          priceCurrency: SITE.currency,
+          price: p.price,
+          availability: p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        },
+      }
+    : {}),
   ...(p.rating > 0 && p.reviews > 0
     ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating, reviewCount: p.reviews } }
     : {}),
@@ -57,14 +76,14 @@ const crumbs = [
   { label: t("nav.home"), href: path(lang, "home") },
   { label: t("nav.shop"), href: path(lang, "shop") },
   ...(main ? [{ label: main.label[lang], href: path(lang, "category", main.slug) }] : []),
-  { label: p.name },
+  { label: name },
 ];
 ---
 
 <Layout
   lang={lang}
-  title={p.name}
-  description={`${p.name}. ${t("product.descriptionText")}`}
+  title={name}
+  description={`${name}. ${t("product.descriptionText")}`}
   alternates={alternates("product", p.slug)}
   image={og.src}
   schema={[schema]}
@@ -86,7 +105,7 @@ const crumbs = [
                 <div class="aspect-square w-full shrink-0">
                   <Image
                     src={img}
-                    alt={i === 0 ? p.name : t("product.photo", { n: i + 1 })}
+                    alt={i === 0 ? name : t("product.photo", { n: i + 1 })}
                     widths={[480, 720, 960, 1200]}
                     sizes="(min-width: 1024px) 55vw, 100vw"
                     loading={i === 0 ? "eager" : "lazy"}
@@ -132,7 +151,7 @@ const crumbs = [
       <div class="lg:col-span-5">
         <div class="lg:sticky lg:top-24">
           {main && <a href={path(lang, "category", main.slug)} class="eyebrow hover:text-ink">{main.label[lang]}</a>}
-          <h1 class="mt-2 text-3xl font-bold sm:text-5xl">{p.name}</h1>
+          <h1 class="mt-2 text-3xl font-bold sm:text-5xl">{name}</h1>
 
           {
             p.rating > 0 && (
@@ -147,10 +166,17 @@ const crumbs = [
             )
           }
 
-          <p class="mt-5 flex flex-wrap items-baseline gap-x-3 tabular-nums">
-            <span class:list={["text-3xl font-bold", off > 0 && "text-brand"]}>{money(p.price)}</span>
-            {oldPrice(p) && <s class="text-lg whitespace-nowrap text-muted">{money(oldPrice(p)!)}</s>}
-          </p>
+          {p.price === null ? (
+            <div class="mt-5">
+              <p class="text-2xl font-bold">{t("product.priceOnRequest")}</p>
+              <p class="mt-1 text-sm text-muted">{t("product.priceNote")}</p>
+            </div>
+          ) : (
+            <p class="mt-5 flex flex-wrap items-baseline gap-x-3 tabular-nums">
+              <span class:list={["text-3xl font-bold", off > 0 && "text-brand"]}>{money(p.price)}</span>
+              {oldPrice(p) && <s class="text-lg whitespace-nowrap text-muted">{money(oldPrice(p)!)}</s>}
+            </p>
+          )}
           <p class:list={["mt-2 flex items-center gap-2 text-sm font-semibold", p.inStock ? "text-brand" : "text-sale"]}>
             <span class:list={["size-2 rounded-full", p.inStock ? "bg-brand" : "bg-sale"]}></span>
             {p.inStock ? t("product.inStock") : t("product.soldOut")}
@@ -163,9 +189,24 @@ const crumbs = [
                   <div>
                     <dt class="text-sm text-muted">{t("product.color")}</dt>
                     <dd class="mt-2 flex flex-wrap gap-2">
-                      {p.colors.map((c) => (
-                        <span class="rounded-full border border-ink/15 px-3 py-1.5 text-sm font-medium">{colorLabel(c, lang)}</span>
-                      ))}
+                      {vs.length > 0
+                        ? vs.map((v) => (
+                            <button
+                              type="button"
+                              data-variant={v.index}
+                              data-variant-image={v.image}
+                              data-variant-name={v.cartName}
+                              data-variant-thumb={v.thumb}
+                              aria-pressed={v.index === 0 ? "true" : "false"}
+                              class="pressable flex items-center gap-2 rounded-full border border-ink/15 py-1 ps-1 pe-3 text-sm font-medium hover:border-ink/40 aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-white"
+                            >
+                              {v.thumb && <img src={v.thumb} alt="" width="28" height="28" class="size-7 rounded-full bg-white object-cover" />}
+                              {v.label}
+                            </button>
+                          ))
+                        : p.colors.map((c) => (
+                            <span class="rounded-full border border-ink/15 px-3 py-1.5 text-sm font-medium">{colorLabel(c, lang)}</span>
+                          ))}
                     </dd>
                   </div>
                 )}
@@ -188,17 +229,20 @@ const crumbs = [
               type="button"
               class="btn-primary h-14 w-full text-base disabled:pointer-events-none disabled:opacity-40"
               data-add-to-cart
-              data-slug={p.slug}
-              data-name={p.name}
-              data-price={p.price}
-              data-image={thumb?.src ?? ""}
+              data-slug={vs.length ? `${p.slug}:0` : p.slug}
+              data-base-slug={p.slug}
+              data-name={initialName}
+              data-price={p.price ?? ""}
+              data-image={vs[0]?.thumb || thumb?.src || ""}
               disabled={!p.inStock}
             >
               <ShoppingBag size={20} />
               {p.inStock ? t("product.add") : t("product.soldOut")}
             </button>
             <a
-              href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(waText)}`}
+              href={waHref(initialName)}
+              data-wa-template={waTemplate}
+              data-wa-number={SITE.whatsapp}
               target="_blank"
               rel="noopener"
               class="btn-ghost h-14 w-full text-base"
@@ -257,8 +301,31 @@ const crumbs = [
     // In right-to-left pages scrollLeft runs from 0 towards negative values.
     const dir = getComputedStyle(rail).direction === "rtl" ? -1 : 1;
 
-    thumbs.forEach((btn, i) =>
-      btn.addEventListener("click", () => rail.scrollTo({ left: i * rail.clientWidth * dir, behavior: "smooth" })),
+    const goTo = (i: number) => rail.scrollTo({ left: i * rail.clientWidth * dir, behavior: "smooth" });
+    thumbs.forEach((btn, i) => btn.addEventListener("click", () => goTo(i)));
+
+    // Colour variants: a chip selects what goes into the cart / WhatsApp and shows its photo.
+    const chips = [...document.querySelectorAll<HTMLButtonElement>("[data-variant]")];
+    const addBtn = document.querySelector<HTMLButtonElement>("[data-add-to-cart][data-base-slug]");
+    const wa = document.querySelector<HTMLAnchorElement>("[data-wa-template]");
+    const select = (chip: HTMLButtonElement) => {
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+      const d = chip.dataset;
+      if (addBtn) {
+        addBtn.dataset.slug = `${addBtn.dataset.baseSlug}:${d.variant}`;
+        addBtn.dataset.name = d.variantName!;
+        if (d.variantThumb) addBtn.dataset.image = d.variantThumb;
+      }
+      if (wa) {
+        const text = wa.dataset.waTemplate!.replace("{name}", d.variantName!);
+        wa.href = `https://wa.me/${wa.dataset.waNumber}?text=${encodeURIComponent(text)}`;
+      }
+    };
+    chips.forEach((chip) =>
+      chip.addEventListener("click", () => {
+        select(chip);
+        goTo(Number(chip.dataset.variantImage));
+      }),
     );
 
     let frame = 0;
@@ -270,6 +337,9 @@ const crumbs = [
           const i = Math.round(Math.abs(rail.scrollLeft) / rail.clientWidth);
           thumbs.forEach((t, n) => (n === i ? t.setAttribute("aria-current", "true") : t.removeAttribute("aria-current")));
           if (counter) counter.textContent = `${i + 1} / ${total}`;
+          // Swiping to a colour's photo selects that colour too.
+          const chip = chips.find((c) => Number(c.dataset.variantImage) === i);
+          if (chip && chip.getAttribute("aria-pressed") !== "true") select(chip);
         });
       },
       { passive: true },

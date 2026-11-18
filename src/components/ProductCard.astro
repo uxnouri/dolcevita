@@ -2,7 +2,7 @@
 import { Image, getImage } from "astro:assets";
 import Plus from "@lucide/astro/icons/plus";
 import { formatPrice, path, useT, type Lang } from "../i18n";
-import { discount, oldPrice, primaryCategory, productImage, type Product } from "../lib/catalog";
+import { colorLabel, discount, oldPrice, primaryCategory, productImage, productName, variants, type Product } from "../lib/catalog";
 import CategoryIcon from "./CategoryIcon.astro";
 import { SITE } from "../lib/site";
 
@@ -22,6 +22,11 @@ const thumb = img ? await getImage({ src: img, width: 160, height: 160, format: 
 const href = path(lang, "product", p.slug);
 const off = discount(p);
 const category = primaryCategory(p);
+const name = productName(p, lang);
+// Quick-add from a card takes the first colour, and says so in the cart.
+const firstVariant = variants(p)[0];
+const cartName = firstVariant ? `${name} — ${colorLabel(firstVariant.color, lang)}` : name;
+const cartSlug = firstVariant ? `${p.slug}:0` : p.slug;
 ---
 
 <article class:list={["group", className]}>
@@ -53,11 +58,11 @@ const category = primaryCategory(p);
         type="button"
         class="pressable absolute end-3 bottom-3 grid size-11 place-items-center rounded-full bg-white text-ink shadow-[0_6px_20px_-6px_rgb(0_0_0/0.25)] hover:bg-ink hover:text-white"
         data-add-to-cart
-        data-slug={p.slug}
-        data-name={p.name}
-        data-price={p.price}
+        data-slug={cartSlug}
+        data-name={cartName}
+        data-price={p.price ?? ""}
         data-image={thumb?.src ?? ""}
-        aria-label={`${t("product.add")} · ${p.name}`}
+        aria-label={`${t("product.add")} · ${cartName}`}
       >
         <Plus size={20} stroke-width={2} />
       </button>
@@ -66,12 +71,21 @@ const category = primaryCategory(p);
   </div>
 
   <div class="mt-3 px-0.5">
-    {category && <p class="text-xs text-muted">{category.label[lang]}</p>}
-    <h3 class="mt-0.5 line-clamp-3 text-[15px] leading-snug font-semibold tracking-normal" title={p.name}>
-      <a href={href} class="hover:text-brand">{p.name}</a>
+    {category && (
+      <p class="text-xs text-muted">
+        {category.label[lang]}
+        {variants(p).length > 1 && <span> · {variants(p).length} {t("product.color").toLowerCase()}</span>}
+      </p>
+    )}
+    <h3 class="mt-0.5 line-clamp-3 text-[15px] leading-snug font-semibold tracking-normal" title={name}>
+      <a href={href} class="hover:text-brand">{name}</a>
     </h3>
     <p class="mt-1 flex flex-wrap items-baseline gap-x-2 text-[15px] tabular-nums">
-      <span class:list={["font-bold whitespace-nowrap", off > 0 && "text-brand"]}>{formatPrice(p.price, lang, SITE.currency)}</span>
+      {p.price === null ? (
+        <span class="text-sm font-semibold text-muted">{t("product.priceOnRequest")}</span>
+      ) : (
+        <span class:list={["font-bold whitespace-nowrap", off > 0 && "text-brand"]}>{formatPrice(p.price, lang, SITE.currency)}</span>
+      )}
       {oldPrice(p) && <s class="text-sm whitespace-nowrap text-muted">{formatPrice(oldPrice(p)!, lang, SITE.currency)}</s>}
     </p>
   </div>

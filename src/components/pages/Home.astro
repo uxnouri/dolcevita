@@ -11,7 +11,7 @@ import Layout from "../../layouts/Layout.astro";
 import ProductRail from "../ProductRail.astro";
 import PostCard from "../PostCard.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
-import { bestsellers, latest, siteImage, topCategories } from "../../lib/catalog";
+import { favourites, latest, siteImage, topCategories } from "../../lib/catalog";
 import CategoryIcon from "../CategoryIcon.astro";
 import { SERVICES } from "../../lib/services";
 import { posts } from "../../lib/blog";
@@ -143,7 +143,7 @@ const promises = [
     </div>
   </section>
 
-  <ProductRail lang={lang} id="bestsellers" title={t("home.best")} lead={t("home.bestLead")} products={bestsellers} />
+  <ProductRail lang={lang} id="favourites" title={t("home.best")} lead={t("home.bestLead")} products={favourites} />
 
   <!-- Promise -->
   <section class="container-site mt-20 sm:mt-28" aria-labelledby="promise-title">
