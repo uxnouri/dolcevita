@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import Photo from "./Photo.astro";
 import { formatDate, path, type Lang } from "../i18n";
 import { blogImage } from "../lib/catalog";
 import type { Post } from "../lib/blog";
@@ -16,7 +16,7 @@ const href = path(lang, "blog", post.slug);
   <a href={href} class="block overflow-hidden rounded-2xl bg-stone" tabindex="-1" aria-hidden="true">
     {
       post.image && (
-        <Image
+        <Photo
           src={blogImage(post.image)}
           alt=""
           widths={[400, 640, 880]}

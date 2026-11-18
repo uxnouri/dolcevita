@@ -1,0 +1,15 @@
+---
+/**
+ * Every large photo on the site goes through here: AVIF for current browsers (typically 30–50%
+ * smaller than WebP at the same quality), WebP as the fallback <img>. Same props as <Image>.
+ * Encoder quality is set once, in astro.config.mjs (image.service.config).
+ * Small thumbnails keep using <Image> (WebP): at 160px the AVIF saving is a few hundred bytes.
+ */
+import { Picture } from "astro:assets";
+import type { ComponentProps } from "astro/types";
+
+type Props = Omit<ComponentProps<typeof Picture>, "formats" | "fallbackFormat" | "pictureAttributes">;
+---
+
+<!-- `contents` keeps <picture> out of layout, so the <img> sizes and positions exactly like before. -->
+<Picture {...Astro.props} formats={["avif"]} fallbackFormat="webp" pictureAttributes={{ class: "contents" }} />

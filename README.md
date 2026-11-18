@@ -84,6 +84,18 @@ The products are the client's own (33 products, 49 photos, November 2026). Each 
 
 `scripts/import-client-photos.ts` converted the client's photo folder: it maps each photo to a product (the catalogue is defined at the top of the script), resizes to 1600 px WebP and turns the studio backdrop pure white so photos blend into the sand-coloured cards. Running it again **regenerates `products.json` and overwrites edits** (such as prices). For a new product after that, add the photo to `src/assets/products/` (white background works best) and a new entry to `products.json` by hand.
 
+## Images and speed
+
+All images are optimised at build time by Astro (`astro:assets`, using sharp), so you can drop full-size photos into `src/assets/`:
+
+- **Large photos** (products, hero, banners, services, journal) use `src/components/Photo.astro`: **AVIF** for current browsers with a **WebP** fallback, in several widths, lazy-loaded below the fold, with fixed dimensions so nothing jumps while loading.
+- **Thumbnails** (gallery, cart, colour chips) are 160px WebP.
+- **Encoder quality** is set once in `astro.config.mjs` (`image.service.config`): AVIF 55, WebP 75, JPEG 72 (mozjpeg).
+- **Link-preview images** for products are 1000px JPEG, under ~160 KB (WhatsApp skips previews over ~300 KB).
+- **Logo SVGs** are minified with SVGO; re-run `bunx svgo --multipass public/brand/*.svg public/favicon.svg` if they change.
+
+Astro caches generated images in `node_modules/.astro`. After changing the quality settings, delete that folder so every image is re-encoded.
+
 ## Prices
 
 Prices are in **Moroccan dirhams**, shown as "5 880 DH" in French, "5,880 MAD" in English and "5.880 درهم" in Arabic (`src/lib/money.ts`). The client hasn't sent prices yet, so every product is `null` ("Prix sur demande"). Set real numbers in `products.json`; the price sort options appear in the shop as soon as one product has a price.

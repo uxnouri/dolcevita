@@ -1,5 +1,6 @@
 ---
-import { Image, getImage } from "astro:assets";
+import Photo from "../Photo.astro";
+import { getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import PostCard from "../PostCard.astro";
@@ -55,7 +56,7 @@ const schema = {
 
     {
       cover && (
-        <Image
+        <Photo
           src={cover}
           alt=""
           widths={[640, 960, 1280, 1600]}
@@ -85,7 +86,7 @@ const schema = {
               </ul>
             );
           return (
-            <Image src={siteImage(b.src)} alt="" widths={[480, 720, 1000, 1305]} sizes="(min-width: 768px) 42rem, 100vw" class="my-10 w-full rounded-2xl" />
+            <Photo src={siteImage(b.src)} alt="" widths={[480, 720, 1000, 1305]} sizes="(min-width: 768px) 42rem, 100vw" class="my-10 w-full rounded-2xl" />
           );
         })
       }

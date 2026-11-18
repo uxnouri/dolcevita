@@ -1,5 +1,6 @@
 ---
-import { Image, getImage } from "astro:assets";
+import Photo from "./Photo.astro";
+import { getImage } from "astro:assets";
 import Plus from "@lucide/astro/icons/plus";
 import { formatPrice, path, useT, type Lang } from "../i18n";
 import { colorLabel, discount, oldPrice, primaryCategory, productImage, productName, variants, type Product } from "../lib/catalog";
@@ -34,7 +35,7 @@ const cartSlug = firstVariant ? `${p.slug}:0` : p.slug;
   <a href={href} class="block" tabindex="-1" aria-hidden="true">
     <div class="relative aspect-square overflow-hidden rounded-2xl bg-sand transition-colors duration-150 ease-[ease] group-hover:bg-stone">
       {img ? (
-        <Image
+        <Photo
           src={img}
           alt=""
           widths={[240, 360, 520, 720]}

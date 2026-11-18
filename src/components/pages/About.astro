@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import Photo from "../Photo.astro";
 import ArrowRight from "@lucide/astro/icons/arrow-right";
 import Hammer from "@lucide/astro/icons/hammer";
 import Leaf from "@lucide/astro/icons/leaf";
@@ -51,7 +51,7 @@ const values = [
     <p class="eyebrow mt-8">{t("about.title")}</p>
     <h1 class="mt-3 max-w-4xl text-4xl leading-[1.05] font-bold sm:text-6xl">{copy.title}</h1>
 
-    <Image
+    <Photo
       src={siteImage("2025-04-about-us-2-modern.jpg")}
       alt=""
       widths={[640, 960, 1328]}
@@ -83,7 +83,7 @@ const values = [
       }
     </ul>
 
-    <Image
+    <Photo
       src={siteImage("2025-04-about-us-1-modern.jpg")}
       alt=""
       widths={[640, 960, 1328]}

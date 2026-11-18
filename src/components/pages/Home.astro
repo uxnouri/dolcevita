@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import Photo from "../Photo.astro";
 import ArrowRight from "@lucide/astro/icons/arrow-right";
 import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
 import Hammer from "@lucide/astro/icons/hammer";
@@ -43,7 +43,7 @@ const promises = [
   <!-- Hero -->
   <section class="container-site pt-2 sm:pt-4">
     <div class="hero relative isolate flex min-h-[min(82svh,46rem)] flex-col justify-end overflow-hidden rounded-[1.75rem] bg-stone sm:min-h-[min(86svh,52rem)] sm:rounded-[2.25rem]">
-      <Image
+      <Photo
         src={hero}
         alt=""
         widths={[640, 960, 1280, 1600]}
@@ -104,7 +104,7 @@ const promises = [
     {
       bannersTop.map((b) => (
         <a href={b.href} class="banner group">
-          <Image src={siteImage(b.img)} alt="" widths={[480, 720, 960, 1328]} sizes="(min-width: 640px) 50vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[5/4]" />
+          <Photo src={siteImage(b.img)} alt="" widths={[480, 720, 960, 1328]} sizes="(min-width: 640px) 50vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[5/4]" />
           <span class="banner-label">
             {b.label}
             <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} class="flip-rtl" /></span>
@@ -132,7 +132,7 @@ const promises = [
       {
         services.services.map((s, i) => (
           <a href={`${path(lang, "services")}#${s.id}`} class="banner group">
-            <Image src={siteImage(s.image)} alt="" widths={[480, 720, 960]} sizes="(min-width: 640px) 33vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[4/5]" />
+            <Photo src={siteImage(s.image)} alt="" widths={[480, 720, 960]} sizes="(min-width: 640px) 33vw, 100vw" class="banner-img aspect-[4/3] sm:aspect-[4/5]" />
             <span class="banner-label">
               <span><span class="block text-sm font-bold text-white/70 tabular-nums">0{i + 1}</span>{s.title}</span>
               <span class="banner-cta">{t("home.more")}<ArrowUpRight size={16} class="flip-rtl" /></span>
@@ -168,7 +168,7 @@ const promises = [
   <!-- Showroom -->
   <section class="container-site mt-20 grid items-center gap-8 sm:mt-28 lg:grid-cols-2 lg:gap-16">
     <div class="overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]">
-      <Image src={siteImage("revslider-home-12-modern-slide3-demo121.jpg")} alt="" widths={[480, 720, 1000, 1328]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] size-full object-cover" />
+      <Photo src={siteImage("revslider-home-12-modern-slide3-demo121.jpg")} alt="" widths={[480, 720, 1000, 1328]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] size-full object-cover" />
     </div>
     <div>
       <p class="eyebrow">{t("footer.visit")} · {SITE.address.city}</p>
