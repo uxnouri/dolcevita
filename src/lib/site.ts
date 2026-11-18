@@ -14,6 +14,8 @@ export const SITE = {
   mapUrl: "https://maps.app.goo.gl/CqYkEvacsGxypDj98",
   /** Shown in the footer and on the contact page, and listed in the schema.org data (sameAs). */
   instagram: "https://www.instagram.com/dolcevitadesign.ma/",
+  /** Same for Facebook. The page's permanent address (share links like facebook.com/share/… can expire). */
+  facebook: "https://www.facebook.com/profile.php?id=61594561155613",
   /** Prices in the catalogue are stored in this currency. */
   currency: "MAD",
 } as const;

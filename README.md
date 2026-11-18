@@ -52,7 +52,7 @@ When styling, use logical Tailwind classes (`ms-`/`me-`, `ps-`/`pe-`, `start-`/`
 
 | What | File |
 | --- | --- |
-| Phone numbers, WhatsApp number, email, address, map link, Instagram, currency | `src/lib/site.ts` |
+| Phone numbers, WhatsApp number, email, address, map link, Instagram, Facebook, currency | `src/lib/site.ts` |
 | All interface text (FR + EN + AR) | `src/i18n/index.ts` |
 | Products (name, price, images, categories, colours) | `src/data/products.json` |
 | Product descriptions (FR + EN + AR, by product slug) | `src/lib/descriptions.ts` |

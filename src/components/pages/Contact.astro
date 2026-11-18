@@ -9,6 +9,7 @@ import Breadcrumbs from "../Breadcrumbs.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
 import { SITE, instagramHandle, telHref } from "../../lib/site";
 import InstagramIcon from "../InstagramIcon.astro";
+import FacebookIcon from "../FacebookIcon.astro";
 
 interface Props {
   lang: Lang;
@@ -61,6 +62,19 @@ const field =
                 <span>
                   <span class="block text-sm text-muted">{t("contact.instagram")}</span>
                   <span class="mt-0.5 block font-semibold" dir="ltr">{instagramHandle(SITE.instagram)}</span>
+                </span>
+              </a>
+            </li>
+          )
+        }
+        {
+          SITE.facebook && (
+            <li>
+              <a href={SITE.facebook} target="_blank" rel="noopener" class="pressable flex gap-4 rounded-2xl bg-sand p-5 hover:bg-stone">
+                <span class="grid size-11 shrink-0 place-items-center rounded-full bg-brand text-white"><FacebookIcon size={20} /></span>
+                <span>
+                  <span class="block text-sm text-muted">{t("contact.facebook")}</span>
+                  <span class="mt-0.5 block font-semibold" dir="ltr">{SITE.name}</span>
                 </span>
               </a>
             </li>
