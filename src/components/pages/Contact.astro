@@ -7,9 +7,11 @@ import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
-import { SITE, instagramHandle, telHref } from "../../lib/site";
+import { SITE, handle, telHref } from "../../lib/site";
 import InstagramIcon from "../InstagramIcon.astro";
 import FacebookIcon from "../FacebookIcon.astro";
+import TikTokIcon from "../TikTokIcon.astro";
+import GoogleMap from "../GoogleMap.astro";
 
 interface Props {
   lang: Lang;
@@ -33,7 +35,8 @@ const field =
             <span class="grid size-11 shrink-0 place-items-center rounded-full bg-brand text-white"><MapPin size={20} /></span>
             <span class="flex-1">
               <span class="block text-sm text-muted">{t("contact.address")}</span>
-              <span class="mt-0.5 block font-semibold">{SITE.address.street}, {SITE.address.city}</span>
+              <span class="mt-0.5 block font-semibold">{SITE.address.street}, {SITE.address.city} {SITE.address.postalCode}</span>
+              <span class="mt-1 block text-sm text-muted">{t("contact.hours")}</span>
               <span class="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-brand">{t("contact.map")}<ArrowUpRight size={14} class="flip-rtl" /></span>
             </span>
           </a>
@@ -61,7 +64,7 @@ const field =
                 <span class="grid size-11 shrink-0 place-items-center rounded-full bg-brand text-white"><InstagramIcon size={20} /></span>
                 <span>
                   <span class="block text-sm text-muted">{t("contact.instagram")}</span>
-                  <span class="mt-0.5 block font-semibold" dir="ltr">{instagramHandle(SITE.instagram)}</span>
+                  <span class="mt-0.5 block font-semibold" dir="ltr">{handle(SITE.instagram)}</span>
                 </span>
               </a>
             </li>
@@ -75,6 +78,19 @@ const field =
                 <span>
                   <span class="block text-sm text-muted">{t("contact.facebook")}</span>
                   <span class="mt-0.5 block font-semibold" dir="ltr">{SITE.name}</span>
+                </span>
+              </a>
+            </li>
+          )
+        }
+        {
+          SITE.tiktok && (
+            <li>
+              <a href={SITE.tiktok} target="_blank" rel="noopener" class="pressable flex gap-4 rounded-2xl bg-sand p-5 hover:bg-stone">
+                <span class="grid size-11 shrink-0 place-items-center rounded-full bg-brand text-white"><TikTokIcon size={20} /></span>
+                <span>
+                  <span class="block text-sm text-muted">{t("contact.tiktok")}</span>
+                  <span class="mt-0.5 block font-semibold" dir="ltr">{handle(SITE.tiktok)}</span>
                 </span>
               </a>
             </li>
@@ -103,6 +119,8 @@ const field =
         </div>
       </form>
     </div>
+
+    <GoogleMap lang={lang} class="mt-6 aspect-[4/3] sm:aspect-[21/9]" />
   </div>
 </Layout>
 

@@ -8,7 +8,7 @@ export const DEFAULT_LANG: Lang = "fr";
 export const LANG_META: Record<Lang, { name: string; short: string; dir: "ltr" | "rtl"; locale: string; og: string }> = {
   fr: { name: "Français", short: "FR", dir: "ltr", locale: "fr-FR", og: "fr_FR" },
   en: { name: "English", short: "EN", dir: "ltr", locale: "en-US", og: "en_US" },
-  ar: { name: "العربية", short: "ع", dir: "rtl", locale: "ar-MA", og: "ar_MA" },
+  ar: { name: "العربية", short: "ع", dir: "rtl", locale: "ar-MA", og: "ar_AR" },
 };
 
 /** Localised URL segments. French lives at the root, English under /en/, Arabic under /ar/. */
@@ -44,7 +44,7 @@ export function formatDate(iso: string, lang: Lang) {
 
 const fr = {
   "meta.description":
-    "Dolce Vita Design, Marrakech : mobilier artisanal et contemporain. Canapés, fauteuils, tables, luminaires et rangements faits pour durer.",
+    "Dolce Vita Design, Marrakech : mobilier sur mesure et décoration d’intérieur. Canapés, lits, fauteuils, tables basses, miroirs et projets clé en main avec conception 3D.",
   "nav.home": "Accueil",
   "nav.shop": "Boutique",
   "nav.categories": "Catégories",
@@ -117,6 +117,10 @@ const fr = {
   "product.photo": "Photo {n}",
   "shop.title": "Boutique",
   "shop.lead": "Tout notre mobilier, de la pièce maîtresse au petit détail qui change tout.",
+  "shop.categoryMeta": "{category} à Marrakech : découvrez la sélection Dolce Vita Design. Fabrication sur mesure, prix sur demande et conseil par WhatsApp ou au showroom.",
+  "shop.categoryTitle": "{category} à Marrakech",
+  "services.metaTitle": "Aménagement et décoration clé en main à Marrakech",
+  "shop.categoryMetaEmpty": "{category} sur mesure à Marrakech : Dolce Vita Design les conçoit et les fabrique selon vos dimensions et vos envies. Demandez un devis sur WhatsApp.",
   "shop.all": "Tout",
   "shop.sort": "Trier",
   "shop.sort.default": "Pertinence",
@@ -151,7 +155,9 @@ const fr = {
   "contact.email": "E-mail",
   "contact.instagram": "Instagram",
   "contact.facebook": "Facebook",
+  "contact.tiktok": "TikTok",
   "contact.map": "Voir sur la carte",
+  "contact.hours": "Du lundi au samedi, 9h – 20h · Fermé le dimanche",
   "contact.form.title": "Envoyez-nous un message",
   "contact.form.name": "Nom",
   "contact.form.message": "Votre message",
@@ -173,7 +179,7 @@ export type UIKey = keyof typeof fr;
 
 const en: Record<UIKey, string> = {
   "meta.description":
-    "Dolce Vita Design, Marrakech: handcrafted, contemporary furniture. Sofas, armchairs, tables, lighting and storage made to last.",
+    "Dolce Vita Design, Marrakech: made-to-measure furniture and interior design. Sofas, beds, armchairs, coffee tables, mirrors and turnkey projects with 3D design.",
   "nav.home": "Home",
   "nav.shop": "Shop",
   "nav.categories": "Categories",
@@ -245,6 +251,10 @@ const en: Record<UIKey, string> = {
   "product.photo": "Photo {n}",
   "shop.title": "Shop",
   "shop.lead": "All of our furniture, from statement pieces to the small details that change everything.",
+  "shop.categoryMeta": "{category} in Marrakech: browse the Dolce Vita Design collection. Made to measure, prices on request, advice on WhatsApp or in our showroom.",
+  "shop.categoryTitle": "{category} in Marrakech",
+  "services.metaTitle": "Turnkey interior design in Marrakech",
+  "shop.categoryMetaEmpty": "Made-to-measure {category} in Marrakech: Dolce Vita Design designs and makes them to your size and taste. Ask for a quote on WhatsApp.",
   "shop.all": "All",
   "shop.sort": "Sort",
   "shop.sort.default": "Featured",
@@ -279,7 +289,9 @@ const en: Record<UIKey, string> = {
   "contact.email": "Email",
   "contact.instagram": "Instagram",
   "contact.facebook": "Facebook",
+  "contact.tiktok": "TikTok",
   "contact.map": "Show on map",
+  "contact.hours": "Monday to Saturday, 9am – 8pm · Closed on Sunday",
   "contact.form.title": "Send us a message",
   "contact.form.name": "Name",
   "contact.form.message": "Your message",
@@ -299,7 +311,7 @@ const en: Record<UIKey, string> = {
 
 const ar: Record<UIKey, string> = {
   "meta.description":
-    "دولتشي فيتا ديزاين، مراكش: أثاث حرفي وعصري. كنبات، كراسي بذراعين، طاولات، إنارة وخزائن مصنوعة لتدوم.",
+    "دولتشي فيتا ديزاين، مراكش: أثاث حسب المقاس وديكور داخلي. كنبات وأسرّة وكراسي وطاولات قهوة ومرايا ومشاريع متكاملة مع تصميم ثلاثي الأبعاد.",
   "nav.home": "الرئيسية",
   "nav.shop": "المتجر",
   "nav.categories": "الفئات",
@@ -371,6 +383,10 @@ const ar: Record<UIKey, string> = {
   "product.photo": "صورة {n}",
   "shop.title": "المتجر",
   "shop.lead": "كل أثاثنا، من القطعة الأساسية إلى التفصيل الصغير الذي يصنع الفرق.",
+  "shop.categoryMeta": "{category} في مراكش: اكتشف تشكيلة دولتشي فيتا ديزاين. صناعة حسب المقاس، السعر عند الطلب، ونصائح عبر واتساب أو في صالة العرض.",
+  "shop.categoryTitle": "{category} في مراكش",
+  "services.metaTitle": "تصميم وتأثيث داخلي متكامل في مراكش",
+  "shop.categoryMetaEmpty": "{category} حسب المقاس في مراكش: تصممها دولتشي فيتا ديزاين وتصنعها وفق مقاساتك وذوقك. اطلب عرض سعر عبر واتساب.",
   "shop.all": "الكل",
   "shop.sort": "ترتيب",
   "shop.sort.default": "الأنسب",
@@ -405,7 +421,9 @@ const ar: Record<UIKey, string> = {
   "contact.email": "البريد الإلكتروني",
   "contact.instagram": "إنستغرام",
   "contact.facebook": "فيسبوك",
+  "contact.tiktok": "تيك توك",
   "contact.map": "عرض على الخريطة",
+  "contact.hours": "من الإثنين إلى السبت، 9:00 – 20:00 · مغلق يوم الأحد",
   "contact.form.title": "أرسل لنا رسالة",
   "contact.form.name": "الاسم",
   "contact.form.message": "رسالتك",

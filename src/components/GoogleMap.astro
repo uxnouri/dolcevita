@@ -1,0 +1,38 @@
+---
+/**
+ * The showroom on Google Maps (the business listing itself, with its name, reviews and directions).
+ * Lazy-loaded: the map's ~1 MB only downloads when the visitor scrolls near it.
+ */
+import { useT, type Lang } from "../i18n";
+import { SITE } from "../lib/site";
+
+interface Props {
+  lang: Lang;
+  class?: string;
+}
+const { lang, class: className } = Astro.props;
+const t = useT(lang);
+const { latitude, longitude } = SITE.geo;
+// Google's "Share > Embed a map" format, pointing at the Google Business Profile (feature id below).
+const src =
+  "https://www.google.com/maps/embed?pb=" +
+  [
+    "!1m18!1m12!1m3",
+    `!1d1700!2d${longitude}!3d${latitude}`,
+    "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2",
+    `!1s${encodeURIComponent(SITE.mapsFeatureId)}`,
+    `!2s${encodeURIComponent(SITE.name)}`,
+    `!5e0!3m2!1s${lang}!2sma!4v1700000000000!5m2!1s${lang}!2sma`,
+  ].join("");
+---
+
+<div class:list={["overflow-hidden rounded-[1.75rem] bg-sand sm:rounded-[2.25rem]", className]}>
+  <iframe
+    src={src}
+    title={`${t("contact.map")} · ${SITE.name}`}
+    class="block size-full border-0"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen
+  ></iframe>
+</div>

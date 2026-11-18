@@ -2,12 +2,14 @@
 import MapPin from "@lucide/astro/icons/map-pin";
 import Phone from "@lucide/astro/icons/phone";
 import Mail from "@lucide/astro/icons/mail";
+import Clock from "@lucide/astro/icons/clock";
 import ArrowUp from "@lucide/astro/icons/arrow-up";
 import { path, useT, type Lang } from "../i18n";
 import { topCategories } from "../lib/catalog";
-import { SITE, instagramHandle, telHref } from "../lib/site";
+import { SITE, handle, telHref } from "../lib/site";
 import InstagramIcon from "./InstagramIcon.astro";
 import FacebookIcon from "./FacebookIcon.astro";
+import TikTokIcon from "./TikTokIcon.astro";
 
 interface Props {
   lang: Lang;
@@ -57,8 +59,12 @@ const year = new Date().getFullYear();
             <li>
               <a href={SITE.mapUrl} target="_blank" rel="noopener" class="flex gap-3 transition-colors hover:text-white">
                 <MapPin size={18} class="mt-0.5 shrink-0 text-olive" />
-                <span>{SITE.address.street}<br />{SITE.address.city}</span>
+                <span>{SITE.address.street}<br />{SITE.address.city} {SITE.address.postalCode}</span>
               </a>
+            </li>
+            <li class="flex gap-3">
+              <Clock size={18} class="mt-0.5 shrink-0 text-olive" />
+              <span>{t("contact.hours")}</span>
             </li>
             {
               SITE.phones.map((p) => (
@@ -81,7 +87,7 @@ const year = new Date().getFullYear();
                 <li>
                   <a href={SITE.instagram} target="_blank" rel="noopener" class="flex gap-3 transition-colors hover:text-white">
                     <InstagramIcon size={18} class="mt-0.5 shrink-0 text-olive" />
-                    <span dir="ltr">{instagramHandle(SITE.instagram)}</span>
+                    <span dir="ltr">{handle(SITE.instagram)}</span>
                   </a>
                 </li>
               )
@@ -91,7 +97,17 @@ const year = new Date().getFullYear();
                 <li>
                   <a href={SITE.facebook} target="_blank" rel="noopener" class="flex gap-3 transition-colors hover:text-white">
                     <FacebookIcon size={18} class="mt-0.5 shrink-0 text-olive" />
-                    <span>{t("contact.facebook")}</span>
+                    <span dir="ltr">{SITE.name}</span>
+                  </a>
+                </li>
+              )
+            }
+            {
+              SITE.tiktok && (
+                <li>
+                  <a href={SITE.tiktok} target="_blank" rel="noopener" class="flex gap-3 transition-colors hover:text-white">
+                    <TikTokIcon size={18} class="mt-0.5 shrink-0 text-olive" />
+                    <span dir="ltr">{handle(SITE.tiktok)}</span>
                   </a>
                 </li>
               )

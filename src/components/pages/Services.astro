@@ -11,7 +11,8 @@ import Breadcrumbs from "../Breadcrumbs.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
 import { siteImage } from "../../lib/catalog";
 import { SERVICES } from "../../lib/services";
-import { SITE } from "../../lib/site";
+import { SITE, SITE_IDS } from "../../lib/site";
+import { getImage } from "astro:assets";
 
 interface Props {
   lang: Lang;
@@ -22,21 +23,32 @@ const copy = SERVICES[lang];
 const icons = { "conception-3d": Box, amenagement: Ruler, "ameublement-decoration": Sofa } as const;
 const whatsapp = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(copy.whatsappMessage)}`;
 
+const pageUrl = new URL(path(lang, "services"), Astro.site).href;
+// Share image: the 3D design photo, cropped to 1200×630.
+const og = await getImage({ src: siteImage(copy.services[0].image), width: 1200, height: 630, fit: "cover", format: "jpg" });
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${pageUrl}#service`,
+  name: copy.eyebrow,
   serviceType: copy.eyebrow,
-  provider: { "@type": "FurnitureStore", name: SITE.name },
-  areaServed: { "@type": "Country", name: "Morocco" },
+  description: copy.lead,
+  url: pageUrl,
+  provider: { "@id": SITE_IDS.store },
+  areaServed: [
+    { "@type": "City", name: "Marrakech" },
+    { "@type": "Country", name: "Morocco" },
+  ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: copy.eyebrow,
-    itemListElement: copy.services.map((s) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: s.title } })),
+    itemListElement: copy.services.map((s) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: s.title, description: s.text } })),
   },
 };
 ---
 
-<Layout lang={lang} title={t("nav.services")} description={copy.lead} alternates={alternates("services")} schema={[schema]}>
+<Layout lang={lang} title={t("services.metaTitle")} description={copy.lead} alternates={alternates("services")} image={og.src} schema={[schema]}>
   <div class="container-site pt-6 sm:pt-10">
     <Breadcrumbs items={[{ label: t("nav.home"), href: path(lang, "home") }, { label: t("nav.services") }]} lang={lang} />
 

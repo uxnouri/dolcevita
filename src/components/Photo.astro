@@ -14,5 +14,5 @@ type Props = Omit<PictureProps, "formats" | "fallbackFormat" | "pictureAttribute
 const props = Astro.props as PictureProps;
 ---
 
-<!-- `contents` keeps <picture> out of layout, so the <img> sizes and positions exactly like before. -->
+{/* `contents` keeps <picture> out of layout, so the <img> sizes and positions exactly like before. */}
 <Picture {...props} formats={["avif"]} fallbackFormat="webp" pictureAttributes={{ class: "contents" }} />

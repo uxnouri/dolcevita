@@ -13,6 +13,7 @@ import PostCard from "../PostCard.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
 import { favourites, latest, siteImage, topCategories } from "../../lib/catalog";
 import CategoryIcon from "../CategoryIcon.astro";
+import GoogleMap from "../GoogleMap.astro";
 import { SERVICES } from "../../lib/services";
 import { posts } from "../../lib/blog";
 import { SITE } from "../../lib/site";
@@ -167,16 +168,14 @@ const promises = [
 
   <!-- Showroom -->
   <section class="container-site mt-20 grid items-center gap-8 sm:mt-28 lg:grid-cols-2 lg:gap-16">
-    <div class="overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]">
-      <Photo src={siteImage("revslider-home-12-modern-slide3-demo121.jpg")} alt="" widths={[480, 720, 1000, 1328]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] size-full object-cover" />
-    </div>
+    <GoogleMap lang={lang} class="aspect-[4/3]" />
     <div>
       <p class="eyebrow">{t("footer.visit")} · {SITE.address.city}</p>
       <h2 class="mt-3 text-3xl font-bold sm:text-5xl">{t("visit.title")}</h2>
       <p class="mt-5 max-w-lg text-lg leading-relaxed text-muted">{t("visit.text")}</p>
       <p class="mt-6 flex items-start gap-3 font-medium">
         <MapPin size={20} class="mt-0.5 shrink-0 text-brand" />
-        {SITE.address.street}, {SITE.address.city}
+        <span>{SITE.address.street}, {SITE.address.city} {SITE.address.postalCode}<br /><span class="text-muted">{t("contact.hours")}</span></span>
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href={SITE.mapUrl} target="_blank" rel="noopener" class="btn-primary">{t("visit.cta")}<ArrowUpRight size={18} class="flip-rtl" /></a>

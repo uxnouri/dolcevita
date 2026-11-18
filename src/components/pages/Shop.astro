@@ -10,7 +10,7 @@ import { alternates, path, useT, type Lang } from "../../i18n";
 import { getCategory, productName, products, productsIn, searchText, topCategories } from "../../lib/catalog";
 import { normalizeSearch } from "../../lib/search";
 import { productCount } from "../../lib/plural";
-import { SITE } from "../../lib/site";
+import { SITE, SITE_IDS } from "../../lib/site";
 
 interface Props {
   lang: Lang;
@@ -33,9 +33,40 @@ const madeToOrder = cat && list.length === 0;
 const whatsapp = cat
   ? `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t("shop.madeToOrder.whatsapp", { category: cat.label[lang] }))}`
   : "";
+
+const description = cat
+  ? t(madeToOrder ? "shop.categoryMetaEmpty" : "shop.categoryMeta", { category: cat.label[lang] })
+  : t("shop.lead");
+// Share image: the category's own (three of its products) or, for an empty category, the brand image.
+const ogImage = cat && !madeToOrder ? `/og/categorie/${cat.slug}.jpg` : undefined;
+const pageUrl = new URL(cat ? path(lang, "category", cat.slug) : path(lang, "shop"), Astro.site).href;
+// The products on this page, so search engines and AI assistants can read the catalogue as a list.
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": `${pageUrl}#page`,
+  name: title,
+  url: pageUrl,
+  description,
+  isPartOf: { "@id": SITE_IDS.website },
+  ...(list.length
+    ? {
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: list.length,
+          itemListElement: list.map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: new URL(path(lang, "product", p.slug), Astro.site).href,
+            name: productName(p, lang),
+          })),
+        },
+      }
+    : {}),
+};
 ---
 
-<Layout lang={lang} title={title} alternates={alts} description={cat ? undefined : t("shop.lead")}>
+<Layout lang={lang} title={cat ? t("shop.categoryTitle", { category: cat.label[lang] }) : title} alternates={alts} description={description} image={ogImage} schema={[schema]}>
   <div class="container-site pt-6 sm:pt-10">
     <Breadcrumbs items={crumbs} lang={lang} />
     <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
