@@ -113,6 +113,30 @@
   },
   {
     "id": 5,
+    "slug": "canape-angle-modulable",
+    "name": {
+      "fr": "Canapé d’Angle Modulable",
+      "en": "Modular Corner Sofa",
+      "ar": "كنبة زاوية معيارية قابلة للتشكيل"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "canapes"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "canape-angle-modulable-1.webp"
+    ]
+  },
+  {
+    "id": 6,
     "slug": "canape-capitonne-vert-emeraude",
     "name": {
       "fr": "Canapé capitonné vert émeraude",
@@ -137,7 +161,7 @@
     ]
   },
   {
-    "id": 6,
+    "id": 7,
     "slug": "fauteuil-bulle",
     "name": {
       "fr": "Fauteuil Bulle",
@@ -174,7 +198,7 @@
     ]
   },
   {
-    "id": 7,
+    "id": 8,
     "slug": "fauteuil-lounge-boucle",
     "name": {
       "fr": "Fauteuil lounge bouclé",
@@ -205,7 +229,7 @@
     ]
   },
   {
-    "id": 8,
+    "id": 9,
     "slug": "fauteuil-sculptural-boucle-ivoire",
     "name": {
       "fr": "Fauteuil sculptural en bouclé ivoire",
@@ -229,7 +253,7 @@
     ]
   },
   {
-    "id": 9,
+    "id": 10,
     "slug": "fauteuil-scandinave",
     "name": {
       "fr": "Fauteuil scandinave",
@@ -263,7 +287,7 @@
     ]
   },
   {
-    "id": 10,
+    "id": 11,
     "slug": "chaise-accoudoirs-boucle",
     "name": {
       "fr": "Chaise à accoudoirs en bouclé",
@@ -296,7 +320,7 @@
     ]
   },
   {
-    "id": 11,
+    "id": 12,
     "slug": "chaise-dossier-rond-boucle",
     "name": {
       "fr": "Chaise à dossier rond en bouclé crème",
@@ -321,7 +345,7 @@
     ]
   },
   {
-    "id": 12,
+    "id": 13,
     "slug": "lit-bulle-ivoire",
     "name": {
       "fr": "Lit Bulle ivoire",
@@ -345,7 +369,7 @@
     ]
   },
   {
-    "id": 13,
+    "id": 14,
     "slug": "lit-tete-capitonnee-beige",
     "name": {
       "fr": "Lit à tête de lit capitonnée beige",
@@ -369,7 +393,7 @@
     ]
   },
   {
-    "id": 14,
+    "id": 15,
     "slug": "lit-capitonne-gris",
     "name": {
       "fr": "Lit capitonné gris",
@@ -393,7 +417,7 @@
     ]
   },
   {
-    "id": 15,
+    "id": 16,
     "slug": "lit-capitonne-beige-texture",
     "name": {
       "fr": "Lit capitonné beige texturé",
@@ -417,7 +441,7 @@
     ]
   },
   {
-    "id": 16,
+    "id": 17,
     "slug": "lit-rembourre-creme",
     "name": {
       "fr": "Lit rembourré crème",
@@ -441,7 +465,7 @@
     ]
   },
   {
-    "id": 17,
+    "id": 18,
     "slug": "miroir-organique",
     "name": {
       "fr": "Miroir organique",
@@ -472,7 +496,175 @@
     ]
   },
   {
-    "id": 18,
+    "id": 19,
+    "slug": "cadre-miroir-festonne-boucle",
+    "name": {
+      "fr": "Cadre de Miroir Festonné en Tissu Bouclé Blanc Design Élégant et Contemporain",
+      "en": "Scalloped White Bouclé Mirror Frame, Elegant Contemporary Design",
+      "ar": "إطار مرآة بحواف متموجة من قماش البوكليه الأبيض، تصميم أنيق وعصري"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "miroirs"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "cadre-miroir-festonne-boucle-1.webp"
+    ]
+  },
+  {
+    "id": 20,
+    "slug": "cadre-miroir-organique-boucle",
+    "name": {
+      "fr": "Cadre de miroir organique en tissu bouclé",
+      "en": "Organic bouclé mirror frame",
+      "ar": "إطار مرآة بشكل عضوي من قماش البوكليه"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "miroirs"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "cadre-miroir-organique-boucle-1.webp"
+    ]
+  },
+  {
+    "id": 21,
+    "slug": "cadre-miroir-ovale-boucle",
+    "name": {
+      "fr": "Cadre de miroir ovale en tissu bouclé",
+      "en": "Oval bouclé mirror frame",
+      "ar": "إطار مرآة بيضاوي من قماش البوكليه"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "miroirs"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "cadre-miroir-ovale-boucle-1.webp"
+    ]
+  },
+  {
+    "id": 22,
+    "slug": "cadre-miroir-asymetrique-boucle",
+    "name": {
+      "fr": "Cadre de miroir asymétrique en tissu bouclé",
+      "en": "Asymmetric bouclé mirror frame",
+      "ar": "إطار مرآة غير متماثل من قماش البوكليه"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "miroirs"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "cadre-miroir-asymetrique-boucle-1.webp"
+    ]
+  },
+  {
+    "id": 23,
+    "slug": "cadre-miroir-arche-classique",
+    "name": {
+      "fr": "Cadre de miroir Arche classique",
+      "en": "Classic arch mirror frame",
+      "ar": "إطار مرآة بقوس كلاسيكي"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "miroirs"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "cadre-miroir-arche-classique-1.webp"
+    ]
+  },
+  {
+    "id": 24,
+    "slug": "cadre-miroir-carre-arrondi",
+    "name": {
+      "fr": "Cadre de miroir Carré arrondi",
+      "en": "Rounded square mirror frame",
+      "ar": "إطار مرآة مربع بزوايا مستديرة"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "miroirs"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "cadre-miroir-carre-arrondi-1.webp"
+    ]
+  },
+  {
+    "id": 25,
+    "slug": "cadre-miroir-double-arche",
+    "name": {
+      "fr": "Cadre de miroir Double arche",
+      "en": "Double arch mirror frame",
+      "ar": "إطار مرآة بقوس مزدوج"
+    },
+    "sku": null,
+    "price": null,
+    "regularPrice": null,
+    "inStock": true,
+    "rating": 0,
+    "reviews": 0,
+    "categories": [
+      "miroirs"
+    ],
+    "colors": [],
+    "colorImages": [],
+    "styles": [],
+    "images": [
+      "cadre-miroir-double-arche-1.webp"
+    ]
+  },
+  {
+    "id": 26,
     "slug": "pouf-geometrique-noir-ivoire",
     "name": {
       "fr": "Pouf géométrique noir et ivoire",
@@ -496,7 +688,7 @@
     ]
   },
   {
-    "id": 19,
+    "id": 27,
     "slug": "pouf-geometrique",
     "name": {
       "fr": "Pouf géométrique",
@@ -527,7 +719,7 @@
     ]
   },
   {
-    "id": 20,
+    "id": 28,
     "slug": "pouf-boucle-trois-niveaux",
     "name": {
       "fr": "Pouf rond en bouclé à trois niveaux",
@@ -551,7 +743,7 @@
     ]
   },
   {
-    "id": 21,
+    "id": 29,
     "slug": "pouf-rond-beige",
     "name": {
       "fr": "Pouf rond en tissu beige",
@@ -575,7 +767,7 @@
     ]
   },
   {
-    "id": 22,
+    "id": 30,
     "slug": "table-basse-bloc-travertin",
     "name": {
       "fr": "Table basse bloc en travertin",
@@ -599,7 +791,7 @@
     ]
   },
   {
-    "id": 23,
+    "id": 31,
     "slug": "table-basse-pieds-canneles",
     "name": {
       "fr": "Table basse beige à pieds cannelés",
@@ -623,31 +815,7 @@
     ]
   },
   {
-    "id": 24,
-    "slug": "table-basse-travertin-minimaliste",
-    "name": {
-      "fr": "Table basse minimaliste en travertin beige",
-      "en": "Minimalist beige travertine coffee table",
-      "ar": "طاولة قهوة بسيطة من الترافرتين البيج"
-    },
-    "sku": null,
-    "price": null,
-    "regularPrice": null,
-    "inStock": true,
-    "rating": 0,
-    "reviews": 0,
-    "categories": [
-      "tables-basses"
-    ],
-    "colors": [],
-    "colorImages": [],
-    "styles": [],
-    "images": [
-      "table-basse-travertin-minimaliste-1.webp"
-    ]
-  },
-  {
-    "id": 25,
+    "id": 32,
     "slug": "table-basse-travertin-pieds-noirs",
     "name": {
       "fr": "Table basse travertin et piédestaux noirs",
@@ -671,7 +839,7 @@
     ]
   },
   {
-    "id": 26,
+    "id": 33,
     "slug": "table-basse-sculpturale-travertin",
     "name": {
       "fr": "Table Basse Sculpturale en Travertin – Design Architectural",
@@ -695,12 +863,12 @@
     ]
   },
   {
-    "id": 27,
-    "slug": "table-basse-travertin-beige",
+    "id": 34,
+    "slug": "table-basse-rectangulaire-travertin",
     "name": {
-      "fr": "Table basse moderne en travertin beige",
-      "en": "Modern beige travertine coffee table",
-      "ar": "طاولة قهوة عصرية من الترافرتين البيج"
+      "fr": "Table Basse Rectangulaire en Travertin Beige Naturel",
+      "en": "Rectangular Natural Beige Travertine Coffee Table",
+      "ar": "طاولة قهوة مستطيلة من الترافرتين البيج الطبيعي"
     },
     "sku": null,
     "price": null,
@@ -715,11 +883,11 @@
     "colorImages": [],
     "styles": [],
     "images": [
-      "table-basse-travertin-beige-1.webp"
+      "table-basse-rectangulaire-travertin-1.webp"
     ]
   },
   {
-    "id": 28,
+    "id": 35,
     "slug": "table-basse-ovale-travertin-cannele",
     "name": {
       "fr": "Table basse ovale en travertin cannelé",
@@ -743,12 +911,12 @@
     ]
   },
   {
-    "id": 29,
-    "slug": "table-basse-ovale-travertin-creme",
+    "id": 36,
+    "slug": "table-basse-ovale-travertin-beige",
     "name": {
-      "fr": "Table basse ovale en travertin crème",
-      "en": "Oval cream travertine coffee table",
-      "ar": "طاولة قهوة بيضاوية من الترافرتين الكريمي"
+      "fr": "Table Basse Ovale en Travertin Beige Naturel",
+      "en": "Oval Natural Beige Travertine Coffee Table",
+      "ar": "طاولة قهوة بيضاوية من الترافرتين البيج الطبيعي"
     },
     "sku": null,
     "price": null,
@@ -763,11 +931,11 @@
     "colorImages": [],
     "styles": [],
     "images": [
-      "table-basse-ovale-travertin-creme-1.webp"
+      "table-basse-ovale-travertin-beige-1.webp"
     ]
   },
   {
-    "id": 30,
+    "id": 37,
     "slug": "table-basse-bois-verre",
     "name": {
       "fr": "Table basse sculpturale en bois et verre",
@@ -791,7 +959,7 @@
     ]
   },
   {
-    "id": 31,
+    "id": 38,
     "slug": "tables-gigognes-marbre-creme",
     "name": {
       "fr": "Tables gigognes en marbre crème",
@@ -816,7 +984,7 @@
     ]
   },
   {
-    "id": 32,
+    "id": 39,
     "slug": "tables-gigognes-rondes-noyer",
     "name": {
       "fr": "Tables Gigognes Rondes en Noyer Naturel",
@@ -841,7 +1009,7 @@
     ]
   },
   {
-    "id": 33,
+    "id": 40,
     "slug": "tables-gigognes-marbre-noir",
     "name": {
       "fr": "Tables gigognes en marbre noir",

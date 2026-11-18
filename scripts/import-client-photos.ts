@@ -53,6 +53,12 @@ const CATALOGUE: Entry[] = [
     photos: ["Canapé d’angle crème avec coussins colorés.webp"],
   },
   {
+    slug: "canape-angle-modulable",
+    name: { fr: "Canapé d’Angle Modulable", en: "Modular Corner Sofa", ar: "كنبة زاوية معيارية قابلة للتشكيل" },
+    categories: ["canapes"],
+    photos: ["Canapé d’angle modulable.webp"],
+  },
+  {
     slug: "canape-capitonne-vert-emeraude",
     name: { fr: "Canapé capitonné vert émeraude", en: "Emerald green tufted sofa", ar: "كنبة مبطنة خضراء زمردية" },
     categories: ["canapes"],
@@ -139,6 +145,52 @@ const CATALOGUE: Entry[] = [
     photos: ["Miroir organique en bouclé ivoire.webp", "Miroir organique en tissu beige velours.webp"],
     colors: [["Ivory bouclé", 0], ["Beige velvet", 1]],
   },
+  {
+    slug: "cadre-miroir-festonne-boucle",
+    name: {
+      fr: "Cadre de Miroir Festonné en Tissu Bouclé Blanc Design Élégant et Contemporain",
+      en: "Scalloped White Bouclé Mirror Frame, Elegant Contemporary Design",
+      ar: "إطار مرآة بحواف متموجة من قماش البوكليه الأبيض، تصميم أنيق وعصري",
+    },
+    categories: ["miroirs"],
+    photos: ["Cadre de miroir festonné en tissu bouclé blanc.webp"],
+  },
+  {
+    slug: "cadre-miroir-organique-boucle",
+    name: { fr: "Cadre de miroir organique en tissu bouclé", en: "Organic bouclé mirror frame", ar: "إطار مرآة بشكل عضوي من قماش البوكليه" },
+    categories: ["miroirs"],
+    photos: ["Cadre de miroir organique en tissu bouclé.webp"],
+  },
+  {
+    slug: "cadre-miroir-ovale-boucle",
+    name: { fr: "Cadre de miroir ovale en tissu bouclé", en: "Oval bouclé mirror frame", ar: "إطار مرآة بيضاوي من قماش البوكليه" },
+    categories: ["miroirs"],
+    photos: ["Cadre de miroir ovale en tissu bouclé.webp"],
+  },
+  {
+    slug: "cadre-miroir-asymetrique-boucle",
+    name: { fr: "Cadre de miroir asymétrique en tissu bouclé", en: "Asymmetric bouclé mirror frame", ar: "إطار مرآة غير متماثل من قماش البوكليه" },
+    categories: ["miroirs"],
+    photos: ["Cadre de miroir asymétrique en tissu bouclé.webp"],
+  },
+  {
+    slug: "cadre-miroir-arche-classique",
+    name: { fr: "Cadre de miroir Arche classique", en: "Classic arch mirror frame", ar: "إطار مرآة بقوس كلاسيكي" },
+    categories: ["miroirs"],
+    photos: ["Cadre de miroir arche classique.webp"],
+  },
+  {
+    slug: "cadre-miroir-carre-arrondi",
+    name: { fr: "Cadre de miroir Carré arrondi", en: "Rounded square mirror frame", ar: "إطار مرآة مربع بزوايا مستديرة" },
+    categories: ["miroirs"],
+    photos: ["Cadre de miroir carré arrondi.webp"],
+  },
+  {
+    slug: "cadre-miroir-double-arche",
+    name: { fr: "Cadre de miroir Double arche", en: "Double arch mirror frame", ar: "إطار مرآة بقوس مزدوج" },
+    categories: ["miroirs"],
+    photos: ["Cadre de miroir double arche.webp"],
+  },
   // ---- Poufs
   {
     slug: "pouf-geometrique-noir-ivoire",
@@ -179,12 +231,6 @@ const CATALOGUE: Entry[] = [
     photos: ["Table basse beige à pieds cannelés.webp"],
   },
   {
-    slug: "table-basse-travertin-minimaliste",
-    name: { fr: "Table basse minimaliste en travertin beige", en: "Minimalist beige travertine coffee table", ar: "طاولة قهوة بسيطة من الترافرتين البيج" },
-    categories: ["tables-basses"],
-    photos: ["Table basse minimaliste en travertin beige (1).webp"],
-  },
-  {
     slug: "table-basse-travertin-pieds-noirs",
     name: { fr: "Table basse travertin et piédestaux noirs", en: "Travertine coffee table with black pedestals", ar: "طاولة قهوة ترافرتين بقواعد سوداء" },
     categories: ["tables-basses"],
@@ -197,8 +243,12 @@ const CATALOGUE: Entry[] = [
     photos: ["Table basse géométrique en béton gris pâle.webp"],
   },
   {
-    slug: "table-basse-travertin-beige",
-    name: { fr: "Table basse moderne en travertin beige", en: "Modern beige travertine coffee table", ar: "طاولة قهوة عصرية من الترافرتين البيج" },
+    slug: "table-basse-rectangulaire-travertin",
+    name: {
+      fr: "Table Basse Rectangulaire en Travertin Beige Naturel",
+      en: "Rectangular Natural Beige Travertine Coffee Table",
+      ar: "طاولة قهوة مستطيلة من الترافرتين البيج الطبيعي",
+    },
     categories: ["tables-basses"],
     photos: ["Table basse moderne en travertin beige.webp"],
   },
@@ -209,10 +259,14 @@ const CATALOGUE: Entry[] = [
     photos: ["Table basse ovale en travertin cannelé.webp"],
   },
   {
-    slug: "table-basse-ovale-travertin-creme",
-    name: { fr: "Table basse ovale en travertin crème", en: "Oval cream travertine coffee table", ar: "طاولة قهوة بيضاوية من الترافرتين الكريمي" },
+    slug: "table-basse-ovale-travertin-beige",
+    name: {
+      fr: "Table Basse Ovale en Travertin Beige Naturel",
+      en: "Oval Natural Beige Travertine Coffee Table",
+      ar: "طاولة قهوة بيضاوية من الترافرتين البيج الطبيعي",
+    },
     categories: ["tables-basses"],
-    photos: ["Table basse ovale en travertin crème.webp"],
+    photos: ["Table basse ovale en travertin beige naturel.webp"],
   },
   {
     slug: "table-basse-bois-verre",

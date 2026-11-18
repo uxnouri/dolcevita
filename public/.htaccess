@@ -39,7 +39,8 @@ RewriteRule ^(?:wp-sitemap\.xml|sitemap_index\.xml|sitemap\.xml)$ /sitemap-index
 
 # Renamed products (old slug → new slug).
 RewriteRule ^((?:en/|ar/)?(?:produit|product))/table-basse-beton/?$ /$1/table-basse-sculpturale-travertin/ [R=301,L]
-RewriteRule ^((?:en/|ar/)?(?:produit|product))/table-basse-noyer-organique/?$ /$1/table-basse-travertin-minimaliste/ [R=301,L]
+RewriteRule ^((?:en/|ar/)?(?:produit|product))/(?:table-basse-noyer-organique|table-basse-travertin-minimaliste|table-basse-travertin-beige)/?$ /$1/table-basse-rectangulaire-travertin/ [R=301,L]
+RewriteRule ^((?:en/|ar/)?(?:produit|product))/table-basse-ovale-travertin-creme/?$ /$1/table-basse-ovale-travertin-beige/ [R=301,L]
 RewriteRule ^((?:en/|ar/)?(?:produit|product))/tables-gigognes-noyer/?$ /$1/tables-gigognes-rondes-noyer/ [R=301,L]
 
 # Blog posts used to live at the site root.
