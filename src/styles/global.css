@@ -184,7 +184,7 @@
   .rail::-webkit-scrollbar { display: none; }
   .rail > * { @apply snap-start; }
 
-  .prose-article p { @apply my-5 text-[17px] leading-[1.75] text-ink/80; }
+  .prose-article > p { @apply my-5 text-[17px] leading-[1.75] text-ink/80; }
   .prose-article h2 { @apply mt-12 mb-4 text-2xl font-bold sm:text-3xl; }
 }
 

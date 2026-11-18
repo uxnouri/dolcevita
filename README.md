@@ -58,7 +58,7 @@ When styling, use logical Tailwind classes (`ms-`/`me-`, `ps-`/`pe-`, `start-`/`
 | Product descriptions (FR + EN + AR, by product slug) | `src/lib/descriptions.ts` |
 | Category, colour and style names per language, home page featured products | `src/lib/catalog.ts` |
 | Search synonyms (French/Arabic words → English product names) | `src/lib/search.ts` |
-| Journal titles and article text | `src/lib/blog.ts`, `src/data/posts.json` |
+| Journal articles (title, description, text, FAQ in FR + EN + AR; cover in `src/assets/blog/`) | `src/lib/articles/part-*.ts` (format: `src/lib/articles/types.ts`) |
 | Colours, fonts, motion curves | `src/styles/global.css` (`@theme`) |
 | Images | `src/assets/{products,site,blog,categories}/` |
 
@@ -127,3 +127,12 @@ Prices are in **Moroccan dirhams**, shown as "5 880 DH" in French, "5,880 MAD" i
 There's no payment backend. The cart is stored in the visitor's browser, and **"Finaliser sur WhatsApp"** opens WhatsApp with the full order (items, quantities, total) addressed to the number in `src/lib/site.ts`. Each product page also has a direct "Commander sur WhatsApp" button.
 
 `scripts/make-icons.ts` regenerates `public/og.jpg` (social share image) and `public/apple-touch-icon.png`.
+
+## Journal
+
+18 articles written for searches in Morocco and Marrakech (custom sofas, riads, villas, holiday rentals, travertine, 3D design, turnkey projects, climate, colours, mirrors, bouclé, care…), dated May–November 2026, each in French, English and Arabic with its own title, search description, FAQ (published as schema.org `FAQPage`) and a WhatsApp / showroom call to action.
+
+- Articles live in `src/lib/articles/part-1.ts` … `part-3.ts`; the format is documented in `src/lib/articles/types.ts`. To add one, add an object with a new French slug, a date and a cover photo in `src/assets/blog/`.
+- Inside text, link with `[label](category:canapes)`, `[label](product:slug)`, `[label](blog:slug)` or `[label](services|contact|shop|about)`: each language gets its own URL, and a link to something that doesn't exist stops the build.
+- A `products` block shows real product cards; keep product slugs in sync if a product is renamed.
+- The old theme articles were replaced; their addresses (WordPress root and `/blog/…` in all three languages) redirect to the new articles in `public/.htaccess`.

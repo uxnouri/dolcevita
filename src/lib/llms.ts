@@ -8,6 +8,7 @@ import { categories, colorLabel, productName, productsIn } from "./catalog";
 import { DESCRIPTIONS } from "./descriptions";
 import { SERVICES } from "./services";
 import { SITE } from "./site";
+import { ARTICLES } from "./articles";
 
 const abs = (p: string) => new URL(p, SITE.url).href;
 const link = (...args: Parameters<typeof path>) => abs(path(...args));
@@ -101,6 +102,17 @@ function catalogue(full: boolean) {
   return lines;
 }
 
+function journal() {
+  return [
+    "## Journal (interior design advice for Marrakech and Morocco)",
+    "",
+    ...ARTICLES.map(
+      (a) => `- [${a.title.en}](${link("en", "blog", a.slug)}) (FR: [${a.title.fr}](${link("fr", "blog", a.slug)})): ${a.description.en}`,
+    ),
+    "",
+  ];
+}
+
 export function llmsTxt() {
   return [
     ...header(),
@@ -110,6 +122,7 @@ export function llmsTxt() {
     ...services(),
     "",
     ...catalogue(false),
+    ...journal(),
     "## Optional",
     "",
     `- [Full catalogue](${abs("/llms-full.txt")}): every product with its description in French, English and Arabic.`,
@@ -119,7 +132,7 @@ export function llmsTxt() {
 }
 
 export function llmsFullTxt() {
-  return [...header(), "", ...pages(), "", ...services(), "", ...catalogue(true)].join("\n");
+  return [...header(), "", ...pages(), "", ...services(), "", ...catalogue(true), ...journal()].join("\n");
 }
 
 export const textResponse = (body: string) =>

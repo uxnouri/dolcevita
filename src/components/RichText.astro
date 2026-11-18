@@ -1,0 +1,28 @@
+---
+/**
+ * Article text with internal links: [label](category:canapes), [label](product:slug),
+ * [label](blog:slug), [label](shop|services|contact|about). Each language gets its own URL.
+ * An unknown target stops the build.
+ */
+import { path, type Lang } from "../i18n";
+import { resolveLink } from "../lib/articles/links";
+
+interface Props {
+  text: string;
+  lang: Lang;
+}
+const { text, lang } = Astro.props;
+const parts: { text: string; href?: string }[] = [];
+let last = 0;
+for (const m of text.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g)) {
+  if (m.index! > last) parts.push({ text: text.slice(last, m.index) });
+  const target = resolveLink(m[2]);
+  // A typo in an article link must not ship as a dead link: stop the build instead.
+  if (!target) throw new Error(`Unknown article link target "${m[2]}" in: ${text.slice(0, 80)}`);
+  parts.push({ text: m[1], href: path(lang, target.route, target.slug) });
+  last = m.index! + m[0].length;
+}
+if (last < text.length) parts.push({ text: text.slice(last) });
+---
+
+{parts.map((p) => (p.href ? <a href={p.href} class="font-medium text-brand underline decoration-brand/30 underline-offset-4 hover:decoration-brand">{p.text}</a> : p.text))}

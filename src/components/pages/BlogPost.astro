@@ -1,12 +1,17 @@
 ---
+import MessageCircle from "@lucide/astro/icons/message-circle";
+import MapPin from "@lucide/astro/icons/map-pin";
 import Photo from "../Photo.astro";
 import { getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import PostCard from "../PostCard.astro";
+import ProductCard from "../ProductCard.astro";
+import RichText from "../RichText.astro";
 import { LANG_META, alternates, formatDate, path, useT, type Lang } from "../../i18n";
-import { ARTICLE, posts, type Post } from "../../lib/blog";
-import { blogImage, siteImage } from "../../lib/catalog";
+import { getArticle, posts, type Post } from "../../lib/blog";
+import { plainText } from "../../lib/articles/links";
+import { blogImage, getProduct, type Product } from "../../lib/catalog";
 import { SITE, SITE_IDS } from "../../lib/site";
 
 interface Props {
@@ -15,37 +20,58 @@ interface Props {
 }
 const { lang, post } = Astro.props;
 const t = useT(lang);
+const article = getArticle(post.slug)!;
+const blocks = article.body[lang];
+const title = article.title[lang];
 const cover = post.image ? blogImage(post.image) : null;
 // Share image cropped to the 1200×630 every network expects.
 const og = cover ? await getImage({ src: cover, width: 1200, height: 630, fit: "cover", format: "jpg" }) : null;
 const pageUrl = new URL(path(lang, "blog", post.slug), Astro.site).href;
-const blocks = ARTICLE[lang];
-const more = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+// "Keep reading": the next articles in date order, wrapping around, so every article links to others.
+const at = posts.findIndex((p) => p.slug === post.slug);
+const more = [1, 2, 3].map((i) => posts[(at + i) % posts.length]);
+const whatsapp = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t("blog.cta.message", { title }))}`;
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "@id": `${pageUrl}#article`,
-  headline: post.title[lang],
-  url: pageUrl,
-  mainEntityOfPage: pageUrl,
-  datePublished: post.date,
-  dateModified: post.date,
-  inLanguage: LANG_META[lang].locale,
-  image: og ? new URL(og.src, Astro.site).href : undefined,
-  author: { "@type": "Organization", "@id": SITE_IDS.store, name: SITE.name },
-  publisher: { "@id": SITE_IDS.store },
-};
+const faq = blocks.flatMap((b) => (b.type === "faq" ? b.items : []));
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${pageUrl}#article`,
+    headline: title,
+    description: article.description[lang],
+    url: pageUrl,
+    mainEntityOfPage: pageUrl,
+    datePublished: article.date,
+    dateModified: article.date,
+    inLanguage: LANG_META[lang].locale,
+    image: og ? new URL(og.src, Astro.site).href : undefined,
+    author: { "@type": "Organization", "@id": SITE_IDS.store, name: SITE.name },
+    publisher: { "@id": SITE_IDS.store },
+    about: { "@type": "Place", name: "Marrakech" },
+  },
+  ...(faq.length
+    ? [
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "@id": `${pageUrl}#faq`,
+          mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: plainText(a) } })),
+        },
+      ]
+    : []),
+];
+const productsOf = (slugs: string[]) => slugs.map(getProduct).filter((p): p is Product => !!p);
 ---
 
 <Layout
   lang={lang}
-  title={post.title[lang]}
-  description={blocks[0].type === "lead" ? blocks[0].text : undefined}
+  title={title}
+  description={article.description[lang]}
   alternates={alternates("blog", post.slug)}
   image={og?.src}
   ogType="article"
-  schema={[schema]}
+  schema={schema}
 >
   <article class="container-site pt-6 sm:pt-10">
     <div class="mx-auto max-w-3xl">
@@ -53,19 +79,19 @@ const schema = {
         items={[
           { label: t("nav.home"), href: path(lang, "home") },
           { label: t("blog.title"), href: path(lang, "blog") },
-          { label: post.title[lang] },
+          { label: title },
         ]}
         lang={lang}
       />
-      <time datetime={post.date} class="mt-8 block text-sm text-muted">{formatDate(post.date, lang)}</time>
-      <h1 class="mt-3 text-4xl leading-[1.05] font-bold sm:text-6xl">{post.title[lang]}</h1>
+      <time datetime={article.date} class="mt-8 block text-sm text-muted">{formatDate(article.date, lang)}</time>
+      <h1 class="mt-3 text-4xl leading-[1.05] font-bold sm:text-6xl">{title}</h1>
     </div>
 
     {
       cover && (
         <Photo
           src={cover}
-          alt=""
+          alt={title}
           widths={[640, 960, 1280, 1600]}
           sizes="(min-width: 1408px) 1328px, 100vw"
           loading="eager"
@@ -78,22 +104,53 @@ const schema = {
     <div class="prose-article mx-auto mt-12 max-w-2xl">
       {
         blocks.map((b) => {
-          if (b.type === "lead") return <p class="text-xl! leading-relaxed! font-semibold text-ink!">{b.text}</p>;
+          if (b.type === "lead") return <p class="text-xl! leading-relaxed! font-semibold text-ink!"><RichText text={b.text} lang={lang} /></p>;
           if (b.type === "h2") return <h2>{b.text}</h2>;
-          if (b.type === "p") return <p>{b.text}</p>;
+          if (b.type === "p") return <p><RichText text={b.text} lang={lang} /></p>;
           if (b.type === "list")
             return (
               <ul class="my-6 space-y-3">
                 {b.items.map(([strong, rest]) => (
                   <li class="flex gap-3 text-[17px] leading-relaxed text-ink/80">
                     <span class="mt-2.5 size-1.5 shrink-0 rounded-full bg-olive" />
-                    <span><strong class="font-semibold text-ink">{strong}</strong> {rest}</span>
+                    <span><strong class="font-semibold text-ink">{strong}</strong> <RichText text={rest} lang={lang} /></span>
                   </li>
                 ))}
               </ul>
             );
+          if (b.type === "products")
+            return (
+              <div class="my-10 grid grid-cols-2 gap-x-4 gap-y-8">
+                {productsOf(b.slugs).map((p) => <ProductCard product={p} lang={lang} sizes="(min-width: 768px) 20rem, 46vw" />)}
+              </div>
+            );
+          if (b.type === "faq")
+            return (
+              <section aria-labelledby="faq-title">
+                <h2 id="faq-title">{t("blog.faq")}</h2>
+                <dl class="divide-y divide-ink/10 border-y border-ink/10">
+                  {b.items.map(([q, a]) => (
+                    <div class="py-5">
+                      <dt class="text-[17px] font-semibold text-ink">{q}</dt>
+                      <dd class="mt-2 text-[17px] leading-relaxed text-ink/80"><RichText text={a} lang={lang} /></dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            );
           return (
-            <Photo src={siteImage(b.src)} alt="" widths={[480, 720, 1000, 1305]} sizes="(min-width: 768px) 42rem, 100vw" class="my-10 w-full rounded-2xl" />
+            <aside class="my-12 rounded-[1.75rem] bg-brand-dark p-6 text-white sm:p-8">
+              <p class="text-2xl font-bold">{t("blog.cta.title")}</p>
+              <p class="mt-3 leading-relaxed text-white/75">{t("blog.cta.text")}</p>
+              <p class="mt-4 flex items-start gap-2 text-sm text-white/75">
+                <MapPin size={18} class="mt-0.5 shrink-0 text-olive" />
+                <span>{SITE.address.street}, {SITE.address.city} {SITE.address.postalCode} · {t("contact.hours")}</span>
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a href={whatsapp} target="_blank" rel="noopener" class="btn-light"><MessageCircle size={18} />{t("blog.cta.whatsapp")}</a>
+                <a href={path(lang, "services")} class="btn border border-white/30 text-white hover:bg-white/10">{t("nav.services")}</a>
+              </div>
+            </aside>
           );
         })
       }
