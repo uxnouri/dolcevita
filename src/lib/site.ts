@@ -12,10 +12,13 @@ export const SITE = {
     country: "MA",
   },
   mapUrl: "https://maps.app.goo.gl/CqYkEvacsGxypDj98",
-  /** Add your Instagram profile URL to show the icon in the footer. */
-  instagram: "",
+  /** Shown in the footer and on the contact page, and listed in the schema.org data (sameAs). */
+  instagram: "https://www.instagram.com/dolcevitadesign.ma/",
   /** Prices in the catalogue are stored in this currency. */
   currency: "MAD",
 } as const;
 
 export const telHref = (phone: string) => `tel:${phone.replace(/\s/g, "")}`;
+
+/** "@dolcevitadesign.ma" from the profile URL. */
+export const instagramHandle = (url: string) => "@" + new URL(url).pathname.split("/").filter(Boolean)[0];

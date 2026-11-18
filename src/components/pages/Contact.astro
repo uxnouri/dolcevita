@@ -7,7 +7,8 @@ import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../Breadcrumbs.astro";
 import { alternates, path, useT, type Lang } from "../../i18n";
-import { SITE, telHref } from "../../lib/site";
+import { SITE, instagramHandle, telHref } from "../../lib/site";
+import InstagramIcon from "../InstagramIcon.astro";
 
 interface Props {
   lang: Lang;
@@ -52,6 +53,19 @@ const field =
             </span>
           </a>
         </li>
+        {
+          SITE.instagram && (
+            <li>
+              <a href={SITE.instagram} target="_blank" rel="noopener" class="pressable flex gap-4 rounded-2xl bg-sand p-5 hover:bg-stone">
+                <span class="grid size-11 shrink-0 place-items-center rounded-full bg-brand text-white"><InstagramIcon size={20} /></span>
+                <span>
+                  <span class="block text-sm text-muted">{t("contact.instagram")}</span>
+                  <span class="mt-0.5 block font-semibold" dir="ltr">{instagramHandle(SITE.instagram)}</span>
+                </span>
+              </a>
+            </li>
+          )
+        }
       </ul>
 
       <form

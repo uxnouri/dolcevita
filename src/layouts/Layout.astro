@@ -45,6 +45,7 @@ const org = {
     addressCountry: SITE.address.country,
   },
   hasMap: SITE.mapUrl,
+  ...(SITE.instagram && { sameAs: [SITE.instagram] }),
 };
 ---
 

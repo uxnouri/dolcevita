@@ -5,7 +5,8 @@ import Mail from "@lucide/astro/icons/mail";
 import ArrowUp from "@lucide/astro/icons/arrow-up";
 import { path, useT, type Lang } from "../i18n";
 import { topCategories } from "../lib/catalog";
-import { SITE, telHref } from "../lib/site";
+import { SITE, instagramHandle, telHref } from "../lib/site";
+import InstagramIcon from "./InstagramIcon.astro";
 
 interface Props {
   lang: Lang;
@@ -74,6 +75,16 @@ const year = new Date().getFullYear();
                 {SITE.email}
               </a>
             </li>
+            {
+              SITE.instagram && (
+                <li>
+                  <a href={SITE.instagram} target="_blank" rel="noopener" class="flex gap-3 transition-colors hover:text-white">
+                    <InstagramIcon size={18} class="mt-0.5 shrink-0 text-olive" />
+                    <span dir="ltr">{instagramHandle(SITE.instagram)}</span>
+                  </a>
+                </li>
+              )
+            }
           </ul>
         </div>
       </nav>
