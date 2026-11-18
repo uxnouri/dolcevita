@@ -8,8 +8,11 @@
 import { Picture } from "astro:assets";
 import type { ComponentProps } from "astro/types";
 
-type Props = Omit<ComponentProps<typeof Picture>, "formats" | "fallbackFormat" | "pictureAttributes">;
+type PictureProps = ComponentProps<typeof Picture>;
+type Props = Omit<PictureProps, "formats" | "fallbackFormat" | "pictureAttributes">;
+// Omit<> flattens Picture's union of prop shapes (local vs remote images), so spread with Picture's own type.
+const props = Astro.props as PictureProps;
 ---
 
 <!-- `contents` keeps <picture> out of layout, so the <img> sizes and positions exactly like before. -->
-<Picture {...Astro.props} formats={["avif"]} fallbackFormat="webp" pictureAttributes={{ class: "contents" }} />
+<Picture {...props} formats={["avif"]} fallbackFormat="webp" pictureAttributes={{ class: "contents" }} />
