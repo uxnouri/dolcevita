@@ -117,7 +117,7 @@ export const latest = bySlugs([
 
 /** Home page "Nos coups de cœur": a hand-picked selection (no sales data yet, so no "bestseller" claims). */
 export const favourites = bySlugs([
-  "canape-capitonne-vert-emeraude", "fauteuil-scandinave", "table-basse-noyer-organique", "lit-capitonne-gris",
+  "canape-capitonne-vert-emeraude", "fauteuil-scandinave", "table-basse-travertin-minimaliste", "lit-capitonne-gris",
   "pouf-geometrique", "chaise-accoudoirs-boucle", "table-basse-bois-verre", "canape-angle-boucle-creme",
 ]);
 

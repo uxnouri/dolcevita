@@ -37,6 +37,11 @@ RewriteRule ^(?:home-13-modern|coming-soon-modern|header-demo-light|footer-home-
 RewriteRule ^(?:feed|comments/feed)/?$ / [R=301,L]
 RewriteRule ^(?:wp-sitemap\.xml|sitemap_index\.xml|sitemap\.xml)$ /sitemap-index.xml [R=301,L]
 
+# Renamed products (old slug → new slug).
+RewriteRule ^((?:en/|ar/)?(?:produit|product))/table-basse-beton/?$ /$1/table-basse-sculpturale-travertin/ [R=301,L]
+RewriteRule ^((?:en/|ar/)?(?:produit|product))/table-basse-noyer-organique/?$ /$1/table-basse-travertin-minimaliste/ [R=301,L]
+RewriteRule ^((?:en/|ar/)?(?:produit|product))/tables-gigognes-noyer/?$ /$1/tables-gigognes-rondes-noyer/ [R=301,L]
+
 # Blog posts used to live at the site root.
 RewriteRule ^transform-your-home-scandinavian-style-ideas-with-a-luxury-touch/?$ /blog/transform-your-home-scandinavian-style-ideas-with-a-luxury-touch/ [R=301,L]
 RewriteRule ^modular-kitchen-design-in-calgary-canada-roots-cabinet/?$ /blog/modular-kitchen-design-in-calgary-canada-roots-cabinet/ [R=301,L]

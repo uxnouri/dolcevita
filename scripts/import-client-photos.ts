@@ -179,10 +179,10 @@ const CATALOGUE: Entry[] = [
     photos: ["Table basse beige à pieds cannelés.webp"],
   },
   {
-    slug: "table-basse-noyer-organique",
-    name: { fr: "Table basse organique en noyer", en: "Organic walnut coffee table", ar: "طاولة قهوة عضوية من خشب الجوز" },
+    slug: "table-basse-travertin-minimaliste",
+    name: { fr: "Table basse minimaliste en travertin beige", en: "Minimalist beige travertine coffee table", ar: "طاولة قهوة بسيطة من الترافرتين البيج" },
     categories: ["tables-basses"],
-    photos: ["Table basse en noyer aux formes organiques.png"],
+    photos: ["Table basse minimaliste en travertin beige (1).webp"],
   },
   {
     slug: "table-basse-travertin-pieds-noirs",
@@ -191,8 +191,8 @@ const CATALOGUE: Entry[] = [
     photos: ["Table basse en travertin et piédestaux noirs.webp"],
   },
   {
-    slug: "table-basse-beton",
-    name: { fr: "Table basse géométrique en béton", en: "Geometric concrete coffee table", ar: "طاولة قهوة هندسية من الخرسانة" },
+    slug: "table-basse-sculpturale-travertin",
+    name: { fr: "Table Basse Sculpturale en Travertin – Design Architectural", en: "Sculptural Travertine Coffee Table – Architectural Design", ar: "طاولة قهوة منحوتة من الترافرتين – تصميم معماري" },
     categories: ["tables-basses"],
     photos: ["Table basse géométrique en béton gris pâle.webp"],
   },
@@ -227,8 +227,8 @@ const CATALOGUE: Entry[] = [
     photos: ["Tables gigognes en marbre crème facetté.webp"],
   },
   {
-    slug: "tables-gigognes-noyer",
-    name: { fr: "Tables gigognes en noyer foncé", en: "Dark walnut nesting tables", ar: "طاولات متداخلة من الجوز الداكن" },
+    slug: "tables-gigognes-rondes-noyer",
+    name: { fr: "Tables Gigognes Rondes en Noyer Naturel", en: "Round Natural Walnut Nesting Tables", ar: "طاولات متداخلة دائرية من خشب الجوز الطبيعي" },
     categories: ["tables-basses", "tables-de-chevet"],
     photos: ["Tables gigognes en noyer foncé.webp"],
   },

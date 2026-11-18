@@ -31,7 +31,7 @@ export const WORST: Product[] = [
     regularPrice: 1500,
     inStock: true,
     categories: ["tables-de-chevet", "commodes"],
-    images: ["tables-gigognes-noyer-1.webp"],
+    images: ["tables-gigognes-rondes-noyer-1.webp"],
   },
   {
     ...base,
